@@ -1,0 +1,137 @@
+{
+    "language": "English",
+    "@language":{
+      "description": "The current Language"
+    },
+    "helloWorld": "Hello World!",
+    "@helloWorld": {
+      "description": "A programmer greeting"
+    },
+    "hello": "Hi {username}",
+    "@hello": {
+      "description": "A welcome message",
+      "placeholders": {
+         "username": {
+           "type": "String"
+         }
+      }
+    },
+
+    "welcome": "Welcome",
+    "logging_Successfully": "Logging Successfully",
+    "wrong_Email_or_Password": "Wrong Email or Password",
+    "please_login_with_your_information": "Please login with your information.",
+    "username": "Username",
+    "please_enter_your_Username": "Please enter your Username",
+    "password": "Password",
+    "please_enter_your_Password": "Please enter your Password",
+    "forgot_Password": "Forgot Password?",
+    "login": "Login",
+
+    "home": "Home",
+    "categories": "Categories",
+    "search": "Search",
+    "basket": "Basket",
+    "more": "More",
+
+    "hot_Deals": "Hot Deals",
+    "discount_Items": "Discount Items",
+    "see_All": "See All",
+    "new_Items": "New Items",
+    "discount_Products": "Discount Products",
+    "number_of_Products": "Number of Products",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "new_Products": "New Products",
+
+    "error_Getting_Categories": "Error Getting Categories",
+    "categories": "Categories",
+    "main_Categories": "Main Categories",
+    "items": "Items",
+    "nothing_Found": "Nothing Found",
+
+    "error_Search_Product_Id": "Error Search Product Id",
+    "error_Search_Barcode": "Error Search Barcode",
+    "error_Search_Product_Name": "Error Search Product Name",
+    "search": "Search",
+    "product_Id": "Product Id",
+    "product_Name": "Product Name",
+    "sCAN_BARCODE": "SCAN BARCODE",
+    "search_By_Product_Id": "Search By Product Id",
+    "search_By_Product_Name": "Search By Product Name",
+    "use_the_keyboard": "Use the keyboard or the camera to search for products",
+
+    "basket": "Basket",
+    "items_in_basket": "Items in basket",
+    "total_Price": "Total Price",
+    "final_Total": "Final Total (With Discount)",
+    "order_Now": "Order Now",
+
+    "more": "More",
+    "my_Favorites": "My Favorites",
+    "language_Settings": "Language Settings",
+    "orders_Details": "Orders Details",
+    "logout": "Logout",
+
+    "favorite_Products": "Favorite Products",
+
+    "logout_Successfully": "Logout Successfully",
+
+    "item_Details": "Item Details",
+    "product_Details": "Product Details",
+    "tax": "Tax",
+    "product_No": "Product No.",
+    "determine": "Determine product unit to add to the basket.",
+    "aDD_TO_BASKET": "ADD TO BASKET",
+
+    "phone_Deleted_Successfully": "Phone Deleted Successfully",
+    "phone_Created_Successfully": "Phone Created Successfully",
+    "profile": "Profile",
+    "restaurant_Name": "Restaurant Name",
+    "phone_Numbers": "Phone Numbers",
+    "add_Phone_Number": "Add Phone Number",
+    "my_Orders": "My Orders",
+    "invoice_price": "Invoice Price",
+    "see_details": "See details",
+    "invoice_Date": "Invoice Date",
+
+    "approved": "Approved",
+    "pending": "Pending",
+    "rejected": "Rejected",
+    "status": "Status",
+    "invoice_Value": "Invoice Value",
+    "ordered_products": "Ordered Products",
+    "amount": "Amount",
+    "order_Details": "Order Details",
+
+    "orders": "Orders",
+    "orders_sent": "Orders Sent",
+
+    "enter_phone_number": "Enter phone number",
+    "please_enter_phone_number": "Please enter phone number",
+    "cancel": "Cancel",
+    "add": "Add",
+    "enter_quantity_unit": "Enter quantity for this unit",
+    "edit_quantity_unit": "Edit quantity for this unit",
+    "not_available": "The quantity is not available now",
+    "edit": "Edit",
+
+    "warning": "Warning",
+    "delete_Items_from_basket": "Do you want to Delete Items from basket?",
+    "delete_the_Item": "Do you want to Delete the Item?",
+    "send_Order": "Do you want to Send Order?",
+    "germany": "Germany",
+    "english": "English",
+    "arabic": "Arabic",
+    "ok": "Ok",
+
+    "basket_Cleared": "Basket Cleared",
+    "item_Deleted_Successfully": "Item Deleted Successfully",
+    "added_To_Basket_Successfully": "Added To Basket Successfully",
+    "cannot_add_again": "Cannot add again, Check Basket",
+    "order_Sent_Successfully": "Order Sent Successfully",
+    "invalid_userName_or_password": "Invalid userName or password",
+
+    "clear_all": "Clear All",
+    "empty": "Empty"
+}

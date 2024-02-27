@@ -1,0 +1,139 @@
+{
+    "language": "اللغة",
+    "@language":{
+      "description": "The current Language"
+    },
+    "helloWorld": "مرحبا عالم!",
+    "@helloWorld": {
+      "description": "A programmer greeting"
+    },
+    "hello": " مرحبا {username}",
+    "@hello": {
+      "description": "A welcome message",
+      "placeholders": {
+         "username": {
+           "type": "String"
+         }
+      }
+    },
+
+    "welcome": "أهلا",
+    "logging_Successfully": "تم التسجيل بنجاح",
+    "wrong_Email_or_Password": "البريد الإلكتروني أو كلمة المرور خاطئة",
+    "please_login_with_your_information": "الرجاء تسجيل الدخول بمعلوماتك.",
+    "username": "اسم المستخدم",
+    "please_enter_your_Username": "الرجاء إدخال اسم المستخدم الخاص بك",
+    "password": "كلمة المرور",
+    "please_enter_your_Password": "الرجاء إدخال كلمة المرور الخاصة بك",
+    "forgot_Password": "هل نسيت كلمة المرور؟",
+    "login": "تسجيل الدخول",
+
+    "home": "الصفحة الرئيسية",
+    "categories": "التصنيفات",
+    "search": "البحث",
+    "basket": "السلة",
+    "more": "المزيد",
+
+    "hot_Deals": "العروض المميزة",
+    "discount_Items": "المنتجات المخفضة",
+    "see_All": "مشاهدة الكل",
+    "new_Items": "منتجات جديدة",
+    "discount_Products": "منتجات مخفضة",
+    "number_of_Products": "عدد المنتجات",
+    "newest": "الأحدث",
+    "oldest": "الأقدم",
+    "new_Products": "منتجات جديدة",
+
+    "error_Getting_Categories": "حدث خطأ أثناء الحصول على الفئات",
+    "categories": "التصنيفات",
+    "main_Categories": "التصنيفات",
+    "items": "العناصر",
+    "nothing_Found": "لم يتم العثور على شيء",
+
+    "error_Search_Product_Id": "خطأ في معرف منتج البحث",
+    "error_Search_Barcode": "خطأ في البحث عن الرمز الشريطي",
+    "error_Search_Product_Name": "خطأ في البحث عن اسم المنتج",
+    "search": "بحث",
+    "product_Id": "معرف المنتج",
+    "product_Name": "اسم المنتج",
+    "sCAN_BARCODE": "مسح الباركود",
+    "search_By_Product_Id": "البحث حسب معرف المنتج",
+    "search_By_Product_Name": "البحث حسب اسم المنتج",
+    "use_the_keyboard": "استخدم لوحة المفاتيح أو الكاميرا للبحث عن المنتجات",
+
+    "basket": "السلة",
+    "items_in_basket": "العناصر الموجودة في السلة",
+    "total_Price": "السعر الإجمالي",
+    "final_Total": "الإجمالي النهائي (مع الخصم)",
+    "order_Now": "اطلب الآن",
+
+    "more": "المزيد",
+    "my_Favorites": "المفضلة الخاصة بي",
+    "language_Settings": "إعدادات اللغة",
+    "orders_Details": "تفاصيل الطلبات",
+    "logout": "تسجيل الخروج",
+
+    "favorite_Products": "المنتجات المفضلة",
+
+    "logout_Successfully": "تم تسجيل الخروج بنجاح",
+
+    "item_Details": "تفاصيل السلعة",
+    "product_Details": "تفاصيل المنتج",
+    "tax": "ضريبة",
+    "product_No": "رقم المنتج",
+    "determine": "حدد وحدة المنتج المراد إضافتها إلى السلة.",
+    "aDD_TO_BASKET": "أضف إلى السلة",
+
+    "phone_Deleted_Successfully": "تم حذف رقم الهاتف بنجاح",
+    "phone_Created_Successfully": "تم إنشاء رقم الهاتف بنجاح",
+    "profile": "الملف الشخصي",
+    "restaurant_Name": "اسم المطعم",
+    "phone_Numbers": "أرقام الهواتف",
+    "add_Phone_Number": "أضف رقم هاتف",
+    "my_Orders": "طلباتي",
+    "invoice_price": "سعر الفاتورة",
+    "see_details": "التفاصيل",
+    "invoice_Date": "تاريخ الفاتورة",
+
+    "approved": "موافق عليه",
+    "pending": "في انتظار المراجعة",
+    "rejected": "مرفوض",
+    "status": "الحالة",
+    "invoice_Value": "قيمة الفاتورة",
+    "ordered_products": "المنتجات المطلوبة",
+    "amount": "الكمية",
+    "order_Details": "تفاصيل الطلب",
+
+    "orders": "الطلبات",
+    "orders_sent": "الطلبات المرسلة",
+
+    "enter_phone_number": "أدخل رقم الهاتف",
+    "please_enter_phone_number": "الرجاء إدخال رقم الهاتف",
+    "cancel": "إلغاء",
+    "add": "إضافة",
+    "enter_quantity_unit": "أدخل كمية الوحدة",
+    "edit_quantity_unit": "عدل كمية الوحدة",
+    "not_available": "الكمية غير متوفرة الآن",
+    "edit": "تعديل",
+
+    "warning": "تحذير",
+    "delete_Items_from_basket": "هل تريد حذف العناصر من السلة؟",
+    "delete_the_Item": "هل تريد حذف العنصر؟",
+    "send_Order": "هل تريد إرسال الطلب؟",
+    "germany": "الألمانية",
+    "english": "الانجليزية",
+    "arabic": "العربية",
+    "ok": "موافق",
+
+
+    "basket_Cleared": "تم مسح السلة",
+    "item_Deleted_Successfully": "تم حذف العنصر بنجاح",
+    "added_To_Basket_Successfully": "تمت الإضافة إلى السلة بنجاح",
+    "cannot_add_again": "رلا يمكن الإضافة مرة أخرى، تحقق من السلة",
+    "order_Sent_Successfully": "تم إرسال الطلب بنجاح",
+    "invalid_userName_or_password": "خطأ في اسم المستخدم أو كلمة مرور",
+
+
+    "clear_all": "مسح الكل",
+    "empty": "فارغة"
+}
