@@ -17,6 +17,6 @@ abstract class DiscountApiService {
       @Query('limit') int limit,
       @Query('page') int page,
       @Query('sort') String sort,
-      @Query('language')  language,
+      @Query('language') String language,
       );
 }

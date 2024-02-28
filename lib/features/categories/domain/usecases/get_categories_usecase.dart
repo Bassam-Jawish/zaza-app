@@ -6,19 +6,19 @@ import '../../../../core/usecases/usecase.dart';
 import '../repository/category_repo.dart';
 
 class GetCategoriesUseCase
-    implements UseCase<DataState<ChooseTypeEntity>, CategoryParams> {
+    implements UseCase<DataState<dynamic>, CategoryParams> {
   final CategoryRepository categoryRepository;
 
   GetCategoriesUseCase(this.categoryRepository);
 
   @override
-  Future<DataState<ChooseTypeEntity>> call({CategoryParams? params}) {
+  Future<DataState<dynamic>> call({CategoryParams? params}) {
     return categoryRepository.getCategoryChildren(params!.id, params.limit, params.page, params.language);
   }
 }
 
 class CategoryParams {
-  final int id;
+  final dynamic id;
   final int limit;
   final int page;
   final dynamic language;

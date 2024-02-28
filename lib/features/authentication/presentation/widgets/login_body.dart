@@ -28,14 +28,18 @@ class LoginBody extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) async {
-        if (state is AuthError) {
+        if (state.authStatus == AuthStatus.error) {
           showToast(
               text: AppLocalizations.of(context)!.invalid_userName_or_password,
               state: state);
         }
-        if (state is AuthSuccess) {
-          debugPrint(token);
+        if (state.authStatus == AuthStatus.success) {
+
           token = state.accessToken;
+          user_id = state.userEntity!.userId;
+          user_name = state.userEntity!.userName;
+          refresh_token = state.refreshToken;
+
           await SecureStorage.writeSecureData(key: 'user_id', value: user_id);
           await SecureStorage.writeSecureData(
               key: 'user_name', value: user_name);

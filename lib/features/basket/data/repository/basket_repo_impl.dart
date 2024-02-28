@@ -1,6 +1,7 @@
 import 'dart:html';
 
 import 'package:dio/dio.dart';
+import 'package:hive/hive.dart';
 import 'package:zaza_app/features/product/data/models/product_model.dart';
 import 'package:zaza_app/features/product/domain/entities/product.dart';
 
@@ -47,8 +48,8 @@ class BasketRepositoryImpl implements BasketRepository {
       final getIdQuantityForBasket =
           await _basketLocalDatabaseService.getIdQuantityForBasket();
       return DataSuccess(getIdQuantityForBasket);
-    } on DioException catch (e) {
-      return DataFailed(e);
+    } on HiveError catch (e) {
+      return DataFailed2(e);
     }
   }
 
@@ -58,8 +59,8 @@ class BasketRepositoryImpl implements BasketRepository {
       final addToBasket = await _basketLocalDatabaseService
           .addToBasket(product_unit_id: product_unit_id, quantity: quantity);
       return DataSuccess(addToBasket);
-    } on DioException catch (e) {
-      return DataFailed(e);
+    } on HiveError catch (e) {
+      return DataFailed2(e);
     }
   }
 
@@ -69,8 +70,8 @@ class BasketRepositoryImpl implements BasketRepository {
       final editQuantityBasket = await _basketLocalDatabaseService
           .editQuantityBasket(product_unit_id: product_unit_id, quantity: quantity, index: index);
       return DataSuccess(editQuantityBasket);
-    } on DioException catch (e) {
-      return DataFailed(e);
+    } on HiveError catch (e) {
+      return DataFailed2(e);
     }
   }
 
@@ -80,8 +81,8 @@ class BasketRepositoryImpl implements BasketRepository {
       final removeOneFromBasket = await _basketLocalDatabaseService
           .removeOneFromBasket(index: index);
       return DataSuccess(removeOneFromBasket);
-    } on DioException catch (e) {
-      return DataFailed(e);
+    } on HiveError catch (e) {
+      return DataFailed2(e);
     }
   }
 
@@ -91,8 +92,8 @@ class BasketRepositoryImpl implements BasketRepository {
       final deleteBasket = await _basketLocalDatabaseService
           .deleteBasket();
       return DataSuccess(deleteBasket);
-    } on DioException catch (e) {
-      return DataFailed(e);
+    } on HiveError catch (e) {
+      return DataFailed2(e);
     }
   }
 }

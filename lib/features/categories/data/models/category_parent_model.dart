@@ -10,7 +10,7 @@ class CategoryParentModel extends CategoryParentEntity {
     String? categoryParentName,
     int? totalNumber,
     List<CategoryModel>? categoriesChildren,
-    List<ProductModel>? productsChildren,
+    List<ProductDataModel>? productsChildren,
   }) : super(
     id: id,
     parentCategoryId: parentCategoryId,
@@ -31,11 +31,11 @@ class CategoryParentModel extends CategoryParentEntity {
       categoriesChildren: map['categories'] != null
           ? List<CategoryModel>.from((map['categories'] as List)
           .map((category) => CategoryModel.fromJson(category)))
-          : null,
+          : [],
       productsChildren: map['translatedProducts'] != null
-          ? List<ProductModel>.from((map['translatedProducts'] as List)
-          .map((product) => ProductModel.fromJson(product)))
-          : null,
+          ? List<ProductDataModel>.from((map['translatedProducts'] as List)
+          .map((product) => ProductDataModel.fromJson(product)))
+          : [],
     );
   }
 }

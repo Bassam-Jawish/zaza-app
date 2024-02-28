@@ -17,4 +17,22 @@ abstract class AuthApiService {
       @Field("userName") String userName,
       @Field("password") String password,
       );
+
+  @POST('/user/forgot-password')
+  Future<HttpResponse<void>> forgotPassword(
+      @Field("email") String email,
+      );
+
+  @POST('/user/validate-token')
+  Future<HttpResponse<void>> validateResetPassword(
+      @Field("email") String email,
+      @Field("token") String token,
+      );
+
+  @POST('/user/reset-password')
+  Future<HttpResponse<void>> resetPassword(
+      @Field("email") String email,
+      @Field("token") String token,
+      @Field("password") String password,
+      );
 }

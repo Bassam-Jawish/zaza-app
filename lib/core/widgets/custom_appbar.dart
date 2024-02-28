@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-AppBar customAppBar (BuildContext context , String text, bool isPopped, [IconData? iconData,VoidCallback? onPressed]){
-    return AppBar(
-      leading: isPopped ? IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        icon: const Icon(Icons.arrow_back),
-      ) : const SizedBox(),
-      centerTitle: true,
-      title: Text(text),
-      scrolledUnderElevation: 0,
-      surfaceTintColor: Colors.transparent,
-      actions: [
-        IconButton(onPressed: onPressed, icon: Icon(iconData))
-      ],
-    );
+import '../../features/base/presentation/widgets/push_bottom_bar.dart';
+import '../utils/gen/assets.gen.dart';
+
+PreferredSizeWidget CustomAppBar(String title, width, height, context) {
+  return AppBar(
+    centerTitle: true,
+    backgroundColor: Colors.white,
+    elevation: 1,
+    title: Text(title),
+    titleTextStyle: TextStyle(
+        fontSize: 20.sp, fontWeight: FontWeight.bold, color: Colors.black),
+    actions: [
+      GestureDetector(
+          onTap: () {
+            //pushNewScreenWithoutNavBar(context, UserProfile(), '/user-profile');
+          },
+          child: Image.asset(
+            Assets.images.profile.path,
+            height: height * 0.1,
+            width: width * 0.15,
+            fit: BoxFit.fill,
+          )),
+    ],
+  );
 }

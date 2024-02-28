@@ -8,7 +8,7 @@ class CategoryParentEntity {
   final String? categoryParentName;
   final int? totalNumber;
   final List<CategoryEntity>? categoriesChildren;
-  final List<ProductEntity>? productsChildren;
+  final List<ProductData>? productsChildren;
 
   const CategoryParentEntity(
       {this.id,

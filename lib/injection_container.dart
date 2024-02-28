@@ -5,6 +5,15 @@ import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:zaza_app/features/categories/data/data_sources/category_api_service.dart';
+import 'package:zaza_app/features/categories/data/repository/category_repo_impl.dart';
+import 'package:zaza_app/features/categories/domain/repository/category_repo.dart';
+import 'package:zaza_app/features/categories/domain/usecases/get_categories_usecase.dart';
+import 'package:zaza_app/features/categories/presentation/bloc/category_bloc.dart';
+import 'package:zaza_app/features/discount/data/data_sources/discount_api_service.dart';
+import 'package:zaza_app/features/discount/domain/repository/discount_repo.dart';
+import 'package:zaza_app/features/discount/domain/usecases/get_discount_usecase.dart';
+import 'package:zaza_app/features/discount/presentation/bloc/discount_bloc.dart';
 
 import 'config/config.dart';
 import 'core/network/network_info.dart';
@@ -19,6 +28,7 @@ import 'features/authentication/presentation/bloc/auth_bloc.dart';
 import 'features/basket/data/data_sources/local/basket_database_service.dart';
 import 'features/basket/data/data_sources/local/basket_database_service_impl.dart';
 import 'features/basket/data/models/product_unit.dart';
+import 'features/discount/data/repository/discount_repo_impl.dart';
 
 final sl = GetIt.instance;
 
@@ -43,6 +53,7 @@ var productId;
 var productName;
 
 var orderId;
+
 
 Locale? locale;
 var languageCode;
@@ -80,7 +91,7 @@ Future<void> initializeDependencies() async {
 
   SecureStorage.initStorage();
 
-  token = await SecureStorage.readSecureData(key: 'token') ?? '';
+  token = await SecureStorage.readSecureData(key: 'token');
 
   isOnboarding =
       await SecureStorage.readSecureData(key: 'isOnboarding');
@@ -163,11 +174,21 @@ Future<void> initializeDependencies() async {
       box: sl<Box<ProductUnit>>(),));
 
   sl.registerSingleton<AuthApiService>(AuthApiService(sl()));
+  sl.registerSingleton<DiscountApiService>(DiscountApiService(sl()));
+  sl.registerSingleton<CategoryApiService>(CategoryApiService(sl()));
+
 
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl(sl()));
+  sl.registerSingleton<DiscountRepository>(DiscountRepositoryImpl(sl()));
+  sl.registerSingleton<CategoryRepository>(CategoryRepositoryImpl(sl()));
+
+
 
   // UseCases
   sl.registerSingleton<LoginUseCase>(LoginUseCase(sl()));
+  sl.registerSingleton<GetDiscountUseCase>(GetDiscountUseCase(sl()));
+  sl.registerSingleton<GetCategoriesUseCase>(GetCategoriesUseCase(sl()));
+
 
   // Network
   sl.registerSingleton<NetworkInfo>(
@@ -179,6 +200,14 @@ Future<void> initializeDependencies() async {
         sl<LoginUseCase>(),
         sl<NetworkInfo>(),
       ));
+  sl.registerFactory<DiscountBloc>(() => DiscountBloc(
+    sl<GetDiscountUseCase>(),
+    sl<NetworkInfo>(),
+  ));
+  sl.registerFactory<CategoryBloc>(() => CategoryBloc(
+    sl<GetCategoriesUseCase>(),
+    sl<NetworkInfo>(),
+  ));
   //sl.registerFactory<HomeBloc>(() => HomeBloc(sl<NetworkInfo>()));
   //sl.registerFactory<CategoryBloc>(() => CategoryBloc(sl<NetworkInfo>()));
 }
@@ -187,7 +216,7 @@ Future<String?> refreshToken() async {
   try {
     final refreshTokenDio = Dio();
     refreshTokenDio.options.headers["Accept"] = "application/json";
-    refreshTokenDio.options.headers["Authorization"] = 'Bearer ${token}' ?? '';
+    refreshTokenDio.options.headers["Authorization"] = 'Bearer ${refresh_token}' ?? '';
 
     final response = await refreshTokenDio.get('auth/refresh');
 
@@ -210,6 +239,6 @@ Future<String?> refreshToken() async {
   } catch (exception) {
     debugPrint('error refresh token');
     await SecureStorage.deleteAllSecureData();
-    showToast(text: 'Try login again', state: ToastState.error);
+    showToast(text: 'Logout and try to login again', state: ToastState.error);
   }
 }

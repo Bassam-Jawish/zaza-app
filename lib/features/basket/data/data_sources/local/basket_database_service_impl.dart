@@ -26,10 +26,7 @@ class BasketLocalDatabaseServiceImpl implements BasketLocalDatabaseService {
     } catch (e) {
       // No matching product found
       productExists = false;
-    }
-
-    if (!productExists) {
-      return;
+      throw HiveError('cannot add again');
     }
 
     final product =

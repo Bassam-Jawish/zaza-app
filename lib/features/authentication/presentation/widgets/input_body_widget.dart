@@ -172,7 +172,7 @@ class InputBodyWidget extends StatelessWidget {
                   height: height * 0.02,
                 ),
                 ConditionalBuilder(
-                  condition: !state.isLoading!,
+                  condition: state.authStatus != AuthStatus.loading,
                   builder: (context) => LoginButton(
                       _userNameController.text,
                       _passwordController.text,

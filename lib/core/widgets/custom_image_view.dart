@@ -4,6 +4,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../utils/functions/spinkit.dart';
+
 class CustomImageView extends StatelessWidget {
   ///[imagePath] is required parameter for showing image
   String? imagePath;
@@ -113,20 +115,8 @@ class CustomImageView extends StatelessWidget {
             fit: fit,
             imageUrl: imagePath!,
             color: color,
-            placeholder: (context, url) => SizedBox(
-              height: 30,
-              width: 30,
-              child: LinearProgressIndicator(
-                color: Colors.grey.shade200,
-                backgroundColor: Colors.grey.shade100,
-              ),
-            ),
-            errorWidget: (context, url, error) => Image.asset(
-              placeHolder,
-              height: height,
-              width: width,
-              fit: fit ?? BoxFit.cover,
-            ),
+            placeholder: (context, url) => SpinKitApp(width),
+            errorWidget: (context, url, error) => Icon(Icons.error),
           );
         case ImageType.png:
         default:

@@ -1,4 +1,4 @@
-import 'dart:html';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:zaza_app/features/categories/data/models/choose_type_model.dart';
@@ -16,15 +16,15 @@ class CategoryRepositoryImpl implements CategoryRepository {
   );
 
   @override
-  Future<DataState<ChooseTypeEntity>> getCategoryChildren(
-      int id, int limit, int page, dynamic language) async {
+  Future<DataState<dynamic>> getCategoryChildren(
+      dynamic id, int limit, int page, dynamic language) async {
     try {
       final httpResponse = await _categoryApiService.getCategoryChildren(
           id, limit, page, language);
 
       if (httpResponse.response.statusCode == HttpStatus.ok) {
-        final ChooseTypeModel model = httpResponse.data;
-        final ChooseTypeEntity entity = model;
+        final dynamic model = httpResponse.data;
+        final dynamic entity = model;
         return DataSuccess(entity);
       } else {
         return DataFailed(DioException(

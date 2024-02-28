@@ -1,12 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 part of 'category_api_service.dart';
-
-// **************************************************************************
-// RetrofitGenerator
-// **************************************************************************
-
-// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
 class _CategoryApiService implements CategoryApiService {
   _CategoryApiService(
@@ -19,29 +11,29 @@ class _CategoryApiService implements CategoryApiService {
   String? baseUrl;
 
   @override
-  Future<HttpResponse<ChooseTypeModel>> getCategoryChildren(
+  Future<HttpResponse<dynamic>> getCategoryChildren(
     dynamic id,
     int limit,
     int page,
-    dynamic languageCode,
+    String languageCode,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'limit': limit,
       r'page': page,
-      r'language': languageCode.toJson(),
+      r'language': languageCode,
     };
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<HttpResponse<ChooseTypeModel>>(Options(
+    final _result =
+        await _dio.fetch(_setStreamType<HttpResponse<dynamic>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/category/${id}',
+              categoryId == null ? '/category/' : '/category/${id}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -50,7 +42,7 @@ class _CategoryApiService implements CategoryApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = ChooseTypeModel.fromJson(_result.data!);
+    final value = _result.data;
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
   }

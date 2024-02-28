@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:zaza_app/features/discount/presentation/bloc/discount_bloc.dart';
 
 import 'config/routes/app_router.dart';
 import 'config/theme/app_themes.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(create: (BuildContext context) => sl()),
+        BlocProvider<DiscountBloc>(create: (BuildContext context) => sl()..add(GetDiscountProducts(limit, 1, sort, languageCode))),
         //BlocProvider<HomeBloc>(create: (BuildContext context) => sl()),
       ],
       child: ScreenUtilInit(

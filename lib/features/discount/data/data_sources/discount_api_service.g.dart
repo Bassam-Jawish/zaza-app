@@ -23,14 +23,14 @@ class _DiscountApiService implements DiscountApiService {
     int limit,
     int page,
     String sort,
-    dynamic language,
+    String language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'limit': limit,
       r'page': page,
       r'sort': sort,
-      r'language': language.toJson(),
+      r'language': language,
     };
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;

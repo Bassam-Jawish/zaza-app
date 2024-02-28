@@ -71,7 +71,7 @@ class _SplashPagebodyState extends State<SplashPageBody>
     Future.delayed(
       const Duration(seconds: 2),
           () {
-        GoRouter.of(context).pushReplacement(AppRouter.kLoginPage);
+        GoRouter.of(context).pushReplacement(AppRouter.kBasePage);
       },
     );
   }

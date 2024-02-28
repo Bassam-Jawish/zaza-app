@@ -17,6 +17,12 @@ class $AssetsImagesGen {
   $AssetsImagesBasketGen get basket => const $AssetsImagesBasketGen();
   $AssetsImagesLogosGen get logos => const $AssetsImagesLogosGen();
   $AssetsImagesOnboardingGen get onboarding => const $AssetsImagesOnboardingGen();
+
+  /// File path: assets/images/profile.png
+  AssetGenImage get profile => const AssetGenImage('assets/images/profile.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [profile];
 }
 
 class $AssetsImagesBasketGen {
