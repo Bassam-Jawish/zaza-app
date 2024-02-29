@@ -30,6 +30,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
             categoryStatus: CategoryStatus.initial,
             catId: 0,
             productsPaginated: [],
+            isFirst: true,
             scrollController: ScrollController())) {
     state.scrollController!.addListener(_scrollListener);
     on<GetCategoryChildren>(onGetCategoryChildren);
@@ -45,8 +46,9 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
           currentIndex: state.currentIndex! + 1,
           categoryStatus: CategoryStatus.paginated));
 
-      // Call the function get category in Listener
-      // await getCategoryChildren(limit: limit, page: currentIndex, id: categoryId);
+
+      //await getCategoryChildren(limit: limit, page: currentIndex, id: categoryId);
+
     }
   }
 
@@ -58,8 +60,11 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
   void onGetCategoryChildren(
       GetCategoryChildren event, Emitter<CategoryState> emit) async {
-    emit(state.copyWith(
-        categoryStatus: CategoryStatus.loading, currentIndex: event.page));
+
+    if (state.isFirst!) {
+      emit(state.copyWith(
+          isFirst: false, currentIndex: event.page));
+    }
 
     final isConnected = await _networkInfo.isConnected;
 
@@ -113,12 +118,11 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
           CategoryParentEntity categoryParentEntity =
               CategoryParentModel.fromJson(dataState.data!);
 
-          List<ProductData> productsPaginated = [];
-            productsPaginated.addAll(categoryParentEntity!.productsChildren!);
+            state.productsPaginated!.addAll(categoryParentEntity!.productsChildren!);
           emit(state.copyWith(
             categoryStatus: CategoryStatus.success,
             categoryParentEntity: categoryParentEntity,
-            productsPaginated: productsPaginated,
+            productsPaginated: state.productsPaginated,
           ));
         }
       }

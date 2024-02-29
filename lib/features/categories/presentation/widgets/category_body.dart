@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zaza_app/config/theme/colors.dart';
 import 'package:zaza_app/core/widgets/custom_toast.dart';
-import 'package:zaza_app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:zaza_app/features/categories/presentation/widgets/category_card.dart';
 import 'package:zaza_app/features/categories/presentation/widgets/sub_category_card.dart';
 import 'package:zaza_app/features/product/presentation/widgets/product_card.dart';
@@ -29,6 +28,11 @@ class CategoryBody extends StatelessWidget {
           if (state.categoryStatus == CategoryStatus.error) {
             showToast(text: state.error!.message, state: ToastState.error);
           }
+
+          if (state.categoryStatus == CategoryStatus.paginated) {
+            context.read<CategoryBloc>().add(GetCategoryChildren(
+                categoryId, state.currentIndex!, limit, languageCode));
+          }
         },
         builder: (context, state) {
           return state.screenType == 'root'
@@ -47,7 +51,7 @@ class CategoryBody extends StatelessWidget {
 
   Widget rootWidget(context, width, height, CategoryState state) {
     return ConditionalBuilder(
-      condition: state.categoryParentEntity != null,
+      condition: !state.isFirst!,
       builder: (context) => RefreshIndicator(
         onRefresh: () async {
           context
@@ -128,23 +132,12 @@ class CategoryBody extends StatelessWidget {
 
   Widget unknownWidget(context, width, height, CategoryState state) {
     return ConditionalBuilder(
-      condition: state.unknownChildEntity != null,
+      condition: !state.isFirst!,
       builder: (context) => Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(
-                Icons.arrow_back_outlined,
-                color: AppColor.secondaryLight,
-                size: 20.sp,
-              ),
-              iconSize: 20.sp,
-            ),
             Text(
               '${AppLocalizations.of(context)!.nothing_Found}',
               style: TextStyle(
@@ -161,7 +154,7 @@ class CategoryBody extends StatelessWidget {
 
   Widget categoryNodeWidget(context, width, height, CategoryState state) {
     return ConditionalBuilder(
-      condition: state.categoryParentEntity != null,
+      condition: !state.isFirst!,
       builder: (context) => SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -169,27 +162,12 @@ class CategoryBody extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      Icons.arrow_back_outlined,
-                      color: AppColor.secondaryLight,
-                      size: 20.sp,
-                    ),
-                    iconSize: 20.sp,
-                  ),
-                  Text(
-                    '${state.categoryParentEntity!.categoryParentName}  (${state.chooseTypeEntity!.totalNumber})',
-                    style: TextStyle(
-                        color: AppColor.secondaryLight,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20.sp),
-                  ),
-                ],
+              Text(
+                '${state.categoryParentEntity!.categoryParentName}   (${state.chooseTypeEntity!.totalNumber})',
+                style: TextStyle(
+                    color: AppColor.secondaryLight,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20.sp),
               ),
               SizedBox(
                 height: height * 0.025,
@@ -221,7 +199,7 @@ class CategoryBody extends StatelessWidget {
 
   Widget categoryLeafWidget(context, width, height, CategoryState state) {
     return ConditionalBuilder(
-      condition: state.categoryParentEntity != null,
+      condition: !state.isFirst!,
       builder: (context) => SingleChildScrollView(
         controller: state.scrollController,
         child: Padding(
@@ -230,27 +208,12 @@ class CategoryBody extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: AppColor.secondaryLight,
-                      size: 20.sp,
-                    ),
-                    iconSize: 20.sp,
-                  ),
-                  Text(
-                    '${state.categoryParentEntity!.categoryParentName}  (${state.chooseTypeEntity!.totalNumber})',
-                    style: TextStyle(
-                        color: AppColor.secondaryLight,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20.sp),
-                  ),
-                ],
+              Text(
+                '${state.categoryParentEntity!.categoryParentName}   (${state.chooseTypeEntity!.totalNumber})',
+                style: TextStyle(
+                    color: AppColor.secondaryLight,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20.sp),
               ),
               SizedBox(
                 height: height * 0.025,
@@ -286,18 +249,15 @@ class CategoryBody extends StatelessWidget {
                       state.productsPaginated![index].productUnitListModel![0]
                           .price!,
                     );
-                  } else {
-                    print('Loading');
-                    return Center(child: SpinKitApp(width));
                   }
                 },
-                itemCount: state.categoryStatus == CategoryStatus.loading
+                itemCount: state.categoryStatus == CategoryStatus.paginated
                     ? state.productsPaginated!.length + 1
                     : state.productsPaginated!.length,
               ),
-              SizedBox(
-                height: height * 0.05,
-              ),
+              state.categoryStatus == CategoryStatus.paginated
+                  ? Center(child: SpinKitApp(width))
+                  : SizedBox(),
             ],
           ),
         ),

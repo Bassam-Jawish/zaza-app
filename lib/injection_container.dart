@@ -17,6 +17,7 @@ import 'package:zaza_app/features/discount/presentation/bloc/discount_bloc.dart'
 
 import 'config/config.dart';
 import 'core/network/network_info.dart';
+import 'core/utils/auth_interceptor.dart';
 import 'core/utils/bloc_observer.dart';
 import 'core/utils/cache_helper.dart';
 import 'core/widgets/custom_toast.dart';
@@ -36,7 +37,7 @@ var token;
 
 var routePath;
 
-var limit = 10;
+var limit = 6;
 
 var limitSearch = 10000000;
 var limitOrders = 10000000;
@@ -54,30 +55,27 @@ var productName;
 
 var orderId;
 
-
 Locale? locale;
 var languageCode;
 var selectedLanguageValue;
 
 String sort = 'newest';
 
-Map<String,String> languagesList = {
-  'Germany':'de',
-  'English':'en',
-  'Arabic':'ar',
+Map<String, String> languagesList = {
+  'Germany': 'de',
+  'English': 'en',
+  'Arabic': 'ar',
 };
 
-List<String> statusList = [
-  'all','pending','approved','rejected'
-];
+List<String> statusList = ['all', 'pending', 'approved', 'rejected'];
 
 Future<void> initializeDependencies() async {
-
   await Hive.initFlutter();
   Hive.registerAdapter(ProductUnitAdapter());
   await Hive.openBox<ProductUnit>('productUnitBox');
   //final box = Hive.box<ProductUnit>('productUnitBox');
-  sl.registerSingleton<Box<ProductUnit>>(Hive.box<ProductUnit>('productUnitBox'));
+  sl.registerSingleton<Box<ProductUnit>>(
+      Hive.box<ProductUnit>('productUnitBox'));
 
   // Bloc Observer
 
@@ -93,8 +91,7 @@ Future<void> initializeDependencies() async {
 
   token = await SecureStorage.readSecureData(key: 'token');
 
-  isOnboarding =
-      await SecureStorage.readSecureData(key: 'isOnboarding');
+  isOnboarding = await SecureStorage.readSecureData(key: 'isOnboarding');
 
   refresh_token = await SecureStorage.readSecureData(key: 'refresh_token');
 
@@ -143,21 +140,7 @@ Future<void> initializeDependencies() async {
   );
 
   // Access and Refresh Token
-  dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) async {
-    debugPrint('On Request');
-    options.headers["Accept"] = "application/json";
-    options.headers["Authorization"] = 'Bearer ${token}' ?? '';
-    return handler.next(options);
-  }, onError: (error, handler) async {
-    if (error.response?.statusCode == 401 && token != 'No data found!') {
-      final newAccessToken = await refreshToken();
-      if (newAccessToken != null) {
-        dio.options.headers["Authorization"] = 'Bearer ${newAccessToken}' ?? '';
-        return handler.resolve(await dio.fetch(error.requestOptions));
-      }
-    }
-    return handler.next(error);
-  }));
+  dio.interceptors.add(AuthInterceptor(dio));
 
   // init dio
   sl.registerSingleton<Dio>(dio);
@@ -170,25 +153,23 @@ Future<void> initializeDependencies() async {
 
   // Dependencies
 
-  sl.registerSingleton<BasketLocalDatabaseService>(BasketLocalDatabaseServiceImpl(
-      box: sl<Box<ProductUnit>>(),));
+  sl.registerSingleton<BasketLocalDatabaseService>(
+      BasketLocalDatabaseServiceImpl(
+    box: sl<Box<ProductUnit>>(),
+  ));
 
   sl.registerSingleton<AuthApiService>(AuthApiService(sl()));
   sl.registerSingleton<DiscountApiService>(DiscountApiService(sl()));
   sl.registerSingleton<CategoryApiService>(CategoryApiService(sl()));
 
-
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl(sl()));
   sl.registerSingleton<DiscountRepository>(DiscountRepositoryImpl(sl()));
   sl.registerSingleton<CategoryRepository>(CategoryRepositoryImpl(sl()));
-
-
 
   // UseCases
   sl.registerSingleton<LoginUseCase>(LoginUseCase(sl()));
   sl.registerSingleton<GetDiscountUseCase>(GetDiscountUseCase(sl()));
   sl.registerSingleton<GetCategoriesUseCase>(GetCategoriesUseCase(sl()));
-
 
   // Network
   sl.registerSingleton<NetworkInfo>(
@@ -201,44 +182,13 @@ Future<void> initializeDependencies() async {
         sl<NetworkInfo>(),
       ));
   sl.registerFactory<DiscountBloc>(() => DiscountBloc(
-    sl<GetDiscountUseCase>(),
-    sl<NetworkInfo>(),
-  ));
+        sl<GetDiscountUseCase>(),
+        sl<NetworkInfo>(),
+      ));
   sl.registerFactory<CategoryBloc>(() => CategoryBloc(
-    sl<GetCategoriesUseCase>(),
-    sl<NetworkInfo>(),
-  ));
+        sl<GetCategoriesUseCase>(),
+        sl<NetworkInfo>(),
+      ));
   //sl.registerFactory<HomeBloc>(() => HomeBloc(sl<NetworkInfo>()));
   //sl.registerFactory<CategoryBloc>(() => CategoryBloc(sl<NetworkInfo>()));
-}
-
-Future<String?> refreshToken() async {
-  try {
-    final refreshTokenDio = Dio();
-    refreshTokenDio.options.headers["Accept"] = "application/json";
-    refreshTokenDio.options.headers["Authorization"] = 'Bearer ${refresh_token}' ?? '';
-
-    final response = await refreshTokenDio.get('auth/refresh');
-
-    String newAccessToken = response.data['accessToken'];
-    String newRefreshToken = response.data['refreshToken'];
-
-    debugPrint(newAccessToken);
-    debugPrint(newRefreshToken);
-
-    await SecureStorage.writeSecureData(
-      key: 'refresh-token',
-      value: newRefreshToken,
-    );
-
-    await SecureStorage.writeSecureData(
-      key: 'token',
-      value: newAccessToken,
-    );
-    return newAccessToken;
-  } catch (exception) {
-    debugPrint('error refresh token');
-    await SecureStorage.deleteAllSecureData();
-    showToast(text: 'Logout and try to login again', state: ToastState.error);
-  }
 }

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../config/theme/colors.dart';
 import '../../features/base/presentation/widgets/push_bottom_bar.dart';
 import '../utils/gen/assets.gen.dart';
 
 PreferredSizeWidget CustomAppBar(String title, width, height, context) {
   return AppBar(
     centerTitle: true,
-    backgroundColor: Colors.white,
+    backgroundColor: AppColor.backgroundColorLight,
+    scrolledUnderElevation: 0,
+    surfaceTintColor: Colors.transparent,
     elevation: 1,
     title: Text(title),
     titleTextStyle: TextStyle(

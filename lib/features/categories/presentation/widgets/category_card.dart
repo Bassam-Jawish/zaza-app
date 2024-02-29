@@ -50,8 +50,9 @@ class CategoryCard extends StatelessWidget {
             Center(
                 child: CustomImageView(
               imagePath: path,
-              width: double.infinity,
               height: height * 0.16,
+              width: double.infinity,
+              color: Colors.white,
               fit: BoxFit.contain,
             )),
             SizedBox(

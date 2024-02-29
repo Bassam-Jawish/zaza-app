@@ -26,7 +26,7 @@ class SubCategoryCard extends StatelessWidget {
     var theme = Theme.of(context).colorScheme;
     String path = '${baseUrl}/${imagePath}';
     return Container(
-      height: height * 0.28,
+      height: height * 0.18,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -64,15 +64,15 @@ class SubCategoryCard extends StatelessWidget {
                   ),
                 ),
                 child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(30),
-                    topLeft: Radius.circular(30),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30.r),
+                    topLeft: Radius.circular(30.r),
                   ),
                   child:
 
                   CustomImageView(
                     imagePath: path,
-                    width: width*0.16,
+                    width: width*0.32,
                     height: double.infinity,
                     fit: BoxFit.contain,
                   ),
@@ -82,7 +82,7 @@ class SubCategoryCard extends StatelessWidget {
                 width: width * 0.02,
               ),
               Container(
-                width: width * 0.17,
+                width: width * 0.45,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -69,4 +69,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         authStatus: AuthStatus.changePassword,
         isPasswordVis: !state.isPasswordVis!));
   }
+
+
+
 }

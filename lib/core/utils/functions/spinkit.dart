@@ -6,6 +6,6 @@ import 'package:zaza_app/config/theme/colors.dart';
 Widget SpinKitApp(width) {
   return SpinKitFadingCircle(
     color: AppColor.primaryLight,
-    size: width * 0.12,
+    size: 30,
   );
 }

@@ -32,101 +32,111 @@ class HomeBody extends StatelessWidget {
         child: Builder(builder: (context) {
           final state = context.watch<DiscountBloc>().state;
           return state.discountStatus == DiscountStatus.success
-              ? SingleChildScrollView(
-                  child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: width * 0.03, vertical: height * 0.03),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.hello(user_name),
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 30.sp),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.discount,
-                                color: theme.secondary,
-                                size: 20.sp,
+              ? RefreshIndicator(
+                  onRefresh: () async {
+                    context.read<DiscountBloc>().add(
+                        GetDiscountProducts(limit, 0, 'newest', languageCode));
+                    await Future.delayed(Duration(seconds: 2));
+                  },
+                  child: SingleChildScrollView(
+                      child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: width * 0.03, vertical: height * 0.03),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.hello(user_name),
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 30.sp),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.discount,
+                                  color: theme.secondary,
+                                  size: 20.sp,
+                                ),
+                                Text(
+                                  AppLocalizations.of(context)!.discount_Items,
+                                  style: TextStyle(
+                                      color: theme.secondary,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 20.sp),
+                                ),
+                              ],
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                /*pushNewScreenWithNavBar(
+                        context,
+                        DiscountProductsScreen(),
+                        '/discount-products');*/
+                              },
+                              style: ButtonStyle(
+                                overlayColor: MaterialStateColor.resolveWith(
+                                    (states) => AppColor.shadeColor),
                               ),
-                              Text(
-                                AppLocalizations.of(context)!.discount_Items,
+                              child: Text(
+                                AppLocalizations.of(context)!.see_All,
                                 style: TextStyle(
-                                    color: theme.secondary,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 20.sp),
-                              ),
-                            ],
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              /*pushNewScreenWithNavBar(
-        context,
-        DiscountProductsScreen(),
-        '/discount-products');*/
-                            },
-                            style: ButtonStyle(
-                              overlayColor: MaterialStateColor.resolveWith(
-                                  (states) => AppColor.shadeColor),
-                            ),
-                            child: Text(
-                              AppLocalizations.of(context)!.see_All,
-                              style: TextStyle(
-                                color: theme.secondary,
-                                fontSize: 14.sp,
+                                  color: theme.secondary,
+                                  fontSize: 14.sp,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: height * 0.25,
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          physics: BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          padding:
-                              EdgeInsets.symmetric(horizontal: width * 0.02),
-                          itemBuilder: (context, index) =>
-                              BuildDiscountProductCard(
-                                  state.productEntity!.productList![index]
-                                      .productId!,
-                                  state.productEntity!.productList![index]
-                                      .productName!,
-                                  state.productEntity!.productList![index]
-                                      .image!,
-                                  state.productEntity!.productList![index]
-                                      .barCode!,
-                                  state.productEntity!.productList![index]
-                                      .discount!,
-                                  state.productEntity!.productList![index]
-                                      .productUnitListModel![0].productUnitId!,
-                                  state.productEntity!.productList![index]
-                                      .productUnitListModel![0].description!,
-                                  0,
-                                  state.productEntity!.productList![index]
-                                      .productUnitListModel![0].quantity!,
-                                  state.productEntity!.productList![index]
-                                      .productUnitListModel![0].unitName!,
-                                  state.productEntity!.productList![index]
-                                      .productUnitListModel![0].price!),
-                          itemCount: state.productEntity!.productList!.length,
-                          separatorBuilder: (BuildContext context, int index) =>
-                              SizedBox(
-                            height: 10.h,
+                          ],
+                        ),
+                        SizedBox(
+                          height: height * 0.25,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            physics: BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            padding:
+                                EdgeInsets.symmetric(horizontal: width * 0.02),
+                            itemBuilder: (context, index) =>
+                                BuildDiscountProductCard(
+                                    state.productEntity!.productList![index]
+                                        .productId!,
+                                    state.productEntity!.productList![index]
+                                        .productName!,
+                                    state.productEntity!.productList![index]
+                                        .image!,
+                                    state.productEntity!.productList![index]
+                                        .barCode!,
+                                    state.productEntity!.productList![index]
+                                        .discount!,
+                                    state
+                                        .productEntity!
+                                        .productList![index]
+                                        .productUnitListModel![0]
+                                        .productUnitId!,
+                                    state.productEntity!.productList![index]
+                                        .productUnitListModel![0].description!,
+                                    0,
+                                    state.productEntity!.productList![index]
+                                        .productUnitListModel![0].quantity!,
+                                    state.productEntity!.productList![index]
+                                        .productUnitListModel![0].unitName!,
+                                    state.productEntity!.productList![index]
+                                        .productUnitListModel![0].price!),
+                            itemCount: state.productEntity!.productList!.length,
+                            separatorBuilder:
+                                (BuildContext context, int index) => SizedBox(
+                              height: 10.h,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ))
+                      ],
+                    ),
+                  )),
+                )
               : SpinKitApp(width);
         }));
   }

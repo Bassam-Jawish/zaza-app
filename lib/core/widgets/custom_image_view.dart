@@ -114,7 +114,6 @@ class CustomImageView extends StatelessWidget {
             width: width,
             fit: fit,
             imageUrl: imagePath!,
-            color: color,
             placeholder: (context, url) => SpinKitApp(width),
             errorWidget: (context, url, error) => Icon(Icons.error),
           );
