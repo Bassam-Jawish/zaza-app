@@ -25,3 +25,10 @@ class AddToFavorite extends FavoriteEvent {
   @override
   List<Object> get props => [productId, index];
 }
+
+class ChangeSort extends FavoriteEvent {
+  const ChangeSort();
+
+  @override
+  List<Object> get props => [];
+}

@@ -1,43 +1,82 @@
 part of 'discount_bloc.dart';
 
-enum DiscountStatus { initial, loading, success, error }
+enum DiscountStatus {
+  initial,
+  loading,
+  success,
+  error,
+  paginated,
+  successAllDiscount,
+  errorAllDiscount,
+  addedToFavorite , errorAddedToFavorite, changeSort
+}
 
 class DiscountState extends Equatable {
   final Failure? error;
-  final ProductEntity? productEntity;
+  final ProductEntity? productEntityHome;
+
+  final ProductEntity? productAllDiscountEntity;
+
+  final List<ProductData>? productDiscountList;
+
   final int? discountPaginationNumberSave;
   final int? discountCurrentIndex;
   final DiscountStatus? discountStatus;
+  final bool? isFirstDiscount;
+
+  final ScrollController? scrollController;
+
+  final Map<int, bool>? favorites;
 
   const DiscountState(
       {this.error,
-      this.productEntity,
+      this.productEntityHome,
       this.discountPaginationNumberSave,
       this.discountCurrentIndex,
-      this.discountStatus});
+      this.discountStatus,
+      this.isFirstDiscount,
+      this.productAllDiscountEntity,
+      this.productDiscountList,
+      this.scrollController,
+      this.favorites});
 
   DiscountState copyWith({
     Failure? error,
-    ProductEntity? productEntity,
+    ProductEntity? productEntityHome,
     int? discountPaginationNumberSave,
     int? discountCurrentIndex,
     DiscountStatus? discountStatus,
+    bool? isFirstDiscount,
+    ProductEntity? productAllDiscountEntity,
+    List<ProductData>? productDiscountList,
+    ScrollController? scrollController,
+    Map<int, bool>? favorites,
   }) =>
       DiscountState(
         error: error ?? this.error,
-        productEntity: productEntity ?? this.productEntity,
+        productEntityHome: productEntityHome ?? this.productEntityHome,
         discountPaginationNumberSave:
             discountPaginationNumberSave ?? this.discountPaginationNumberSave,
         discountCurrentIndex: discountCurrentIndex ?? this.discountCurrentIndex,
         discountStatus: discountStatus ?? this.discountStatus,
+        isFirstDiscount: isFirstDiscount ?? this.isFirstDiscount,
+        productAllDiscountEntity:
+            productAllDiscountEntity ?? this.productAllDiscountEntity,
+        productDiscountList: productDiscountList ?? this.productDiscountList,
+        scrollController: scrollController ?? this.scrollController,
+        favorites: favorites ?? this.favorites,
       );
 
   @override
   List<Object?> get props => [
         error,
-        productEntity,
+        productEntityHome,
         discountPaginationNumberSave,
         discountCurrentIndex,
-        discountStatus
+        discountStatus,
+        isFirstDiscount,
+        productAllDiscountEntity,
+        productDiscountList,
+        scrollController,
       ];
 }

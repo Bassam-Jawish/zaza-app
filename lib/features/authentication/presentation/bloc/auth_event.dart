@@ -17,5 +17,45 @@ class Login extends AuthEvent {
 class ChangePassword extends AuthEvent{
   const ChangePassword();
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object> get props => [];
+}
+
+class ForgotPassword extends AuthEvent {
+  final String email;
+
+  const ForgotPassword(this.email);
+
+  @override
+  List<Object> get props => [email];
+}
+
+
+class ValidateResetPassword extends AuthEvent {
+  final String email;
+  final String code;
+
+
+  const ValidateResetPassword(this.email, this.code);
+
+  @override
+  List<Object> get props => [email, code];
+}
+
+
+class ResetPassword extends AuthEvent {
+  final String email;
+  final String code;
+  final String password;
+
+  const ResetPassword(this.email, this.code, this.password);
+
+  @override
+  List<Object> get props => [email, code, password];
+}
+
+class Logout extends AuthEvent {
+  const Logout();
+
+  @override
+  List<Object> get props => [];
 }

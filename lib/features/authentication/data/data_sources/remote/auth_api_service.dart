@@ -35,4 +35,7 @@ abstract class AuthApiService {
       @Field("token") String token,
       @Field("password") String password,
       );
+
+  @GET('auth/logout')
+  Future<HttpResponse<void>> logout();
 }

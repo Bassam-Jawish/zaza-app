@@ -34,8 +34,8 @@ class HomeBody extends StatelessWidget {
           return state.discountStatus == DiscountStatus.success
               ? RefreshIndicator(
                   onRefresh: () async {
-                    context.read<DiscountBloc>().add(
-                        GetDiscountProducts(limit, 0, 'newest', languageCode));
+                    context.read<DiscountBloc>().add(GetHomeDiscountProducts(
+                        limit, 0, 'newest', languageCode));
                     await Future.delayed(Duration(seconds: 2));
                   },
                   child: SingleChildScrollView(
@@ -102,31 +102,32 @@ class HomeBody extends StatelessWidget {
                                 EdgeInsets.symmetric(horizontal: width * 0.02),
                             itemBuilder: (context, index) =>
                                 BuildDiscountProductCard(
-                                    state.productEntity!.productList![index]
+                                    state.productEntityHome!.productList![index]
                                         .productId!,
-                                    state.productEntity!.productList![index]
+                                    state.productEntityHome!.productList![index]
                                         .productName!,
-                                    state.productEntity!.productList![index]
+                                    state.productEntityHome!.productList![index]
                                         .image!,
-                                    state.productEntity!.productList![index]
+                                    state.productEntityHome!.productList![index]
                                         .barCode!,
-                                    state.productEntity!.productList![index]
+                                    state.productEntityHome!.productList![index]
                                         .discount!,
                                     state
-                                        .productEntity!
+                                        .productEntityHome!
                                         .productList![index]
                                         .productUnitListModel![0]
                                         .productUnitId!,
-                                    state.productEntity!.productList![index]
+                                    state.productEntityHome!.productList![index]
                                         .productUnitListModel![0].description!,
                                     0,
-                                    state.productEntity!.productList![index]
+                                    state.productEntityHome!.productList![index]
                                         .productUnitListModel![0].quantity!,
-                                    state.productEntity!.productList![index]
+                                    state.productEntityHome!.productList![index]
                                         .productUnitListModel![0].unitName!,
-                                    state.productEntity!.productList![index]
+                                    state.productEntityHome!.productList![index]
                                         .productUnitListModel![0].price!),
-                            itemCount: state.productEntity!.productList!.length,
+                            itemCount:
+                                state.productEntityHome!.productList!.length,
                             separatorBuilder:
                                 (BuildContext context, int index) => SizedBox(
                               height: 10.h,

@@ -1,6 +1,6 @@
 part of 'favorite_bloc.dart';
 
-enum FavoriteStatus { initial, loading, success, error, addedToFavorite }
+enum FavoriteStatus { initial, paginated, success, error, addedToFavorite , errorAddedToFavorite, changeSort }
 
 class FavoriteState extends Equatable {
   final Failure? error;
@@ -15,6 +15,8 @@ class FavoriteState extends Equatable {
 
   final ScrollController? scrollController;
 
+  bool? isFirst;
+
 
   FavoriteState({
     this.error,
@@ -25,6 +27,7 @@ class FavoriteState extends Equatable {
     this.favoriteProductsList,
     this.favorites,
     this.scrollController,
+    this.isFirst
   });
 
   FavoriteState copyWith({
@@ -36,6 +39,7 @@ class FavoriteState extends Equatable {
     List<ProductData>? favoriteProductsList,
     Map<int, bool>? favorites,
     ScrollController? scrollController,
+    bool? isFirst,
   }) {
     return FavoriteState(
       error: error ?? this.error,
@@ -46,6 +50,7 @@ class FavoriteState extends Equatable {
       favoriteProductsList: favoriteProductsList ?? this.favoriteProductsList,
       favorites: favorites ?? this.favorites,
       scrollController: scrollController ?? this.scrollController,
+      isFirst: isFirst ?? this.isFirst,
     );
   }
 
@@ -59,5 +64,6 @@ class FavoriteState extends Equatable {
     favoriteProductsList,
     favorites,
     scrollController,
+    isFirst
   ];
 }

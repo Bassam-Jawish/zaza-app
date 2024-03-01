@@ -22,7 +22,7 @@ class ProductData extends Equatable {
   final dynamic barCode;
   final String? taxName;
   final int? taxPercent;
-  final List<ProductUnit>? productUnitListModel;
+  final List<ProductUnitty>? productUnitListModel;
 
   const ProductData(
       {this.productId,
@@ -48,7 +48,7 @@ class ProductData extends Equatable {
       ];
 }
 
-class ProductUnit extends Equatable {
+class ProductUnitty extends Equatable {
   final int? productUnitId;
   final int? unitId;
   final int? quantity;
@@ -56,7 +56,7 @@ class ProductUnit extends Equatable {
   final String? description;
   final dynamic price;
 
-  const ProductUnit(
+  const ProductUnitty(
       {this.productUnitId,
       this.unitId,
       this.quantity,

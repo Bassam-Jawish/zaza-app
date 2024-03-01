@@ -1,6 +1,7 @@
 import 'package:zaza_app/features/product/domain/entities/product.dart';
 
 import '../../../../core/resources/data_state.dart';
+import '../../data/models/product_unit.dart';
 
 abstract class BasketRepository {
   // API methods
@@ -15,4 +16,7 @@ abstract class BasketRepository {
   Future<DataState<void>> removeOneFromBasket(int index);
 
   Future<DataState<void>> deleteBasket();
+
+  Future<DataState<void>> sendOrder(
+      dynamic language,List<ProductUnit> productUnitHelper);
 }

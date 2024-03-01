@@ -16,3 +16,20 @@ class GetCategoryChildren extends CategoryEvent {
   @override
   List<Object> get props => [id, page, limit, language];
 }
+
+
+class AddToFavorite extends CategoryEvent {
+  final int productId;
+  final int index;
+  const AddToFavorite(this.productId, this.index);
+
+  @override
+  List<Object> get props => [productId, index];
+}
+
+class ChangeSort extends CategoryEvent {
+  const ChangeSort();
+
+  @override
+  List<Object> get props => [];
+}

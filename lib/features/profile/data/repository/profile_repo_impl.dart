@@ -44,7 +44,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
       final httpResponse =
           await _profileApiService.createPhoneNumber(language, data);
 
-      if (httpResponse.response.statusCode == HttpStatus.ok) {
+      if (httpResponse.response.statusCode == HttpStatus.ok || httpResponse.response.statusCode == HttpStatus.created) {
         return DataSuccess(httpResponse);
       } else {
         return DataFailed(DioException(

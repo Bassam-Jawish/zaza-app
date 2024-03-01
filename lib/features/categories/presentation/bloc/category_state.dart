@@ -1,6 +1,6 @@
 part of 'category_bloc.dart';
 
-enum CategoryStatus { initial,paginated,success, error, chooseType, }
+enum CategoryStatus { initial,paginated,success, error, chooseType, addedToFavorite , errorAddedToFavorite,changeSort}
 class CategoryState extends Equatable {
   final Failure? error;
   final String? screenType;
@@ -25,6 +25,9 @@ class CategoryState extends Equatable {
 
   final bool? isFirst;
 
+  final Map<int, bool>? favorites;
+
+
   CategoryState({
     this.error,
     this.screenType,
@@ -39,6 +42,7 @@ class CategoryState extends Equatable {
     this.categoryStatus,
     this.scrollController,
     this.isFirst,
+    this.favorites
   });
 
   @override
@@ -55,7 +59,8 @@ class CategoryState extends Equatable {
     productsPaginated,
     categoryStatus,
     scrollController,
-    isFirst
+    isFirst,
+    favorites,
   ];
 
   CategoryState copyWith({
@@ -71,7 +76,9 @@ class CategoryState extends Equatable {
     List<ProductData>? productsPaginated,
     CategoryStatus? categoryStatus,
     ScrollController? scrollController,
-    bool? isFirst
+    bool? isFirst,
+    Map<int, bool>? favorites,
+
   }) {
     return CategoryState(
       error: error ?? this.error,
@@ -87,6 +94,7 @@ class CategoryState extends Equatable {
       categoryStatus: categoryStatus ?? this.categoryStatus,
       scrollController: scrollController ?? this.scrollController,
       isFirst: isFirst ?? this.isFirst,
+      favorites: favorites ?? this.favorites,
     );
   }
 }

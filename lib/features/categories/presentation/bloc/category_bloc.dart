@@ -16,6 +16,8 @@ import 'package:zaza_app/features/product/domain/entities/product.dart';
 import '../../../../core/error/failure.dart';
 import '../../../../core/network/network_info.dart';
 import '../../../../core/resources/data_state.dart';
+import '../../../../injection_container.dart';
+import '../../../favorite/domain/usecases/add_to_favorites_usecase.dart';
 
 part 'category_event.dart';
 
@@ -23,17 +25,23 @@ part 'category_state.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final GetCategoriesUseCase _getCategoriesUseCase;
+
+  final AddToFavoritesUseCase _addToFavoritesUseCase;
+
   final NetworkInfo _networkInfo;
 
-  CategoryBloc(this._getCategoriesUseCase, this._networkInfo)
+  CategoryBloc(this._getCategoriesUseCase,this._addToFavoritesUseCase ,this._networkInfo)
       : super(CategoryState().copyWith(
             categoryStatus: CategoryStatus.initial,
             catId: 0,
             productsPaginated: [],
             isFirst: true,
+            favorites: {},
             scrollController: ScrollController())) {
     state.scrollController!.addListener(_scrollListener);
     on<GetCategoryChildren>(onGetCategoryChildren);
+    on<AddToFavorite>(onAddToFavorite);
+    on<ChangeSort>(onChangeSort);
   }
 
   Future<void> _scrollListener() async {
@@ -45,10 +53,6 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       emit(state.copyWith(
           currentIndex: state.currentIndex! + 1,
           categoryStatus: CategoryStatus.paginated));
-
-
-      //await getCategoryChildren(limit: limit, page: currentIndex, id: categoryId);
-
     }
   }
 
@@ -119,10 +123,18 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
               CategoryParentModel.fromJson(dataState.data!);
 
             state.productsPaginated!.addAll(categoryParentEntity!.productsChildren!);
+
+          state.productsPaginated!.forEach((element) {
+            state.favorites!.addAll({
+              element.productId!: element.isFavorite!,
+            });
+          });
+
           emit(state.copyWith(
             categoryStatus: CategoryStatus.success,
             categoryParentEntity: categoryParentEntity,
             productsPaginated: state.productsPaginated,
+            favorites: state.favorites
           ));
         }
       }
@@ -140,4 +152,67 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
           categoryStatus: CategoryStatus.error));
     }
   }
+
+
+  void onAddToFavorite(
+      AddToFavorite event, Emitter<CategoryState> emit) async {
+
+    try {
+      final addToFavoriteParams = AddToFavoriteParams(productId: event.productId,);
+
+      final dataState = await _addToFavoritesUseCase(params: addToFavoriteParams);
+
+      if (dataState is DataSuccess) {
+
+        Map<int, bool> favorites = state.favorites!;
+        favorites[event.productId] = !favorites[event.productId]!;
+
+        if (favorites[event.productId]! == false) {
+          favorites.removeWhere((key, value) => key == event.productId && value == false);
+          state.productsPaginated!.removeAt(event.index);
+        }
+
+        emit(state.copyWith(
+          categoryStatus: CategoryStatus.addedToFavorite,
+          productsPaginated: state.productsPaginated,
+          favorites: favorites,
+        ));
+      }
+
+      if (dataState is DataFailed) {
+        debugPrint(dataState.error!.message);
+        Map<int, bool> favorites = state.favorites!;
+        favorites[event.productId] = !favorites[event.productId]!;
+        emit(state.copyWith(
+            error: ServerFailure.fromDioError(dataState.error!),
+            categoryStatus: CategoryStatus.errorAddedToFavorite));
+      }
+    } on DioException catch (e) {
+      debugPrint(e.toString());
+      Map<int, bool> favorites = state.favorites!;
+      favorites[event.productId] = !favorites[event.productId]!;
+      emit(state.copyWith(
+          error: ServerFailure.fromDioError(e),
+          categoryStatus: CategoryStatus.errorAddedToFavorite));
+    }
+
+  }
+
+
+  void onChangeSort(
+      ChangeSort event, Emitter<CategoryState> emit) async {
+
+    if (sort == 'newest') {
+      sort = 'oldest';
+    }
+    else {
+      sort = 'newest';
+    }
+
+    emit(state.copyWith(productsPaginated: [], categoryStatus: CategoryStatus.changeSort));
+
+    // call get products
+
+  }
+
 }

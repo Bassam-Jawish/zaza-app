@@ -1,4 +1,12 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
 part of 'category_api_service.dart';
+
+// **************************************************************************
+// RetrofitGenerator
+// **************************************************************************
+
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
 class _CategoryApiService implements CategoryApiService {
   _CategoryApiService(
@@ -33,7 +41,7 @@ class _CategoryApiService implements CategoryApiService {
     )
             .compose(
               _dio.options,
-              categoryId == null ? '/category/' : '/category/${id}',
+              '/category/${id}',
               queryParameters: queryParameters,
               data: _data,
             )

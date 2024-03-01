@@ -83,3 +83,14 @@ class DeleteBasket extends BasketEvent {
   @override
   List<Object> get props => [];
 }
+
+class SendOrder extends BasketEvent {
+
+  dynamic language;
+  List<ProductUnit> productUnitHelper;
+
+  SendOrder(this.productUnitHelper, this.language);
+
+  @override
+  List<Object> get props => [language, productUnitHelper];
+}

@@ -8,11 +8,13 @@ import 'package:zaza_app/features/basket/domain/usecases/edit_basket_usecase.dar
 import 'package:zaza_app/features/basket/domain/usecases/get_basket_usecase.dart';
 import 'package:zaza_app/features/basket/domain/usecases/get_id_quantity_usecase.dart';
 import 'package:zaza_app/features/basket/domain/usecases/remove_one_basket_usecase.dart';
+import 'package:zaza_app/features/basket/domain/usecases/send_order_usecase.dart';
 
 import '../../../../../core/error/failure.dart';
 import '../../../../core/network/network_info.dart';
 import '../../../../core/resources/data_state.dart';
 import '../../../product/domain/entities/product.dart';
+import '../../data/models/product_unit.dart';
 
 part 'basket_event.dart';
 
@@ -31,6 +33,8 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
 
   final DeleteBasketUseCase _deleteBasketUseCase;
 
+  final SendOrdersUseCase _sendOrdersUseCase;
+
   final NetworkInfo _networkInfo;
 
   BasketBloc(
@@ -40,6 +44,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
       this._addToBasketUseCase,
       this._removeOneBasketUseCase,
       this._deleteBasketUseCase,
+      this._sendOrdersUseCase,
       this._networkInfo)
       : super(BasketState().copyWith(
             basketStatus: BasketStatus.initial,
@@ -55,6 +60,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     on<EditQuantityBasket>(onEditQuantityBasket);
     on<RemoveOneFromBasket>(onRemoveOneFromBasket);
     on<DeleteBasket>(onDeleteBasket);
+    on<SendOrder>(onSendOrder);
   }
 
   Future<void> onGetBasketProducts(
@@ -72,7 +78,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
 
     try {
       List<dynamic> idList = state.productUnitHelper!
-          .map((product) => product.productUnitId)
+          .map((ProductUnit product) => product.product_unit_id)
           .toList();
 
       List<dynamic> quantityList =
@@ -279,13 +285,62 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
       copy.clear();
 
       emit(state.copyWith(
-          subTotal: subTotal,
-          total: total,
-          basketStatus: BasketStatus.deleteAll,
-          basketProductsList: copy));
+        subTotal: subTotal,
+        total: total,
+        basketStatus: BasketStatus.deleteAll,
+        basketProductsList: copy,
+      ));
 
       // call onGetIdQuantityForBasket
       // call onGetBasketProducts
+    }
+  }
+
+  Future<void> onSendOrder(SendOrder event, Emitter<BasketState> emit) async {
+    emit(state.copyWith(basketStatus: BasketStatus.loadingSendOrder));
+
+    final isConnected = await _networkInfo.isConnected;
+
+    if (!isConnected) {
+      emit(state.copyWith(
+          error: ConnectionFailure('No Internet Connection'),
+          basketStatus: BasketStatus.errorSendOrder));
+      return;
+    }
+
+    try {
+      final sendOrder = SendOrderParams(
+          language: event.language, productUnitHelper: event.productUnitHelper);
+
+      final dataState = await _sendOrdersUseCase(params: sendOrder);
+
+      if (dataState is DataSuccess) {
+
+        dynamic total = 0.0;
+        dynamic subTotal = 0.0;
+
+        emit(state.copyWith(
+          productEntity: dataState.data,
+          basketStatus: BasketStatus.successSendOrder,
+          total: total,
+          subTotal: subTotal,
+        ));
+
+        // call delete all
+        // call onGetIdQuantityForBasket
+      }
+
+      if (dataState is DataFailed) {
+        debugPrint(dataState.error!.message);
+        emit(state.copyWith(
+            error: ServerFailure.fromDioError(dataState.error!),
+            basketStatus: BasketStatus.errorSendOrder));
+      }
+    } on DioException catch (e) {
+      debugPrint(e.toString());
+      emit(state.copyWith(
+          error: ServerFailure.fromDioError(e),
+          basketStatus: BasketStatus.errorSendOrder));
     }
   }
 }

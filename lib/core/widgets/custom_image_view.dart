@@ -86,7 +86,6 @@ class CustomImageView extends StatelessWidget {
   }
 
   Widget _buildImageView() {
-    print(imagePath);
     if (imagePath != null) {
       switch (imagePath!.imageType) {
         case ImageType.svg:

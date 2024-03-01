@@ -1,18 +1,18 @@
 import '../../../../core/resources/data_state.dart';
 import '../../../../core/usecases/usecase.dart';
-import '../../../basket/data/models/product_unit.dart';
-import '../entities/order.dart';
-import '../repository/order_repo.dart';
+import '../../../product/domain/entities/product.dart';
+import '../../data/models/product_unit.dart';
+import '../repository/basket_repo.dart';
 
 class SendOrdersUseCase
     implements UseCase<DataState<void>, SendOrderParams> {
-  final OrderRepository orderRepository;
+  final BasketRepository basketRepository;
 
-  SendOrdersUseCase(this.orderRepository);
+  SendOrdersUseCase(this.basketRepository);
 
   @override
   Future<DataState<void>> call({SendOrderParams? params}) {
-    return orderRepository.sendOrder(params!.language, params.productUnitHelper);
+    return basketRepository.sendOrder(params!.language, params.productUnitHelper);
   }
 }
 

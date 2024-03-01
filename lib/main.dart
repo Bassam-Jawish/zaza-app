@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(create: (BuildContext context) => sl()),
-        BlocProvider<DiscountBloc>(create: (BuildContext context) => sl()..add(GetDiscountProducts(limit, 1, sort, languageCode))),
+        BlocProvider<DiscountBloc>(create: (BuildContext context) => sl()..add(GetHomeDiscountProducts(limit, 1, sort, languageCode))),
         //BlocProvider<HomeBloc>(create: (BuildContext context) => sl()),
       ],
       child: ScreenUtilInit(

@@ -29,10 +29,4 @@ abstract class OrderApiService {
       @Query('language')  language,
       );
 
-  @POST('/order')
-  Future<HttpResponse<void>> sendOrder(
-      @Query('language')  language,
-      @Body() List<ProductUnit> productUnitHelper,
-      );
-
 }

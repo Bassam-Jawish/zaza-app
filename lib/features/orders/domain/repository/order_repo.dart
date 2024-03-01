@@ -11,7 +11,4 @@ abstract class OrderRepository {
 
   Future<DataState<OrderDetailsEntity>> getOrderDetails(
       int orderId, dynamic language);
-
-  Future<DataState<void>> sendOrder(
-      dynamic language,List<ProductUnit> productUnitHelper);
 }

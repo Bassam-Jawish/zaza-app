@@ -58,7 +58,7 @@ class ProductDataModel extends ProductData {
   }
 }
 
-class ProductUnitModel extends ProductUnit {
+class ProductUnitModel extends ProductUnitty {
   const ProductUnitModel({
     int? productUnitId,
     int? unitId,

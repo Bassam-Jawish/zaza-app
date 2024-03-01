@@ -87,36 +87,6 @@ class _OrderApiService implements OrderApiService {
     return httpResponse;
   }
 
-  @override
-  Future<HttpResponse<void>> sendOrder(
-    dynamic language,
-    List<ProductUnit> productUnitHelper,
-  ) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'language': language.toJson()};
-    final _headers = <String, dynamic>{};
-    final _data = productUnitHelper.map((e) => e.toJson()).toList();
-    final _result =
-        await _dio.fetch<void>(_setStreamType<HttpResponse<void>>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/order',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final httpResponse = HttpResponse(null, _result);
-    return httpResponse;
-  }
-
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

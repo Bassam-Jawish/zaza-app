@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
+import 'package:zaza_app/features/basket/data/models/product_unit.dart';
 import 'package:zaza_app/features/product/data/models/product_model.dart';
 import 'package:zaza_app/features/product/domain/entities/product.dart';
 
@@ -96,4 +97,27 @@ class BasketRepositoryImpl implements BasketRepository {
       return DataFailed2(e);
     }
   }
+
+  @override
+  Future<DataState<void>> sendOrder(
+      dynamic language,List<ProductUnit> productUnitHelper) async {
+    try {
+      final httpResponse =
+      await _basketApiService.sendOrder(language, productUnitHelper);
+
+      if (httpResponse.response.statusCode == HttpStatus.ok || httpResponse.response.statusCode == HttpStatus.created) {
+        return DataSuccess(httpResponse);
+      } else {
+        return DataFailed(DioException(
+          error: httpResponse.response.statusMessage,
+          response: httpResponse.response,
+          type: DioExceptionType.badResponse,
+          requestOptions: httpResponse.response.requestOptions,
+        ));
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
+  }
+
 }

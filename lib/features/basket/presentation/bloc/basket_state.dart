@@ -13,7 +13,11 @@ enum BasketStatus {
   errorAdded,
   getIds,
   clearController,
-  errorAdd
+  errorAdd,
+  loadingSendOrder,
+  successSendOrder,
+  errorSendOrder,
+
 }
 
 class BasketState extends Equatable {

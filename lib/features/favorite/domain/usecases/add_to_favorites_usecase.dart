@@ -18,7 +18,6 @@ class AddToFavoritesUseCase
 
 class AddToFavoriteParams {
   final int productId;
-
   AddToFavoriteParams({
     required this.productId,
   });

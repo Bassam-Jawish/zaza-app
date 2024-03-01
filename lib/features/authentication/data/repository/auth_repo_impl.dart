@@ -19,7 +19,8 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final httpResponse = await _authApiService.login(userName, password);
 
-      if (httpResponse.response.statusCode == HttpStatus.ok) {
+      if (httpResponse.response.statusCode == HttpStatus.ok ||
+          httpResponse.response.statusCode == HttpStatus.created) {
         final UserInfoModel model = httpResponse.data;
         final UserInfoEntity entity = model;
         return DataSuccess(entity);
@@ -42,7 +43,8 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final httpResponse = await _authApiService.forgotPassword(email);
 
-      if (httpResponse.response.statusCode == HttpStatus.ok) {
+      if (httpResponse.response.statusCode == HttpStatus.ok ||
+          httpResponse.response.statusCode == HttpStatus.created) {
         return DataSuccess(httpResponse);
       } else {
         return DataFailed(DioException(
@@ -58,11 +60,14 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<DataState<void>> validateResetPassword(String email, String token) async {
+  Future<DataState<void>> validateResetPassword(
+      String email, String token) async {
     try {
-      final httpResponse = await _authApiService.validateResetPassword(email, token);
+      final httpResponse =
+          await _authApiService.validateResetPassword(email, token);
 
-      if (httpResponse.response.statusCode == HttpStatus.ok) {
+      if (httpResponse.response.statusCode == HttpStatus.ok ||
+          httpResponse.response.statusCode == HttpStatus.created) {
         return DataSuccess(httpResponse);
       } else {
         return DataFailed(DioException(
@@ -78,11 +83,14 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<DataState<void>> resetPassword(String email, String token, String password) async {
+  Future<DataState<void>> resetPassword(
+      String email, String token, String password) async {
     try {
-      final httpResponse = await _authApiService.resetPassword(email, token, password);
+      final httpResponse =
+          await _authApiService.resetPassword(email, token, password);
 
-      if (httpResponse.response.statusCode == HttpStatus.ok) {
+      if (httpResponse.response.statusCode == HttpStatus.ok ||
+          httpResponse.response.statusCode == HttpStatus.created) {
         return DataSuccess(httpResponse);
       } else {
         return DataFailed(DioException(
@@ -97,4 +105,24 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+  @override
+  Future<DataState<void>> logout() async {
+    try {
+      final httpResponse = await _authApiService.logout();
+
+      if (httpResponse.response.statusCode == HttpStatus.ok ||
+          httpResponse.response.statusCode == HttpStatus.created) {
+        return DataSuccess(httpResponse);
+      } else {
+        return DataFailed(DioException(
+          error: httpResponse.response.statusMessage,
+          response: httpResponse.response,
+          type: DioExceptionType.badResponse,
+          requestOptions: httpResponse.response.requestOptions,
+        ));
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
+  }
 }

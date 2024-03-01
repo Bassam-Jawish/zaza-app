@@ -64,26 +64,5 @@ class OrderRepositoryImpl implements OrderRepository {
     }
   }
 
-  @override
-  Future<DataState<void>> sendOrder(
-      dynamic language,List<ProductUnit> productUnitHelper) async {
-    try {
-      final httpResponse =
-      await _orderApiService.sendOrder(language, productUnitHelper);
-
-      if (httpResponse.response.statusCode == HttpStatus.ok) {
-        return DataSuccess(httpResponse);
-      } else {
-        return DataFailed(DioException(
-          error: httpResponse.response.statusMessage,
-          response: httpResponse.response,
-          type: DioExceptionType.badResponse,
-          requestOptions: httpResponse.response.requestOptions,
-        ));
-      }
-    } on DioException catch (e) {
-      return DataFailed(e);
-    }
-  }
 
 }
