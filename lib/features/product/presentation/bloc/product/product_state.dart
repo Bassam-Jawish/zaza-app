@@ -16,6 +16,12 @@ enum ProductStatus {
   successProductProfile,
   errorProductProfile,
   changeUnitIndex,
+  addedToFavoriteNewProducts,
+  errorAddedToFavoriteNewProducts,
+  addedToFavoriteSearchByBarcode,
+  errorAddedToFavoriteSearchByBarcode,
+  addedToFavoriteSearchByName,
+  errorAddedToFavoriteSearchByName,
 }
 
 class ProductState extends Equatable {
@@ -35,19 +41,30 @@ class ProductState extends Equatable {
 
   final String? scanBarcode;
 
-  ProductState({
-    this.error,
-    this.newHomeProductsFavorites,
-    this.searchBarcodeProductsFavorites,
-    this.searchNameProductsFavorites,
-    this.homeNewProductsEntity,
-    this.searchBarcodeProductsEntity,
-    this.searchNameProductsEntity,
-    this.unitIndex,
-    this.productProfile,
-    this.productStatus,
-    this.scanBarcode,
-  });
+  final bool? isNewHomeLoaded;
+
+  final bool? isProductProfileLoaded;
+
+  final bool? isSearchByBarcodeLoaded;
+
+  final bool? isSearchByNameLoaded;
+
+  ProductState(
+      {this.error,
+      this.newHomeProductsFavorites,
+      this.searchBarcodeProductsFavorites,
+      this.searchNameProductsFavorites,
+      this.homeNewProductsEntity,
+      this.searchBarcodeProductsEntity,
+      this.searchNameProductsEntity,
+      this.unitIndex,
+      this.productProfile,
+      this.productStatus,
+      this.scanBarcode,
+      this.isNewHomeLoaded,
+      this.isProductProfileLoaded,
+      this.isSearchByBarcodeLoaded,
+      this.isSearchByNameLoaded});
 
   // CopyWith method
   ProductState copyWith({
@@ -62,6 +79,10 @@ class ProductState extends Equatable {
     ProductData? productProfile,
     ProductStatus? productStatus,
     String? scanBarcode,
+    bool? isNewHomeLoaded,
+    bool? isProductProfileLoaded,
+    bool? isSearchByBarcodeLoaded,
+    bool? isSearchByNameLoaded,
   }) {
     return ProductState(
       error: error ?? this.error,
@@ -81,6 +102,12 @@ class ProductState extends Equatable {
       productProfile: productProfile ?? this.productProfile,
       productStatus: productStatus ?? this.productStatus,
       scanBarcode: scanBarcode ?? this.scanBarcode,
+      isNewHomeLoaded: isNewHomeLoaded ?? this.isNewHomeLoaded,
+      isProductProfileLoaded:
+          isProductProfileLoaded ?? this.isProductProfileLoaded,
+      isSearchByBarcodeLoaded:
+          isSearchByBarcodeLoaded ?? this.isSearchByBarcodeLoaded,
+      isSearchByNameLoaded: isSearchByNameLoaded ?? this.isSearchByNameLoaded,
     );
   }
 
@@ -97,5 +124,9 @@ class ProductState extends Equatable {
         productProfile,
         productStatus,
         scanBarcode,
+        isNewHomeLoaded,
+        isProductProfileLoaded,
+        isSearchByBarcodeLoaded,
+        isSearchByNameLoaded
       ];
 }

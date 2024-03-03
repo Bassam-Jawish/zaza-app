@@ -19,17 +19,17 @@ class GetAllNewProducts extends NewProductEvent {
   List<Object> get props => [limit, page, sort, search, language];
 }
 
-class AddToFavorite extends NewProductEvent {
+class AddToFavoriteNewProducts extends NewProductEvent {
   final int productId;
   final int index;
-  const AddToFavorite(this.productId, this.index);
+  const AddToFavoriteNewProducts(this.productId, this.index);
 
   @override
   List<Object> get props => [productId, index];
 }
 
-class ChangeSort extends NewProductEvent {
-  const ChangeSort();
+class ChangeSortNewProducts extends NewProductEvent {
+  const ChangeSortNewProducts();
 
   @override
   List<Object> get props => [];

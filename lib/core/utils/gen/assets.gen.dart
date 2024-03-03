@@ -15,6 +15,13 @@ class $AssetsImagesGen {
   const $AssetsImagesGen();
 
   $AssetsImagesBasketGen get basket => const $AssetsImagesBasketGen();
+
+  /// File path: assets/images/img_email.svg
+  SvgGenImage get imgEmail => const SvgGenImage('assets/images/img_email.svg');
+
+  /// File path: assets/images/img_password.svg
+  SvgGenImage get imgPassword => const SvgGenImage('assets/images/img_password.svg');
+
   $AssetsImagesLogosGen get logos => const $AssetsImagesLogosGen();
   $AssetsImagesOnboardingGen get onboarding => const $AssetsImagesOnboardingGen();
 
@@ -22,7 +29,7 @@ class $AssetsImagesGen {
   AssetGenImage get profile => const AssetGenImage('assets/images/profile.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [profile];
+  List<dynamic> get values => [imgEmail, imgPassword, profile];
 }
 
 class $AssetsImagesBasketGen {

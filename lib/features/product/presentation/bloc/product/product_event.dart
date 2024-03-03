@@ -75,3 +75,30 @@ class ScanBarcode extends ProductEvent {
   @override
   List<Object> get props => [];
 }
+
+class AddToFavoriteSearchByBarCode extends ProductEvent {
+  final int productId;
+  final int index;
+  const AddToFavoriteSearchByBarCode(this.productId, this.index);
+
+  @override
+  List<Object> get props => [productId, index];
+}
+
+class AddToFavoriteSearchByName extends ProductEvent {
+  final int productId;
+  final int index;
+  const AddToFavoriteSearchByName(this.productId, this.index);
+
+  @override
+  List<Object> get props => [productId, index];
+}
+
+class AddToFavoriteHomeNewProducts extends ProductEvent {
+  final int productId;
+  final int index;
+  const AddToFavoriteHomeNewProducts(this.productId, this.index);
+
+  @override
+  List<Object> get props => [productId, index];
+}

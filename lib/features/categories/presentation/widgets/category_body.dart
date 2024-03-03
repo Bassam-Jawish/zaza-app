@@ -245,9 +245,9 @@ class CategoryBody extends StatelessWidget {
                       0,
                       state.productsPaginated![index].productUnitListModel![0]
                           .quantity!,
-                      0,
+                      6,
                       state.productsPaginated![index].productUnitListModel![0]
-                          .price!,
+                          .price!,state
                     );
                   }
                 },

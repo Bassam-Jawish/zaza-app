@@ -1,4 +1,4 @@
-import 'dart:html';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:zaza_app/features/product/data/models/product_model.dart';
@@ -16,9 +16,9 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
 
   @override
   Future<DataState<ProductEntity>> getFavoriteProducts(
-      int limit, int page, String sort, String search, String status) async {
+      int limit, int page, String sort, String search, String language) async {
     try {
-      final httpResponse = await _favoriteApiService.getFavoriteProducts(limit, page, sort, search, status);
+      final httpResponse = await _favoriteApiService.getFavoriteProducts(limit, page, sort, search, language);
 
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         final ProductModel model = httpResponse.data;
@@ -42,7 +42,7 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
       int productId) async {
     try {
       final httpResponse = await _favoriteApiService.addToFavorite(productId);
-      if (httpResponse.response.statusCode == HttpStatus.ok) {
+      if (httpResponse.response.statusCode == HttpStatus.ok || httpResponse.response.statusCode == HttpStatus.created) {
         return DataSuccess(httpResponse);
       } else {
         return DataFailed(DioException(

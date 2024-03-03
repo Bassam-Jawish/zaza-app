@@ -24,7 +24,7 @@ class _FavoriteApiService implements FavoriteApiService {
     int page,
     String sort,
     String search,
-    String status,
+    String language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -32,7 +32,7 @@ class _FavoriteApiService implements FavoriteApiService {
       r'page': page,
       r'sort': sort,
       r'search': search,
-      r'status': status,
+      r'language': language,
     };
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;

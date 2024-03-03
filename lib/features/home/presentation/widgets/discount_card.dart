@@ -7,6 +7,8 @@ import 'package:zaza_app/core/widgets/custom_image_view.dart';
 
 import '../../../../core/utils/functions/spinkit.dart';
 import '../../../../injection_container.dart';
+import '../../../base/presentation/widgets/push_bottom_bar.dart';
+import '../../../product/presentation/pages/product_page.dart';
 
 class BuildDiscountProductCard extends StatelessWidget {
   BuildDiscountProductCard(
@@ -46,7 +48,7 @@ class BuildDiscountProductCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         productId = product_id;
-        //pushNewScreenWithoutNavBar(context, ProductProfile(), '/product-profile');
+        pushNewScreenWithoutNavBar(context, ProductPage(), '/product-profile');
       },
       child: Container(
         width: width * 0.8,

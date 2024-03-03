@@ -20,7 +20,7 @@ class DeletePhoneUseCase
 
 class DeletePhoneUseCaseParams {
   final int phoneId;
-  final dynamic language;
+  final String language;
 
   DeletePhoneUseCaseParams({required this.phoneId, required this.language});
 }

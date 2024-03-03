@@ -20,13 +20,22 @@ class OrderState extends Equatable {
 
   final OrderStatus? orderStatus;
 
+  final bool? isProfileOrdersLoaded;
+
+  final bool? isOrdersLoaded;
+
+  final bool? isOrderDetailsLoaded;
+
   OrderState({
     this.error,
     this.ordersList,
     this.generalOrdersEntity,
     this.statusSearch,
     this.orderDetailsEntity,
-    this.orderStatus
+    this.orderStatus,
+    this.isProfileOrdersLoaded,
+    this.isOrdersLoaded,
+    this.isOrderDetailsLoaded,
   });
 
   // CopyWith function for immutability
@@ -37,6 +46,9 @@ class OrderState extends Equatable {
     String? statusSearch,
     OrderDetailsEntity? orderDetailsEntity,
     OrderStatus? orderStatus,
+    bool? isProfileOrdersLoaded,
+    bool? isOrdersLoaded,
+    bool? isOrderDetailsLoaded,
   }) {
     return OrderState(
       error: error ?? this.error,
@@ -45,16 +57,22 @@ class OrderState extends Equatable {
       statusSearch: statusSearch ?? this.statusSearch,
       orderDetailsEntity: orderDetailsEntity ?? this.orderDetailsEntity,
       orderStatus: orderStatus ?? this.orderStatus,
-
+      isProfileOrdersLoaded:
+          isProfileOrdersLoaded ?? this.isProfileOrdersLoaded,
+      isOrdersLoaded: isOrdersLoaded ?? this.isOrdersLoaded,
+      isOrderDetailsLoaded: isOrderDetailsLoaded ?? this.isOrderDetailsLoaded,
     );
   }
 
   @override
   List<Object?> get props => [
-    error,
-    ordersList,
-    generalOrdersEntity,
-    statusSearch,
-    orderDetailsEntity,
-  ];
+        error,
+        ordersList,
+        generalOrdersEntity,
+        statusSearch,
+        orderDetailsEntity,
+        isProfileOrdersLoaded,
+        isOrdersLoaded,
+        isOrderDetailsLoaded,
+      ];
 }

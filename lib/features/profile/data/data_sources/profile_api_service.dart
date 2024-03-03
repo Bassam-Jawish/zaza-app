@@ -12,21 +12,21 @@ abstract class ProfileApiService {
     return _ProfileApiService(dio);
   }
 
-  @GET('auth/profile/')
+  @GET('/auth/profile/')
   Future<HttpResponse<UserProfileModel>> getUserProfile(
-      @Query('language') languageCode,
+      @Query('language') String languageCode,
       );
 
   @POST('/phone/')
   Future<HttpResponse<void>> createPhoneNumber(
-      @Query('language') languageCode,
+      @Query('language') String languageCode,
       @Body() Map<String, dynamic> data,
       );
 
   @DELETE('/phone/{phone_id}')
   Future<HttpResponse<void>> deletePhoneNumber(
       @Path('phone_id') int phone_id,
-      @Query('language') languageCode,
+      @Query('language') String languageCode,
       );
 }
 

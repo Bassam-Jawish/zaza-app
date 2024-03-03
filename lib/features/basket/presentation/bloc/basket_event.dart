@@ -87,10 +87,8 @@ class DeleteBasket extends BasketEvent {
 class SendOrder extends BasketEvent {
 
   dynamic language;
-  List<ProductUnit> productUnitHelper;
-
-  SendOrder(this.productUnitHelper, this.language);
+  SendOrder(this.language);
 
   @override
-  List<Object> get props => [language, productUnitHelper];
+  List<Object> get props => [language];
 }

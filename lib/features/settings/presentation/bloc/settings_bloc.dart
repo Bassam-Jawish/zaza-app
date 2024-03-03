@@ -16,9 +16,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc()
       : super(
             SettingsState().copyWith(settingsStatus: SettingsStatus.initial)) {
-    on<SettingsEvent>((event, emit) {
       on<ChangeLanguage>(onChangeLanguage);
-    });
   }
 
   void onChangeLanguage(
@@ -45,6 +43,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       value: languageCode,
     ).then((value) => debugPrint('success caching'));
 
-    emit(state.copyWith(settingsStatus: SettingsStatus.changeLanguage));
+    emit(state.copyWith(settingsStatus: SettingsStatus.changeLanguage,languageCode: languageCode));
   }
 }

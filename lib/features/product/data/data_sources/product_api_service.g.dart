@@ -21,10 +21,10 @@ class _ProductApiService implements ProductApiService {
   @override
   Future<HttpResponse<ProductDataModel>> getProductInfo(
     int productId,
-    dynamic language,
+    String language,
   ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'language': language.toJson()};
+    final queryParameters = <String, dynamic>{r'language': language};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -55,7 +55,7 @@ class _ProductApiService implements ProductApiService {
     int page,
     String sort,
     String search,
-    dynamic language,
+    String language,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -63,7 +63,7 @@ class _ProductApiService implements ProductApiService {
       r'page': page,
       r'sort': sort,
       r'search': search,
-      r'language': language.toJson(),
+      r'language': language,
     };
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;

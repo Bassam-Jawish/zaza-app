@@ -32,14 +32,15 @@ class DiscountBloc extends Bloc<DiscountEvent, DiscountState> {
             favorites: {},
             isFirstDiscount: true,
             scrollController: ScrollController(),
-            productDiscountList: [])) {
-    state.scrollController!.addListener(_scrollListener);
-    on<GetHomeDiscountProducts>(onGetHomeDiscountProducts);
-    on<GetAllDiscountProducts>(onGetAllDiscountProducts);
-    on<AddToFavorite>(onAddToFavorite);
-    on<ChangeSort>(onChangeSort);
+            productDiscountList: [],isDiscountHomeLoaded: false)) {
+    on<DiscountEvent>((event, emit) async {
+      state.scrollController!.addListener(_scrollListener);
+      if (event is GetHomeDiscountProducts) await onGetHomeDiscountProducts(event, emit);
+      if (event is GetAllDiscountProducts) await onGetAllDiscountProducts(event, emit);
+      if (event is AddToFavoriteDiscount) await onAddToFavoriteDiscount(event, emit);
+      if (event is ChangeSortDiscount) onChangeSortDiscount(event, emit);
+    });
   }
-
   Future<void> _scrollListener() async {
     if (state.productAllDiscountEntity == null) return;
 
@@ -59,7 +60,7 @@ class DiscountBloc extends Bloc<DiscountEvent, DiscountState> {
     return super.close();
   }
 
-  void onGetHomeDiscountProducts(
+  Future<void> onGetHomeDiscountProducts(
       GetHomeDiscountProducts event, Emitter<DiscountState> emit) async {
     emit(state.copyWith(discountStatus: DiscountStatus.loading));
 
@@ -102,7 +103,7 @@ class DiscountBloc extends Bloc<DiscountEvent, DiscountState> {
     }
   }
 
-  void onGetAllDiscountProducts(
+  Future<void> onGetAllDiscountProducts(
       GetAllDiscountProducts event, Emitter<DiscountState> emit) async {
     if (state.isFirstDiscount!) {
       emit(state.copyWith(
@@ -113,14 +114,14 @@ class DiscountBloc extends Bloc<DiscountEvent, DiscountState> {
     if (!isConnected) {
       emit(state.copyWith(
           error: ConnectionFailure('No Internet Connection'),
-          discountStatus: DiscountStatus.error));
+          discountStatus: DiscountStatus.errorAllDiscount));
       return;
     }
 
     try {
       final discountParams = DiscountParams(
           limit: event.limit,
-          page: event.page,
+          page: event.page + 1,
           sort: event.sort,
           language: event.language);
 
@@ -138,18 +139,19 @@ class DiscountBloc extends Bloc<DiscountEvent, DiscountState> {
 
         state.productDiscountList!.addAll(discountProductsEntity.productList!);
 
-        state.productDiscountList!.forEach((element) {
+        dataState.data!.productList!.forEach((element) {
           state.favorites!.addAll({
             element.productId!: element.isFavorite!,
           });
         });
 
         emit(state.copyWith(
-          discountStatus: DiscountStatus.success,
+          discountStatus: DiscountStatus.successAllDiscount,
           productAllDiscountEntity: discountProductsEntity,
           productDiscountList: state.productDiscountList,
           discountPaginationNumberSave: discountPaginationNumberSave,
           favorites: state.favorites,
+          isDiscountHomeLoaded: true,
         ));
       }
 
@@ -157,17 +159,17 @@ class DiscountBloc extends Bloc<DiscountEvent, DiscountState> {
         debugPrint(dataState.error!.message);
         emit(state.copyWith(
             error: ServerFailure.fromDioError(dataState.error!),
-            discountStatus: DiscountStatus.error));
+            discountStatus: DiscountStatus.errorAllDiscount));
       }
     } on DioException catch (e) {
       debugPrint(e.toString());
       emit(state.copyWith(
           error: ServerFailure.fromDioError(e),
-          discountStatus: DiscountStatus.error));
+          discountStatus: DiscountStatus.errorAllDiscount));
     }
   }
 
-  void onAddToFavorite(AddToFavorite event, Emitter<DiscountState> emit) async {
+  Future<void> onAddToFavoriteDiscount(AddToFavoriteDiscount event, Emitter<DiscountState> emit) async {
     try {
       final addToFavoriteParams = AddToFavoriteParams(
         productId: event.productId,
@@ -211,16 +213,18 @@ class DiscountBloc extends Bloc<DiscountEvent, DiscountState> {
     }
   }
 
-  void onChangeSort(ChangeSort event, Emitter<DiscountState> emit) async {
+  void onChangeSortDiscount(ChangeSortDiscount event, Emitter<DiscountState> emit) async {
     if (sort == 'newest') {
       sort = 'oldest';
     } else {
       sort = 'newest';
     }
 
+    print(state.discountStatus);
+
     emit(state.copyWith(
         productDiscountList: [], discountStatus: DiscountStatus.changeSort));
+    print(state.discountStatus);
 
-    // call get discounts
   }
 }

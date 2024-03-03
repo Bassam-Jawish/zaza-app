@@ -23,10 +23,12 @@ class ChangePassword extends AuthEvent{
 class ForgotPassword extends AuthEvent {
   final String email;
 
-  const ForgotPassword(this.email);
+  final bool isResend;
+
+  const ForgotPassword(this.email, this.isResend);
 
   @override
-  List<Object> get props => [email];
+  List<Object> get props => [email, isResend];
 }
 
 

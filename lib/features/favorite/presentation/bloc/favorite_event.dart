@@ -9,25 +9,25 @@ class GetFavoriteProducts extends FavoriteEvent {
   final int page;
   final String sort;
   final String search;
-  final String status;
+  final String language;
 
-  const GetFavoriteProducts(this.limit, this.page, this.sort, this.search, this.status);
+  const GetFavoriteProducts(this.limit, this.page, this.sort, this.search, this.language);
 
   @override
   List<Object> get props => [limit, page, sort, search, search];
 }
 
-class AddToFavorite extends FavoriteEvent {
+class AddToFavoriteFav extends FavoriteEvent {
   final int productId;
   final int index;
-  const AddToFavorite(this.productId, this.index);
+  const AddToFavoriteFav(this.productId, this.index);
 
   @override
   List<Object> get props => [productId, index];
 }
 
-class ChangeSort extends FavoriteEvent {
-  const ChangeSort();
+class ChangeSortFavorite extends FavoriteEvent {
+  const ChangeSortFavorite();
 
   @override
   List<Object> get props => [];

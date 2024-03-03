@@ -36,6 +36,6 @@ abstract class AuthApiService {
       @Field("password") String password,
       );
 
-  @GET('auth/logout')
+  @GET('/auth/logout')
   Future<HttpResponse<void>> logout();
 }

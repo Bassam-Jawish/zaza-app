@@ -33,7 +33,6 @@ class AuthRepositoryImpl implements AuthRepository {
         ));
       }
     } on DioException catch (e) {
-      print('dsgdfgdg');
       return DataFailed(e);
     }
   }

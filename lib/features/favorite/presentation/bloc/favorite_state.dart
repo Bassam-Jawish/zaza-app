@@ -15,8 +15,8 @@ class FavoriteState extends Equatable {
 
   final ScrollController? scrollController;
 
-  bool? isFirst;
-
+  final int? totalNumber;
+  final bool? isFirst;
 
   FavoriteState({
     this.error,
@@ -27,6 +27,7 @@ class FavoriteState extends Equatable {
     this.favoriteProductsList,
     this.favorites,
     this.scrollController,
+    this.totalNumber,
     this.isFirst
   });
 
@@ -39,6 +40,7 @@ class FavoriteState extends Equatable {
     List<ProductData>? favoriteProductsList,
     Map<int, bool>? favorites,
     ScrollController? scrollController,
+    int? totalNumber,
     bool? isFirst,
   }) {
     return FavoriteState(
@@ -50,6 +52,7 @@ class FavoriteState extends Equatable {
       favoriteProductsList: favoriteProductsList ?? this.favoriteProductsList,
       favorites: favorites ?? this.favorites,
       scrollController: scrollController ?? this.scrollController,
+      totalNumber: totalNumber ?? this.totalNumber,
       isFirst: isFirst ?? this.isFirst,
     );
   }
@@ -64,6 +67,7 @@ class FavoriteState extends Equatable {
     favoriteProductsList,
     favorites,
     scrollController,
-    isFirst
+    totalNumber,
+    isFirst,
   ];
 }

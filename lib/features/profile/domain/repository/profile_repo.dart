@@ -7,12 +7,12 @@ abstract class ProfileRepository {
   // API methods
 
   Future<DataState<UserProfileEntity>> getUserProfile(
-      dynamic language);
+      String language);
 
   Future<DataState<void>> createPhoneNumber(
-      dynamic language, Map<String, dynamic> data);
+      String language, Map<String, dynamic> data);
 
   Future<DataState<void>> deletePhoneNumber(
-      int phoneId, dynamic language);
+      int phoneId, String language);
 
 }

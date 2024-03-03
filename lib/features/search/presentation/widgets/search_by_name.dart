@@ -1,0 +1,106 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zaza_app/features/product/presentation/bloc/product/product_bloc.dart';
+
+import '../../../../core/app_export.dart';
+import '../../../../core/utils/functions/spinkit.dart';
+import '../../../../core/widgets/default_textformfield.dart';
+import '../../../../injection_container.dart';
+import '../../../product/presentation/widgets/product_card.dart';
+import 'no_search.dart';
+
+class SearchByName extends StatelessWidget {
+  SearchByName(this.state, this.searchByProductNameController, {super.key});
+
+  final ProductState state;
+
+  TextEditingController searchByProductNameController;
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context).colorScheme;
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    return SingleChildScrollView(
+      //controller: cubit.scrollController,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: width * 0.03, vertical: height * 0.03),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            def_TextFromField_search(
+              keyboardType: TextInputType.number,
+              controller: searchByProductNameController,
+              onChanged: (value) {
+                context.read<ProductBloc>()
+                  ..add(GetSearchBarcodeProducts(
+                      limitSearch, 0, 'newest', value, languageCode));
+              },
+              br: 15,
+              label: '${AppLocalizations.of(context)!.search_By_Product_Name}',
+              labelStyle: TextStyle(color: theme.primary, fontSize: 16.sp),
+              prefixIcon: Icon(
+                Icons.search,
+                color: theme.primary,
+                size: 25.sp,
+              ),
+            ),
+            SizedBox(
+              height: height * 0.06,
+            ),
+            ConditionalBuilder(
+              condition: state.isSearchByNameLoaded!,
+              builder: (context) => ConditionalBuilder(
+                condition: state.searchNameProductsEntity != null,
+                builder: (context) => GridView.builder(
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: width * 0.5,
+                    mainAxisExtent: height * 0.36,
+                    crossAxisSpacing: 5,
+                    mainAxisSpacing: 5,
+                  ),
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return ProductCard(
+                        index,
+                        state.searchNameProductsEntity!.productList![index]
+                            .productId!,
+                        state.searchNameProductsEntity!.productList![index]
+                            .productName!,
+                        state.searchNameProductsEntity!.productList![index]
+                            .image!,
+                        state.searchNameProductsEntity!.productList![index]
+                            .barCode!,
+                        state.searchNameProductsEntity!.productList![index]
+                            .discount!,
+                        state.searchNameProductsEntity!.productList![index]
+                            .productUnitListModel![0].unitId!,
+                        state.searchNameProductsEntity!.productList![index]
+                            .productUnitListModel![0].unitName!,
+                        state.searchNameProductsEntity!.productList![index]
+                            .productUnitListModel![0].description!,
+                        0,
+                        state.searchNameProductsEntity!.productList![index]
+                            .productUnitListModel![0].quantity!,
+                        2,
+                        state.searchNameProductsEntity!.productList![index]
+                            .productUnitListModel![0].price!,
+                        state);
+                  },
+                  itemCount:
+                      state.searchNameProductsEntity!.productList!.length,
+                ),
+                fallback: (context) => SpinKitApp(width),
+              ),
+              fallback: (context) => NoSearchYet(height, context),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -161,7 +161,7 @@ class _AuthApiService implements AuthApiService {
     )
             .compose(
               _dio.options,
-              'auth/logout',
+              '/auth/logout',
               queryParameters: queryParameters,
               data: _data,
             )

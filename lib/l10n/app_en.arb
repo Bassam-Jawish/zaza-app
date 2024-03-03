@@ -133,5 +133,27 @@
     "invalid_userName_or_password": "Invalid userName or password",
 
     "clear_all": "Clear All",
-    "empty": "Empty"
+    "empty": "Empty",
+
+    "forgot_your": "Forgot your Password?",
+    "enter_your_email": "Enter your email, we will send you confirmation code",
+    "send_code": "Send Code",
+    "please_enter_valid": "Please enter valid email",
+    "enter_your_password": "Enter your password",
+    "please_confirm_your_password": "Please confirm your password",
+    "password_does_not_match": "Password does not match",
+    "verification_sent" : "Verification sent",
+
+    "enter_ver": "Enter Verification Code",
+    "enter_code_that": "Enter code that we have sent to your email",
+    "verify": "Verify",
+    "receive_the": "Didn't receive the code?",
+    "resend": "Resend",
+
+    "password_has_updated": "Password has updated",
+    "create_new": "Create New Password",
+    "create_your_new": "Create your new password to login",
+    "enter_new_password": "Enter new password",
+    "confirm_password": "Confirm password",
+    "create_password": "Create Password"
 }

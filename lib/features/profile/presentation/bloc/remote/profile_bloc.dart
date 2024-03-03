@@ -29,13 +29,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc(this._getUserProfileUseCase, this._createPhoneUseCase,
       this._deletePhoneUseCase, this._networkInfo)
       : super(ProfileState().copyWith(
-            profileStatus: ProfileStatus.initial, number: '', isoCode: '')) {
-    on<ProfileEvent>((event, emit) {
-      on<GetUserProfile>(onGetUserProfile);
-      on<CreatePhone>(onCreatePhone);
-      on<DeletePhone>(onDeletePhone);
-      on<AddingPhoneNumber>(onAddingPhoneNumber);
-    });
+            profileStatus: ProfileStatus.initial,
+            number: '',
+            isoCode: '',
+            isLoaded: false)) {
+    on<GetUserProfile>(onGetUserProfile);
+    on<CreatePhone>(onCreatePhone);
+    on<DeletePhone>(onDeletePhone);
+    on<AddingPhoneNumber>(onAddingPhoneNumber);
   }
 
   void onGetUserProfile(
@@ -56,12 +57,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       final dataState = await _getUserProfileUseCase(params: userProfileParams);
 
-      UserProfileEntity userProfileEntity = dataState.data!;
-
       if (dataState is DataSuccess) {
         emit(state.copyWith(
-          userProfileEntity: userProfileEntity,
+          userProfileEntity: dataState.data,
           profileStatus: ProfileStatus.success,
+          isLoaded: true,
         ));
       }
 

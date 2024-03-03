@@ -3,8 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zaza_app/config/config.dart';
 import 'package:zaza_app/config/theme/colors.dart';
 import 'package:zaza_app/core/widgets/custom_image_view.dart';
+import 'package:zaza_app/features/product/presentation/pages/product_page.dart';
 
 import '../../../../injection_container.dart';
+import '../../../base/presentation/widgets/push_bottom_bar.dart';
+import '../../../favorite/presentation/widgets/like_button.dart';
 
 class ProductCard extends StatelessWidget {
   ProductCard(
@@ -21,6 +24,7 @@ class ProductCard extends StatelessWidget {
       this.quantity,
       this.likeButtonType,
       this.price,
+      this.state,
       {super.key});
 
   final int index;
@@ -36,6 +40,7 @@ class ProductCard extends StatelessWidget {
   final int quantity;
   final int price;
   final int likeButtonType;
+  dynamic state;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -49,11 +54,11 @@ class ProductCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         productId = product_id;
-        //pushNewScreenWithoutNavBar(context, ProductProfile(), '/product-profile');
+        pushNewScreenWithoutNavBar(context, ProductPage(), '/product-profile');
       },
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30.r),
+          borderRadius: BorderRadius.circular(20.r),
           color: Colors.white,
           boxShadow: [
             BoxShadow(
@@ -90,8 +95,8 @@ class ProductCard extends StatelessWidget {
                         ),
                       )
                     : Container(),
-                /*likeButtonWidget(
-                    context, 25.0, cubit, product_id, likeButtonType, index),*/
+                likeButtonWidget(
+                    context, 30.0, product_id, likeButtonType, index, state)
               ],
             ),
             Center(

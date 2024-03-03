@@ -20,11 +20,9 @@ class _ProfileApiService implements ProfileApiService {
 
   @override
   Future<HttpResponse<UserProfileModel>> getUserProfile(
-      dynamic languageCode) async {
+      String languageCode) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'language': languageCode.toJson()
-    };
+    final queryParameters = <String, dynamic>{r'language': languageCode};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -35,7 +33,7 @@ class _ProfileApiService implements ProfileApiService {
     )
             .compose(
               _dio.options,
-              'auth/profile/',
+              '/auth/profile/',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -51,13 +49,11 @@ class _ProfileApiService implements ProfileApiService {
 
   @override
   Future<HttpResponse<void>> createPhoneNumber(
-    dynamic languageCode,
+    String languageCode,
     Map<String, dynamic> data,
   ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'language': languageCode.toJson()
-    };
+    final queryParameters = <String, dynamic>{r'language': languageCode};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(data);
@@ -85,12 +81,10 @@ class _ProfileApiService implements ProfileApiService {
   @override
   Future<HttpResponse<void>> deletePhoneNumber(
     int phone_id,
-    dynamic languageCode,
+    String languageCode,
   ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'language': languageCode.toJson()
-    };
+    final queryParameters = <String, dynamic>{r'language': languageCode};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result =

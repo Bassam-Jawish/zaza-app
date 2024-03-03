@@ -90,7 +90,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
 
       final basketParams = BasketParams(
           limit: event.limit,
-          page: event.page,
+          page: event.page + 1,
           language: event.languageCode,
           idList: idList);
 
@@ -180,7 +180,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     final dataState = await _getIdQuantityBasketUseCase();
 
     if (dataState is DataSuccess) {
-      emit(state.copyWith(productUnitHelper: dataState.data));
+      emit(state.copyWith(productUnitHelper: dataState.data,basketStatus: BasketStatus.getIds));
       // call onGetBasketProducts
     }
   }
@@ -310,7 +310,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
 
     try {
       final sendOrder = SendOrderParams(
-          language: event.language, productUnitHelper: event.productUnitHelper);
+          language: event.language, productUnitHelper: state.productUnitHelper!);
 
       final dataState = await _sendOrdersUseCase(params: sendOrder);
 

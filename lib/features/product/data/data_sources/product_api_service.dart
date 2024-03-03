@@ -15,7 +15,7 @@ abstract class ProductApiService {
   @GET('/product/{productId}')
   Future<HttpResponse<ProductDataModel>> getProductInfo(
       @Path('productId')  int productId,
-      @Query('language')  language,
+      @Query('language')  String language,
       );
 
   @GET('/product')
@@ -24,6 +24,6 @@ abstract class ProductApiService {
       @Query('page') int page,
       @Query('sort') String sort,
       @Query('search') String search,
-      @Query('language')  language,
+      @Query('language')  String language,
       );
 }

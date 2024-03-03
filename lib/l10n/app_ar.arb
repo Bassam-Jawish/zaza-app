@@ -135,5 +135,27 @@
 
 
     "clear_all": "مسح الكل",
-    "empty": "فارغة"
+    "empty": "فارغة",
+
+    "forgot_your": "هل نسيت كلمة المرور؟",
+    "enter_your_email": "أدخل بريدك الإلكتروني، وسنرسل لك رمز التأكيد",
+    "send_code": "أرسل الرمز",
+    "please_enter_valid": "الرجاء إدخال بريد إلكتروني صحيح",
+    "enter_your_password": "أدخل كلمة المرور الخاصة بك",
+    "please_confirm_your_password": "الرجاء تأكيد كلمة المرور الخاصة بك",
+    "password_does_not_match": "كلمة المرور غير متطابقة",
+    "verification_sent" : "تم إرسال التحقق",
+
+    "enter_ver": "أدخل رمز التحقق",
+    "enter_code_that": "أدخل الرمز الذي أرسلناه إلى بريدك الإلكتروني",
+    "verify": "التحقق",
+    "receive_the": "لم تستلم الرمز؟",
+    "resend": "إعادة الإرسال",
+
+    "password_has_updated": "تم تحديث كلمة المرور",
+    "create_new": "إنشاء كلمة مرور جديدة",
+    "create_your_new": "قم بإنشاء كلمة المرور الجديدة لتسجيل الدخول",
+    "enter_new_password": "أدخل كلمة المرور الجديدة",
+    "confirm_password": "تأكيد كلمة المرور",
+    "create_password": "إنشاء كلمة مرور"
 }

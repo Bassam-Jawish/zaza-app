@@ -30,17 +30,17 @@ class GetAllDiscountProducts extends DiscountEvent {
   List<Object> get props => [limit, page, sort, language];
 }
 
-class AddToFavorite extends DiscountEvent {
+class AddToFavoriteDiscount extends DiscountEvent {
   final int productId;
   final int index;
-  const AddToFavorite(this.productId, this.index);
+  const AddToFavoriteDiscount(this.productId, this.index);
 
   @override
   List<Object> get props => [productId, index];
 }
 
-class ChangeSort extends DiscountEvent {
-  const ChangeSort();
+class ChangeSortDiscount extends DiscountEvent {
+  const ChangeSortDiscount();
 
   @override
   List<Object> get props => [];

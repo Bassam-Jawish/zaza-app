@@ -103,7 +103,8 @@ dependencies:
   #make request to api
   retrofit: ^4.1.0
 
-  fresh_dio: ^0.4.1
+  #Pinput
+  pinput: ^4.0.0
 
   #Languages
   flutter_localizations:

@@ -33,12 +33,10 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
             newAllProductsList: [],
             newAllProductsFavorites: {},
             newProductsCurrentIndex: 0)) {
-    on<NewProductEvent>((event, emit) {
       state.scrollController!.addListener(_scrollListener);
       on<GetAllNewProducts>(onGetAllNewProducts);
-      on<AddToFavorite>(onAddToFavorite);
-      on<ChangeSort>(onChangeSort);
-    });
+      on<AddToFavoriteNewProducts>(onAddToFavoriteNewProducts);
+      on<ChangeSortNewProducts>(onChangeSortNewProducts);
   }
 
   Future<void> _scrollListener() async {
@@ -65,7 +63,6 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
       GetAllNewProducts event, Emitter<NewProductState> emit) async {
     if (state.isFirstNewProductsLoading!) {
       emit(state.copyWith(
-          isFirstNewProductsLoading: false,
           newProductsCurrentIndex: event.page));
     }
     final isConnected = await _networkInfo.isConnected;
@@ -80,7 +77,7 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
     try {
       final allNewProducts = SearchProductsParams(
           limit: event.limit,
-          page: event.page,
+          page: event.page + 1,
           sort: event.sort,
           search: event.search,
           language: event.language);
@@ -99,7 +96,7 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
 
         state.newAllProductsList!.addAll(newProductsEntity.productList!);
 
-        state.newAllProductsList!.forEach((element) {
+        dataState.data!.productList!.forEach((element) {
           state.newAllProductsFavorites!.addAll({
             element.productId!: element.isFavorite!,
           });
@@ -111,6 +108,7 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
           newAllProductsList: state.newAllProductsList,
           newProductsPaginationNumberSave: newPaginationNumberSave,
           newAllProductsFavorites: state.newAllProductsFavorites,
+          isFirstNewProductsLoading: false,
         ));
       }
 
@@ -128,8 +126,8 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
     }
   }
 
-  void onAddToFavorite(
-      AddToFavorite event, Emitter<NewProductState> emit) async {
+  void onAddToFavoriteNewProducts(
+      AddToFavoriteNewProducts event, Emitter<NewProductState> emit) async {
     try {
       final addToFavoriteParams = AddToFavoriteParams(
         productId: event.productId,
@@ -173,7 +171,8 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
     }
   }
 
-  void onChangeSort(ChangeSort event, Emitter<NewProductState> emit) async {
+  void onChangeSortNewProducts(
+      ChangeSortNewProducts event, Emitter<NewProductState> emit) async {
     if (sort == 'newest') {
       sort = 'oldest';
     } else {

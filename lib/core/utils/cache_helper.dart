@@ -1,5 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../injection_container.dart';
 
 
 class CacheHelper
@@ -81,6 +85,13 @@ class SecureStorage {
   }
 
   static Future<void>deleteAllSecureData() async {
-    await storage!.deleteAll();
+    await storage!.delete(key: 'token');
+    await storage!.delete(key: 'refresh_token');
+    await storage!.delete(key: 'user_id');
+    await storage!.delete(key: 'user_name');
+    token = 'No data found!';
+    refresh_token = 'No data found!';
+    user_id = 'No data found!';
+    user_name = 'No data found!';
   }
 }

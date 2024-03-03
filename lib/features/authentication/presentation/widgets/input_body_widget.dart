@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../config/routes/app_router.dart';
 import '../../../../config/theme/colors.dart';
 import '../../../../core/utils/functions/spinkit.dart';
 import '../../../../core/widgets/default_textformfield.dart';
@@ -77,7 +79,7 @@ class InputBodyWidget extends StatelessWidget {
                 ),
                 def_TextFromField(
                   cursorColor: theme.primary,
-                  autovalidateMode:
+                  autValidateMode:
                   AutovalidateMode.onUserInteraction,
                   keyboardType: TextInputType.text,
                   controller: _userNameController,
@@ -117,7 +119,7 @@ class InputBodyWidget extends StatelessWidget {
                   maxLines: 1,
                   controller: _passwordController,
                   obscureText: !state.isPasswordVis!,
-                  autovalidateMode:
+                  autValidateMode:
                   AutovalidateMode.onUserInteraction,
                   prefixIcon: Icon(
                     Icons.lock,
@@ -153,7 +155,10 @@ class InputBodyWidget extends StatelessWidget {
                   height: height * 0.02,
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    GoRouter.of(context).push(
+                        '${AppRouter.kLoginPage}/${AppRouter.kForgotPasswordPage}');
+                  },
                   style: ButtonStyle(
                     overlayColor:
                     MaterialStateColor.resolveWith(

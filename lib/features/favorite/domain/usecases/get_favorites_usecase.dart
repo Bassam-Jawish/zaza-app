@@ -13,7 +13,7 @@ class GetFavoritesUseCase
   @override
   Future<DataState<ProductEntity>> call({FavoriteParams? params}) {
     return favoriteRepository.getFavoriteProducts(
-        params!.limit, params.page, params.sort, params.search, params.status);
+        params!.limit, params.page, params.sort, params.search, params.language);
   }
 }
 
@@ -24,13 +24,13 @@ class FavoriteParams {
   final String sort;
   final String search;
 
-  final String status;
+  final String language;
 
   FavoriteParams({
     required this.limit,
     required this.page,
     required this.sort,
     required this.search,
-    required this.status,
+    required this.language,
   });
 }

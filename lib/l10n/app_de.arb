@@ -119,5 +119,28 @@
     "invalid_userName_or_password": "Ungültiger Benutzername oder Passwort",
 
     "clear_all": "Alles Löschen",
-    "empty": "Leer"
+    "empty": "Leer",
+
+    "forgot_your": "Passwort vergessen?",
+    "enter_your_email": "Geben Sie Ihre E-Mail-Adresse ein, wir senden Ihnen einen Bestätigungscode",
+    "send_code": "Code senden",
+    "please_enter_valid": "Bitte eine gültige Email eingeben",
+    "enter_your_password": "Geben Sie Ihr Passwort ein",
+    "please_confirm_your_password": "Bitte bestätigen Sie Ihr Passwort",
+    "password_does_not_match": "Passwort stimmt nicht überein",
+    "verification_sent" : "Bestätigung gesendet",
+
+
+    "enter_ver": "Bestätigungscode eingeben",
+    "enter_code_that": "Geben Sie den Code ein, den wir an Ihre E-Mail gesendet haben",
+    "verify": "Überprüfen",
+    "receive_the": "Haben Sie den Code nicht erhalten?",
+    "resend": "Erneut senden",
+
+    "password_has_updated": "Passwort wurde aktualisiert",
+    "create_new": "Neues Passwort erstellen",
+    "create_your_new": "Erstellen Sie Ihr neues Passwort zum Anmelden",
+    "enter_new_password": "Neues Passwort eingeben",
+    "confirm_password": "Passwort bestätigen",
+    "create_password": "Passwort erstellen"
 }

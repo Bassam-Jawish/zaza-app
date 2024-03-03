@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:zaza_app/core/app_export.dart';
 import 'package:zaza_app/features/discount/presentation/bloc/discount_bloc.dart';
 
 import 'config/routes/app_router.dart';
 import 'config/theme/app_themes.dart';
-import 'features/authentication/presentation/bloc/auth_bloc.dart';
+import 'features/product/presentation/bloc/product/product_bloc.dart';
 import 'injection_container.dart';
 import 'l10n/l10n.dart';
 
@@ -37,34 +36,57 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(create: (BuildContext context) => sl()),
-        BlocProvider<DiscountBloc>(create: (BuildContext context) => sl()..add(GetHomeDiscountProducts(limit, 1, sort, languageCode))),
+        BlocProvider<DiscountBloc>(
+            create: (BuildContext context) =>
+            sl()
+              ..add(GetHomeDiscountProducts(limit, 1, sort, languageCode))),
+        BlocProvider<ProductBloc>(
+          create: (BuildContext context) =>
+              sl(),
+        ),
+        BlocProvider<BasketBloc>(
+          create: (BuildContext context) =>
+              sl(),
+        ),
+        BlocProvider<OrderBloc>(
+          create: (BuildContext context) =>
+              sl(),
+        ),
+        BlocProvider<SettingsBloc>(
+          create: (BuildContext context) =>
+              sl(),
+        ),
         //BlocProvider<HomeBloc>(create: (BuildContext context) => sl()),
       ],
       child: ScreenUtilInit(
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (_, child) {
-          return MaterialApp.router(
-            builder: (context, child) {
-              final MediaQueryData data = MediaQuery.of(context);
-              return MediaQuery(
-                data: data.copyWith(textScaler: TextScaler.linear(1.0)),
-                child: child!,
+          return BlocBuilder<SettingsBloc, SettingsState>(
+            builder: (context, state) {
+              return MaterialApp.router(
+                builder: (context, child) {
+                  final MediaQueryData data = MediaQuery.of(context);
+                  return MediaQuery(
+                    data: data.copyWith(textScaler: TextScaler.linear(1.0)),
+                    child: child!,
+                  );
+                },
+                locale: locale,
+                supportedLocales: L10n.all,
+                localizationsDelegates: [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                ],
+                title: 'Zaza App',
+                theme: theme(),
+                themeMode: ThemeMode.system,
+                routerConfig: AppRouter.router,
+                debugShowCheckedModeBanner: false,
               );
             },
-            locale: locale,
-            supportedLocales: L10n.all,
-            localizationsDelegates: [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-            ],
-            title: 'Zaza App',
-            theme: theme(),
-            themeMode: ThemeMode.system,
-            routerConfig: AppRouter.router,
-            debugShowCheckedModeBanner: false,
           );
         },
       ),

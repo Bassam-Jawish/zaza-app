@@ -26,7 +26,7 @@ class CategoryParentModel extends CategoryParentEntity {
       id: map['id'] ?? 0,
       parentCategoryId: map['parentCategoryId'] ?? 0,
       typeName: (map['typeName'] ?? map['type']) ?? "",
-      categoryParentName: map['categoryParentName'] ?? "",
+      categoryParentName: map['translatedText'] ?? "",
       totalNumber: map['count'] ?? 0,
       categoriesChildren: map['categories'] != null
           ? List<CategoryModel>.from((map['categories'] as List)

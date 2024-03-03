@@ -2,8 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:zaza_app/features/basket/presentation/pages/basket_page.dart';
 import 'package:zaza_app/features/categories/presentation/pages/categories_page.dart';
 import 'package:zaza_app/features/home/presentation/pages/home_page.dart';
+import 'package:zaza_app/features/search/presentation/pages/search_page.dart';
+import 'package:zaza_app/features/settings/presentation/pages/settings_page.dart';
 
 import '../../../../config/theme/colors.dart';
 
@@ -42,7 +45,7 @@ List<PersistentBottomNavBarItem> bottomItems(context) {
         Icons.shopping_basket,
         size: 26,
       ),
-      title: (AppLocalizations.of(context)!.search),
+      title: (AppLocalizations.of(context)!.basket),
       activeColorPrimary: Colors.white,
       inactiveColorPrimary: theme.background,
     ),
@@ -58,12 +61,12 @@ List<PersistentBottomNavBarItem> bottomItems(context) {
   ];
 }
 
-List<Widget> screens = const [
+List<Widget> screens = [
   HomePage(),
   CategoryPage(),
-  HomePage(),
-  HomePage(),
-  HomePage(),
+  SearchPage(),
+  BasketPage(),
+  SettingsPage(),
   //const CategoriesScreen(),
   //SearchScreen(),
   //BasketScreen(),

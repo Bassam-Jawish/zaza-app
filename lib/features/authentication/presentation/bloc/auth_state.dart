@@ -28,16 +28,24 @@ class AuthState extends Equatable {
   final bool? isLoading;
   final bool? isPasswordVis;
   final AuthStatus? authStatus;
+  final bool? isForgotPasswordLoading;
+  final bool? isValidateResetPasswordLoading;
+  final bool? isResetPasswordLoading;
 
-  const AuthState({
-    this.accessToken,
-    this.refreshToken,
-    this.userEntity,
-    this.error,
-    this.isLoading,
-    this.isPasswordVis,
-    this.authStatus,
-  });
+  final bool? isResend;
+
+  const AuthState(
+      {this.accessToken,
+      this.refreshToken,
+      this.userEntity,
+      this.error,
+      this.isLoading,
+      this.isPasswordVis,
+      this.authStatus,
+      this.isForgotPasswordLoading,
+      this.isValidateResetPasswordLoading,
+      this.isResetPasswordLoading,
+      this.isResend});
 
   AuthState copyWith({
     String? accessToken,
@@ -47,6 +55,10 @@ class AuthState extends Equatable {
     bool? isLoading,
     bool? isPasswordVis,
     AuthStatus? authStatus,
+    bool? isForgotPasswordLoading,
+    bool? isValidateResetPasswordLoading,
+    bool? isResetPasswordLoading,
+    bool? isResend,
   }) =>
       AuthState(
         accessToken: accessToken ?? this.accessToken,
@@ -56,6 +68,13 @@ class AuthState extends Equatable {
         isLoading: isLoading ?? this.isLoading,
         isPasswordVis: isPasswordVis ?? this.isPasswordVis,
         authStatus: authStatus ?? this.authStatus,
+        isForgotPasswordLoading:
+            isForgotPasswordLoading ?? this.isForgotPasswordLoading,
+        isValidateResetPasswordLoading: isValidateResetPasswordLoading ??
+            this.isValidateResetPasswordLoading,
+        isResetPasswordLoading:
+            isResetPasswordLoading ?? this.isResetPasswordLoading,
+        isResend: isResend ?? this.isResend,
       );
 
   @override
@@ -67,5 +86,9 @@ class AuthState extends Equatable {
         isLoading,
         isPasswordVis,
         authStatus,
+        isForgotPasswordLoading,
+        isValidateResetPasswordLoading,
+        isResetPasswordLoading,
+        isResend,
       ];
 }

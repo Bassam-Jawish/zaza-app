@@ -9,10 +9,15 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.primaryLight,
-      appBar: null,
-      body: SafeArea(child: LoginBody()),
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        backgroundColor: AppColor.primaryLight,
+        appBar: null,
+        body: SafeArea(child: LoginBody()),
+      ),
     );
   }
 }

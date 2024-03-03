@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zaza_app/config/routes/route_animation.dart';
+import 'package:zaza_app/features/authentication/presentation/pages/reset_password_page.dart';
+import 'package:zaza_app/features/authentication/presentation/pages/verification_code_page.dart';
 import 'package:zaza_app/features/onboarding/presentation/pages/onboarding_page.dart';
 
 import '../../features/authentication/presentation/pages/forgot_password_page.dart';
@@ -12,13 +14,14 @@ import '../../injection_container.dart';
 abstract class AppRouter {
   static const kLoginPage = '/login';
   static const kRegisterPage = 'register';
-  static const kForgotPasswordPage = 'forgot_password';
-  static const kCreatePasswordPage = 'create_password';
   static const kOnboardingPage = '/onboarding';
   static const kBasePage = '/base';
   static const kMessagesPage = 'messages';
   static const kTopExpertsPage = 'top_experts';
   static const kExpertDetailsPage = 'expert_details';
+  static const kForgotPasswordPage = 'forgot_password';
+  static const kVerificationForgotPage = 'verification_forgot';
+  static const kResetPasswordPage = 'reset_password';
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
   /*
@@ -63,16 +66,26 @@ abstract class AppRouter {
             path: kForgotPasswordPage,
             name: 'forgot_password',
             pageBuilder: (context, state) =>
-                slideTransition(const ForgotPasswordPage()),
+                slideTransition( ForgotPasswordPage()),
             routes: [
-              /*GoRoute(
-  path: '$kVerificationForgotPage/:email',
-  name: 'verification_forgot',
-  pageBuilder: (context, state) => slideTransition(
-  VerificationSendPage(
-  email: state.pathParameters['email']!.toString() ?? ''),
-  ),
-  ),*/
+              GoRoute(
+                  path: '$kVerificationForgotPage/:email',
+                  name: 'verification_forgot',
+                  pageBuilder: (context, state) => slideTransition(
+                        VerificationCodePage(
+                            state.pathParameters['email']!.toString() ?? ''),
+                      ),
+                  routes: [
+                    GoRoute(
+                      path: '$kResetPasswordPage/:reset_email/:token',
+                      name: 'reset_password',
+                      pageBuilder: (context, state) => slideTransition(
+                        ResetPasswordPage(
+                            state.pathParameters['reset_email']!.toString() ?? '',
+                            state.pathParameters['token']!.toString() ?? ''),
+                      ),
+                    ),
+                  ]),
             ],
           ),
         ],

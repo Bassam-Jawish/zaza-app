@@ -11,6 +11,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import '../../../../../core/error/failure.dart';
 import '../../../../../core/network/network_info.dart';
 import '../../../../../core/resources/data_state.dart';
+import '../../../../favorite/domain/usecases/add_to_favorites_usecase.dart';
 import '../../../domain/usecases/get_product_info_usecase.dart';
 import '../../../domain/usecases/seacrh_products_usecase.dart';
 
@@ -23,22 +24,40 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   final GetProductInfoUseCase _getProductInfoUseCase;
 
+  final AddToFavoritesUseCase _addToFavoritesUseCase;
+
   final NetworkInfo _networkInfo;
 
   ProductBloc(this._searchProductsUseCase, this._getProductInfoUseCase,
-      this._networkInfo)
-      : super(ProductState().copyWith(productStatus: ProductStatus.initial)) {
-    on<ProductEvent>((event, emit) {
-      on<GetHomeNewProducts>(onGetHomeNewProducts);
-      on<GetSearchBarcodeProducts>(onGetSearchBarcodeProducts);
-      on<GetSearchNameProducts>(onGetSearchNameProducts);
-      on<GetProductProfile>(onGetProductProfile);
-      on<ChangeUnitIndex>(onChangeUnitIndex);
-      on<ScanBarcode>(onScanBarcode);
+      this._addToFavoritesUseCase, this._networkInfo)
+      : super(ProductState().copyWith(
+            productStatus: ProductStatus.initial,
+            newHomeProductsFavorites: {},
+            searchBarcodeProductsFavorites: {},
+            searchNameProductsFavorites: {},
+            isNewHomeLoaded: false,
+            isProductProfileLoaded: false,
+            isSearchByBarcodeLoaded: false,
+            isSearchByNameLoaded: false)) {
+    on<ProductEvent>((event, emit) async {
+      if (event is GetHomeNewProducts) await onGetHomeNewProducts(event, emit);
+      if (event is GetSearchBarcodeProducts)
+        await onGetSearchBarcodeProducts(event, emit);
+      if (event is GetSearchNameProducts)
+        await onGetSearchNameProducts(event, emit);
+      if (event is GetProductProfile) await onGetProductProfile(event, emit);
+      if (event is ChangeUnitIndex) onChangeUnitIndex(event, emit);
+      if (event is ScanBarcode) await onScanBarcode(event, emit);
+      if (event is AddToFavoriteSearchByBarCode)
+        await onAddToFavoriteSearchByBarCode(event, emit);
+      if (event is AddToFavoriteSearchByName)
+        await onAddToFavoriteSearchByName(event, emit);
+      if (event is AddToFavoriteHomeNewProducts)
+        await onAddToFavoriteHomeNewProducts(event, emit);
     });
   }
 
-  void onGetHomeNewProducts(
+  Future<void> onGetHomeNewProducts(
       GetHomeNewProducts event, Emitter<ProductState> emit) async {
     emit(state.copyWith(productStatus: ProductStatus.loadingHomeNewProducts));
 
@@ -54,7 +73,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       final searchProductsParams = SearchProductsParams(
           limit: event.limit,
-          page: event.page,
+          page: event.page + 1,
           sort: event.sort,
           search: event.search,
           language: event.language);
@@ -63,9 +82,17 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           await _searchProductsUseCase(params: searchProductsParams);
 
       if (dataState is DataSuccess) {
+        dataState.data!.productList!.forEach((element) {
+          state.newHomeProductsFavorites!.addAll({
+            element.productId!: element.isFavorite!,
+          });
+        });
+
         emit(state.copyWith(
           homeNewProductsEntity: dataState.data,
           productStatus: ProductStatus.successHomeNewProducts,
+          newHomeProductsFavorites: state.newHomeProductsFavorites,
+          isNewHomeLoaded: true,
         ));
       }
 
@@ -83,9 +110,11 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     }
   }
 
-  void onGetSearchBarcodeProducts(
+  Future<void> onGetSearchBarcodeProducts(
       GetSearchBarcodeProducts event, Emitter<ProductState> emit) async {
-    emit(state.copyWith(productStatus: ProductStatus.loadingBarcodeSearch));
+    emit(state.copyWith(
+        productStatus: ProductStatus.loadingBarcodeSearch,
+        isSearchByBarcodeLoaded: false));
 
     final isConnected = await _networkInfo.isConnected;
 
@@ -99,9 +128,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       final searchProductsParams = SearchProductsParams(
           limit: event.limit,
-          page: event.page,
+          page: event.page + 1,
           sort: event.sort,
-          search: event.search,
+          search: 'barCode:${event.search}',
           language: event.language);
 
       final dataState =
@@ -111,6 +140,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(state.copyWith(
           searchBarcodeProductsEntity: dataState.data,
           productStatus: ProductStatus.successBarcodeSearch,
+          isSearchByBarcodeLoaded: true,
         ));
       }
 
@@ -128,9 +158,11 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     }
   }
 
-  void onGetSearchNameProducts(
+  Future<void> onGetSearchNameProducts(
       GetSearchNameProducts event, Emitter<ProductState> emit) async {
-    emit(state.copyWith(productStatus: ProductStatus.loadingNameSearch));
+    emit(state.copyWith(
+        productStatus: ProductStatus.loadingNameSearch,
+        isSearchByNameLoaded: false));
 
     final isConnected = await _networkInfo.isConnected;
 
@@ -144,9 +176,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       final searchProductsParams = SearchProductsParams(
           limit: event.limit,
-          page: event.page,
+          page: event.page + 1,
           sort: event.sort,
-          search: event.search,
+          search: 'name:${event.search}',
           language: event.language);
 
       final dataState =
@@ -156,6 +188,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(state.copyWith(
           searchNameProductsEntity: dataState.data,
           productStatus: ProductStatus.successNameSearch,
+          isSearchByNameLoaded: true,
         ));
       }
 
@@ -173,7 +206,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     }
   }
 
-  void onGetProductProfile(
+  Future<void> onGetProductProfile(
       GetProductProfile event, Emitter<ProductState> emit) async {
     emit(state.copyWith(productStatus: ProductStatus.loadingProductProfile));
 
@@ -194,9 +227,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
       if (dataState is DataSuccess) {
         emit(state.copyWith(
-          productProfile: dataState.data,
-          productStatus: ProductStatus.successProductProfile,
-        ));
+            productProfile: dataState.data,
+            productStatus: ProductStatus.successProductProfile,
+            isProductProfileLoaded: true));
       }
 
       if (dataState is DataFailed) {
@@ -223,7 +256,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     ));
   }
 
-  void onScanBarcode(ScanBarcode event, Emitter<ProductState> emit) async {
+  Future<void> onScanBarcode(ScanBarcode event, Emitter<ProductState> emit) async {
     String scanResult;
     try {
       scanResult = await FlutterBarcodeScanner.scanBarcode(
@@ -234,5 +267,140 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
     emit(state.copyWith(
         scanBarcode: scanResult, productStatus: ProductStatus.scannedBarcode));
+  }
+
+  Future<void> onAddToFavoriteHomeNewProducts(
+      AddToFavoriteHomeNewProducts event, Emitter<ProductState> emit) async {
+    try {
+      final addToFavoriteParams = AddToFavoriteParams(
+        productId: event.productId,
+      );
+
+      final dataState =
+          await _addToFavoritesUseCase(params: addToFavoriteParams);
+
+      if (dataState is DataSuccess) {
+        Map<int, bool> favorites = state.newHomeProductsFavorites!;
+        favorites[event.productId] = !favorites[event.productId]!;
+
+        if (favorites[event.productId]! == false) {
+          favorites.removeWhere(
+              (key, value) => key == event.productId && value == false);
+          state.homeNewProductsEntity!.productList!.removeAt(event.index);
+        }
+
+        emit(state.copyWith(
+          productStatus: ProductStatus.addedToFavoriteNewProducts,
+          homeNewProductsEntity: state.homeNewProductsEntity,
+          newHomeProductsFavorites: favorites,
+        ));
+      }
+
+      if (dataState is DataFailed) {
+        debugPrint(dataState.error!.message);
+        Map<int, bool> favorites = state.newHomeProductsFavorites!;
+        favorites[event.productId] = !favorites[event.productId]!;
+        emit(state.copyWith(
+            error: ServerFailure.fromDioError(dataState.error!),
+            productStatus: ProductStatus.errorAddedToFavoriteNewProducts));
+      }
+    } on DioException catch (e) {
+      debugPrint(e.toString());
+      Map<int, bool> favorites = state.newHomeProductsFavorites!;
+      favorites[event.productId] = !favorites[event.productId]!;
+      emit(state.copyWith(
+          error: ServerFailure.fromDioError(e),
+          productStatus: ProductStatus.errorAddedToFavoriteNewProducts));
+    }
+  }
+
+  Future<void> onAddToFavoriteSearchByBarCode(
+      AddToFavoriteSearchByBarCode event, Emitter<ProductState> emit) async {
+    try {
+      final addToFavoriteParams = AddToFavoriteParams(
+        productId: event.productId,
+      );
+
+      final dataState =
+          await _addToFavoritesUseCase(params: addToFavoriteParams);
+
+      if (dataState is DataSuccess) {
+        Map<int, bool> favorites = state.searchBarcodeProductsFavorites!;
+        favorites[event.productId] = !favorites[event.productId]!;
+
+        if (favorites[event.productId]! == false) {
+          favorites.removeWhere(
+              (key, value) => key == event.productId && value == false);
+          state.searchBarcodeProductsEntity!.productList!.removeAt(event.index);
+        }
+
+        emit(state.copyWith(
+          productStatus: ProductStatus.addedToFavoriteSearchByBarcode,
+          searchBarcodeProductsEntity: state.searchBarcodeProductsEntity,
+          searchBarcodeProductsFavorites: favorites,
+        ));
+      }
+
+      if (dataState is DataFailed) {
+        debugPrint(dataState.error!.message);
+        Map<int, bool> favorites = state.searchBarcodeProductsFavorites!;
+        favorites[event.productId] = !favorites[event.productId]!;
+        emit(state.copyWith(
+            error: ServerFailure.fromDioError(dataState.error!),
+            productStatus: ProductStatus.errorAddedToFavoriteSearchByBarcode));
+      }
+    } on DioException catch (e) {
+      debugPrint(e.toString());
+      Map<int, bool> favorites = state.searchBarcodeProductsFavorites!;
+      favorites[event.productId] = !favorites[event.productId]!;
+      emit(state.copyWith(
+          error: ServerFailure.fromDioError(e),
+          productStatus: ProductStatus.errorAddedToFavoriteSearchByBarcode));
+    }
+  }
+
+  Future<void> onAddToFavoriteSearchByName(
+      AddToFavoriteSearchByName event, Emitter<ProductState> emit) async {
+    try {
+      final addToFavoriteParams = AddToFavoriteParams(
+        productId: event.productId,
+      );
+
+      final dataState =
+          await _addToFavoritesUseCase(params: addToFavoriteParams);
+
+      if (dataState is DataSuccess) {
+        Map<int, bool> favorites = state.searchNameProductsFavorites!;
+        favorites[event.productId] = !favorites[event.productId]!;
+
+        if (favorites[event.productId]! == false) {
+          favorites.removeWhere(
+              (key, value) => key == event.productId && value == false);
+          state.searchNameProductsEntity!.productList!.removeAt(event.index);
+        }
+
+        emit(state.copyWith(
+          productStatus: ProductStatus.addedToFavoriteSearchByName,
+          searchNameProductsEntity: state.searchNameProductsEntity,
+          searchNameProductsFavorites: favorites,
+        ));
+      }
+
+      if (dataState is DataFailed) {
+        debugPrint(dataState.error!.message);
+        Map<int, bool> favorites = state.searchNameProductsFavorites!;
+        favorites[event.productId] = !favorites[event.productId]!;
+        emit(state.copyWith(
+            error: ServerFailure.fromDioError(dataState.error!),
+            productStatus: ProductStatus.errorAddedToFavoriteSearchByName));
+      }
+    } on DioException catch (e) {
+      debugPrint(e.toString());
+      Map<int, bool> favorites = state.searchNameProductsFavorites!;
+      favorites[event.productId] = !favorites[event.productId]!;
+      emit(state.copyWith(
+          error: ServerFailure.fromDioError(e),
+          productStatus: ProductStatus.errorAddedToFavoriteSearchByName));
+    }
   }
 }

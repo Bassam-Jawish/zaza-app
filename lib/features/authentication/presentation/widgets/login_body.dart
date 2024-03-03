@@ -3,12 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zaza_app/core/utils/gen/assets.gen.dart';
 import 'package:zaza_app/core/widgets/custom_image_view.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../config/routes/app_router.dart';
+import '../../../../core/app_export.dart';
 import '../../../../core/utils/cache_helper.dart';
 import '../../../../core/widgets/custom_toast.dart';
 import '../../../../injection_container.dart';
+import '../../../settings/presentation/widgets/change_language_dialog.dart';
 import '../bloc/auth_bloc.dart';
 import 'input_body_widget.dart';
 
@@ -28,13 +29,14 @@ class LoginBody extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) async {
+
         if (state.authStatus == AuthStatus.error) {
-          showToast(
+          /*showToast(
               text: AppLocalizations.of(context)!.invalid_userName_or_password,
-              state: state);
+              state: ToastState.error);*/
+          showToast(text: state.error!.message, state: ToastState.error);
         }
         if (state.authStatus == AuthStatus.success) {
-
           token = state.accessToken;
           user_id = state.userEntity!.userId;
           user_name = state.userEntity!.userName;
@@ -68,7 +70,7 @@ class LoginBody extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                //changeLanguageDialog(context, width, height);
+                changeLanguageDialog(context, width, height);
               },
               icon: Icon(
                 Icons.language,

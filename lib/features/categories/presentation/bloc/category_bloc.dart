@@ -30,7 +30,8 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
   final NetworkInfo _networkInfo;
 
-  CategoryBloc(this._getCategoriesUseCase,this._addToFavoritesUseCase ,this._networkInfo)
+  CategoryBloc(this._getCategoriesUseCase, this._addToFavoritesUseCase,
+      this._networkInfo)
       : super(CategoryState().copyWith(
             categoryStatus: CategoryStatus.initial,
             catId: 0,
@@ -40,8 +41,8 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
             scrollController: ScrollController())) {
     state.scrollController!.addListener(_scrollListener);
     on<GetCategoryChildren>(onGetCategoryChildren);
-    on<AddToFavorite>(onAddToFavorite);
-    on<ChangeSort>(onChangeSort);
+    on<AddToFavoriteCategory>(onAddToFavoriteCategory);
+    on<ChangeSortCategory>(onChangeSortCategory);
   }
 
   Future<void> _scrollListener() async {
@@ -64,10 +65,8 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
   void onGetCategoryChildren(
       GetCategoryChildren event, Emitter<CategoryState> emit) async {
-
     if (state.isFirst!) {
-      emit(state.copyWith(
-          isFirst: false, currentIndex: event.page));
+      emit(state.copyWith(isFirst: false, currentIndex: event.page));
     }
 
     final isConnected = await _networkInfo.isConnected;
@@ -81,7 +80,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
     try {
       final categoryParams = CategoryParams(
-          id: event.id,
+          id: event.id ?? '',
           limit: event.limit,
           page: event.page + 1,
           language: event.language);
@@ -122,20 +121,20 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
           CategoryParentEntity categoryParentEntity =
               CategoryParentModel.fromJson(dataState.data!);
 
-            state.productsPaginated!.addAll(categoryParentEntity!.productsChildren!);
+          state.productsPaginated!
+              .addAll(categoryParentEntity!.productsChildren!);
 
-          state.productsPaginated!.forEach((element) {
+          categoryParentEntity.productsChildren!.forEach((element) {
             state.favorites!.addAll({
               element.productId!: element.isFavorite!,
             });
           });
 
           emit(state.copyWith(
-            categoryStatus: CategoryStatus.success,
-            categoryParentEntity: categoryParentEntity,
-            productsPaginated: state.productsPaginated,
-            favorites: state.favorites
-          ));
+              categoryStatus: CategoryStatus.success,
+              categoryParentEntity: categoryParentEntity,
+              productsPaginated: state.productsPaginated,
+              favorites: state.favorites));
         }
       }
 
@@ -153,22 +152,22 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     }
   }
 
-
-  void onAddToFavorite(
-      AddToFavorite event, Emitter<CategoryState> emit) async {
-
+  void onAddToFavoriteCategory(AddToFavoriteCategory event, Emitter<CategoryState> emit) async {
     try {
-      final addToFavoriteParams = AddToFavoriteParams(productId: event.productId,);
+      final addToFavoriteParams = AddToFavoriteParams(
+        productId: event.productId,
+      );
 
-      final dataState = await _addToFavoritesUseCase(params: addToFavoriteParams);
+      final dataState =
+          await _addToFavoritesUseCase(params: addToFavoriteParams);
 
       if (dataState is DataSuccess) {
-
         Map<int, bool> favorites = state.favorites!;
         favorites[event.productId] = !favorites[event.productId]!;
 
         if (favorites[event.productId]! == false) {
-          favorites.removeWhere((key, value) => key == event.productId && value == false);
+          favorites.removeWhere(
+              (key, value) => key == event.productId && value == false);
           state.productsPaginated!.removeAt(event.index);
         }
 
@@ -195,24 +194,18 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
           error: ServerFailure.fromDioError(e),
           categoryStatus: CategoryStatus.errorAddedToFavorite));
     }
-
   }
 
-
-  void onChangeSort(
-      ChangeSort event, Emitter<CategoryState> emit) async {
-
+  void onChangeSortCategory(ChangeSortCategory event, Emitter<CategoryState> emit) async {
     if (sort == 'newest') {
       sort = 'oldest';
-    }
-    else {
+    } else {
       sort = 'newest';
     }
 
-    emit(state.copyWith(productsPaginated: [], categoryStatus: CategoryStatus.changeSort));
+    emit(state.copyWith(
+        productsPaginated: [], categoryStatus: CategoryStatus.changeSort));
 
     // call get products
-
   }
-
 }

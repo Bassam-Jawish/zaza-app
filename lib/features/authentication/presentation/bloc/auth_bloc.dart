@@ -4,14 +4,18 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:zaza_app/core/app_export.dart';
+import 'package:zaza_app/core/widgets/custom_toast.dart';
 import 'package:zaza_app/features/authentication/domain/usecases/forgot_password_usecase.dart';
 import 'package:zaza_app/features/authentication/domain/usecases/logout_usecase.dart';
 import 'package:zaza_app/features/authentication/domain/usecases/reset_password_usecase.dart';
 import 'package:zaza_app/features/authentication/domain/usecases/validate_reset_password_usecase.dart';
 
+import '../../../../config/routes/app_router.dart';
 import '../../../../core/error/failure.dart';
 import '../../../../core/network/network_info.dart';
 import '../../../../core/resources/data_state.dart';
+import '../../../../core/utils/cache_helper.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/usecases/login_usecase.dart';
 
@@ -35,8 +39,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       this._resetPasswordUseCase,
       this._logoutUseCase,
       this._networkInfo)
-      : super(AuthState()
-            .copyWith(authStatus: AuthStatus.initial, isPasswordVis: false)) {
+      : super(AuthState().copyWith(
+            authStatus: AuthStatus.initial,
+            isPasswordVis: false,
+            isForgotPasswordLoading: false,
+            isValidateResetPasswordLoading: false,
+            isResetPasswordLoading: false)) {
     on<Login>(onLogin);
     on<ChangePassword>(onChangePassword);
     on<ForgotPassword>(onForgotPassword);
@@ -51,8 +59,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     if (!isConnected) {
       emit(state.copyWith(
-          authStatus: AuthStatus.error,
-          error: ConnectionFailure('No Internet Connection')));
+        authStatus: AuthStatus.error,
+        error: ConnectionFailure('No Internet Connection'),
+      ));
       return;
     }
 
@@ -78,7 +87,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             error: ServerFailure.fromDioError(dataState.error!)));
       }
     } on DioException catch (e) {
-      debugPrint(e.toString());
       emit(state.copyWith(
           authStatus: AuthStatus.error, error: ServerFailure.fromDioError(e)));
     }
@@ -91,14 +99,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void onForgotPassword(ForgotPassword event, Emitter<AuthState> emit) async {
-    emit(state.copyWith(authStatus: AuthStatus.loadingForgotPass));
+    emit(state.copyWith(
+        authStatus: AuthStatus.loadingForgotPass,
+        isForgotPasswordLoading: true));
 
     final isConnected = await _networkInfo.isConnected;
 
     if (!isConnected) {
       emit(state.copyWith(
-          authStatus: AuthStatus.errorForgotPass,
-          error: ConnectionFailure('No Internet Connection')));
+        authStatus: AuthStatus.errorForgotPass,
+        error: ConnectionFailure('No Internet Connection'),
+        isForgotPasswordLoading: false,
+      ));
       return;
     }
 
@@ -108,35 +120,55 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final dataState = await _forgotPasswordUseCase(params: forgotPassword);
 
       if (dataState is DataSuccess) {
-        emit(state.copyWith(
-          authStatus: AuthStatus.successForgotPass,
-        ));
+        if (event.isResend) {
+          emit(state.copyWith(
+            authStatus: AuthStatus.successForgotPass,
+            isForgotPasswordLoading: false,
+            isResend: true,
+          ));
+        } else {
+          emit(state.copyWith(
+            authStatus: AuthStatus.successForgotPass,
+            isForgotPasswordLoading: false,
+            isResend: false,
+          ));
+        }
       }
 
       if (dataState is DataFailed) {
         debugPrint(dataState.error!.message);
         emit(state.copyWith(
-            authStatus: AuthStatus.errorForgotPass,
-            error: ServerFailure.fromDioError(dataState.error!)));
+          authStatus: AuthStatus.errorForgotPass,
+          error: ServerFailure.fromDioError(
+            dataState.error!,
+          ),
+          isForgotPasswordLoading: false,
+        ));
       }
     } on DioException catch (e) {
       debugPrint(e.toString());
       emit(state.copyWith(
-          authStatus: AuthStatus.errorForgotPass,
-          error: ServerFailure.fromDioError(e)));
+        authStatus: AuthStatus.errorForgotPass,
+        error: ServerFailure.fromDioError(e),
+        isForgotPasswordLoading: false,
+      ));
     }
   }
 
   void onValidateResetPassword(
       ValidateResetPassword event, Emitter<AuthState> emit) async {
-    emit(state.copyWith(authStatus: AuthStatus.loadingValidateResetPass));
+    emit(state.copyWith(
+        authStatus: AuthStatus.loadingValidateResetPass,
+        isValidateResetPasswordLoading: true));
 
     final isConnected = await _networkInfo.isConnected;
 
     if (!isConnected) {
       emit(state.copyWith(
-          authStatus: AuthStatus.errorValidateResetPass,
-          error: ConnectionFailure('No Internet Connection')));
+        authStatus: AuthStatus.errorValidateResetPass,
+        error: ConnectionFailure('No Internet Connection'),
+        isValidateResetPasswordLoading: false,
+      ));
       return;
     }
 
@@ -150,32 +182,40 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (dataState is DataSuccess) {
         emit(state.copyWith(
           authStatus: AuthStatus.successValidateResetPass,
+          isValidateResetPasswordLoading: false,
         ));
       }
 
       if (dataState is DataFailed) {
         debugPrint(dataState.error!.message);
         emit(state.copyWith(
-            authStatus: AuthStatus.errorValidateResetPass,
-            error: ServerFailure.fromDioError(dataState.error!)));
+          authStatus: AuthStatus.errorValidateResetPass,
+          error: ServerFailure.fromDioError(dataState.error!),
+          isValidateResetPasswordLoading: false,
+        ));
       }
     } on DioException catch (e) {
       debugPrint(e.toString());
       emit(state.copyWith(
-          authStatus: AuthStatus.errorValidateResetPass,
-          error: ServerFailure.fromDioError(e)));
+        authStatus: AuthStatus.errorValidateResetPass,
+        error: ServerFailure.fromDioError(e),
+        isValidateResetPasswordLoading: false,
+      ));
     }
   }
 
   void onResetPassword(ResetPassword event, Emitter<AuthState> emit) async {
-    emit(state.copyWith(authStatus: AuthStatus.loadingResetPass));
+    emit(state.copyWith(
+        authStatus: AuthStatus.loadingResetPass, isResetPasswordLoading: true));
 
     final isConnected = await _networkInfo.isConnected;
 
     if (!isConnected) {
       emit(state.copyWith(
-          authStatus: AuthStatus.errorValidateResetPass,
-          error: ConnectionFailure('No Internet Connection')));
+        authStatus: AuthStatus.errorValidateResetPass,
+        error: ConnectionFailure('No Internet Connection'),
+        isResetPasswordLoading: false,
+      ));
       return;
     }
 
@@ -188,21 +228,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       if (dataState is DataSuccess) {
         emit(state.copyWith(
-          authStatus: AuthStatus.successResetPass,
-        ));
+            authStatus: AuthStatus.successResetPass,
+            isResetPasswordLoading: false));
       }
 
       if (dataState is DataFailed) {
         debugPrint(dataState.error!.message);
         emit(state.copyWith(
             authStatus: AuthStatus.errorResetPass,
-            error: ServerFailure.fromDioError(dataState.error!)));
+            error: ServerFailure.fromDioError(dataState.error!),
+            isResetPasswordLoading: false));
       }
     } on DioException catch (e) {
       debugPrint(e.toString());
       emit(state.copyWith(
           authStatus: AuthStatus.errorResetPass,
-          error: ServerFailure.fromDioError(e)));
+          error: ServerFailure.fromDioError(e),
+          isResetPasswordLoading: false));
     }
   }
 
@@ -225,6 +267,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(state.copyWith(
           authStatus: AuthStatus.successLogout,
         ));
+        await SecureStorage.deleteAllSecureData();
+        final router = AppRouter.router;
+        router.pushReplacement(AppRouter.kLoginPage);
       }
 
       if (dataState is DataFailed) {

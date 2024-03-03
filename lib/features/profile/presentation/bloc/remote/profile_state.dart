@@ -22,12 +22,15 @@ class ProfileState extends Equatable {
 
   final String? isoCode;
 
+  final bool? isLoaded;
+
   ProfileState({
     this.error,
     this.userProfileEntity,
     this.profileStatus,
     this.number,
     this.isoCode,
+    this.isLoaded,
   });
 
   // CopyWith function for immutability
@@ -37,6 +40,7 @@ class ProfileState extends Equatable {
     ProfileStatus? profileStatus,
     String? number,
     String? isoCode,
+    bool? isLoaded,
   }) {
     return ProfileState(
       error: error ?? this.error,
@@ -44,6 +48,7 @@ class ProfileState extends Equatable {
       profileStatus: profileStatus ?? this.profileStatus,
       number: number ?? this.number,
       isoCode: isoCode ?? this.isoCode,
+      isLoaded: isLoaded ?? this.isLoaded,
     );
   }
 
@@ -54,5 +59,6 @@ class ProfileState extends Equatable {
         profileStatus,
         number,
         isoCode,
+        isLoaded,
       ];
 }

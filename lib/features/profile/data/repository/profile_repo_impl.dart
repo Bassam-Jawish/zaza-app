@@ -1,4 +1,4 @@
-import 'dart:html';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:zaza_app/features/product/data/models/product_model.dart';
@@ -16,10 +16,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
   ProfileRepositoryImpl(this._profileApiService);
 
   @override
-  Future<DataState<UserProfileEntity>> getUserProfile(dynamic language) async {
+  Future<DataState<UserProfileEntity>> getUserProfile(String language) async {
     try {
       final httpResponse = await _profileApiService.getUserProfile(language);
-
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         final UserProfileModel model = httpResponse.data;
         final UserProfileEntity entity = model;
@@ -39,7 +38,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<DataState<void>> createPhoneNumber(
-      dynamic language, Map<String, dynamic> data) async {
+      String language, Map<String, dynamic> data) async {
     try {
       final httpResponse =
           await _profileApiService.createPhoneNumber(language, data);
@@ -61,7 +60,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<DataState<void>> deletePhoneNumber(
-      int phoneId, dynamic language) async {
+      int phoneId, String language) async {
     try {
       final httpResponse =
           await _profileApiService.deletePhoneNumber(phoneId, language);

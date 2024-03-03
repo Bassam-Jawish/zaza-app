@@ -1,77 +1,8 @@
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fresh_dio/fresh_dio.dart';
-import 'package:get_it/get_it.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:zaza_app/features/authentication/domain/usecases/forgot_password_usecase.dart';
-import 'package:zaza_app/features/authentication/domain/usecases/logout_usecase.dart';
-import 'package:zaza_app/features/authentication/domain/usecases/validate_reset_password_usecase.dart';
-import 'package:zaza_app/features/categories/data/data_sources/category_api_service.dart';
-import 'package:zaza_app/features/categories/data/repository/category_repo_impl.dart';
-import 'package:zaza_app/features/categories/domain/repository/category_repo.dart';
-import 'package:zaza_app/features/categories/domain/usecases/get_categories_usecase.dart';
-import 'package:zaza_app/features/categories/presentation/bloc/category_bloc.dart';
-import 'package:zaza_app/features/discount/data/data_sources/discount_api_service.dart';
-import 'package:zaza_app/features/discount/domain/repository/discount_repo.dart';
-import 'package:zaza_app/features/discount/domain/usecases/get_discount_usecase.dart';
 import 'package:zaza_app/features/discount/presentation/bloc/discount_bloc.dart';
-import 'package:zaza_app/features/favorite/domain/usecases/add_to_favorites_usecase.dart';
-import 'package:zaza_app/features/settings/presentation/bloc/settings_bloc.dart';
-
-import 'config/config.dart';
-import 'core/network/network_info.dart';
-import 'core/utils/auth_interceptor.dart';
-import 'core/utils/bloc_observer.dart';
-import 'core/utils/cache_helper.dart';
-import 'features/authentication/data/data_sources/remote/auth_api_service.dart';
-import 'features/authentication/data/repository/auth_repo_impl.dart';
-import 'features/authentication/domain/repository/auth_repo.dart';
-import 'features/authentication/domain/usecases/login_usecase.dart';
-import 'features/authentication/domain/usecases/reset_password_usecase.dart';
-import 'features/authentication/presentation/bloc/auth_bloc.dart';
-import 'features/basket/data/data_sources/local/basket_database_service.dart';
-import 'features/basket/data/data_sources/local/basket_database_service_impl.dart';
-import 'features/basket/data/data_sources/remote/basket_api_service.dart';
-import 'features/basket/data/models/product_unit.dart';
-import 'features/basket/data/repository/basket_repo_impl.dart';
-import 'features/basket/domain/repository/basket_repo.dart';
-import 'features/basket/domain/usecases/add_to_basket_usecase.dart';
-import 'features/basket/domain/usecases/delete_basket_usecase.dart';
-import 'features/basket/domain/usecases/edit_basket_usecase.dart';
-import 'features/basket/domain/usecases/get_basket_usecase.dart';
-import 'features/basket/domain/usecases/get_id_quantity_usecase.dart';
-import 'features/basket/domain/usecases/remove_one_basket_usecase.dart';
-import 'features/basket/domain/usecases/send_order_usecase.dart';
-import 'features/basket/presentation/bloc/basket_bloc.dart';
-import 'features/discount/data/repository/discount_repo_impl.dart';
-import 'features/favorite/data/data_sources/favorite_api_service.dart';
-import 'features/favorite/data/repository/favorite_repo_impl.dart';
-import 'features/favorite/domain/repository/favorite_repo.dart';
-import 'features/favorite/domain/usecases/get_favorites_usecase.dart';
-import 'features/favorite/presentation/bloc/favorite_bloc.dart';
-import 'features/orders/data/data_sources/order_api_service.dart';
-import 'features/orders/data/repository/order_repo_impl.dart';
-import 'features/orders/domain/repository/order_repo.dart';
-import 'features/orders/domain/usecases/get_order_details_usecase.dart';
-import 'features/orders/domain/usecases/get_orders_usecase.dart';
-import 'features/orders/presentation/bloc/order_bloc.dart';
-import 'features/product/data/data_sources/product_api_service.dart';
-import 'features/product/data/repository/product_repo_impl.dart';
-import 'features/product/domain/repository/product_repo.dart';
-import 'features/product/domain/usecases/get_product_info_usecase.dart';
-import 'features/product/domain/usecases/seacrh_products_usecase.dart';
-import 'features/product/presentation/bloc/new_product/new_product_bloc.dart';
+import 'package:zaza_app/features/favorite/presentation/bloc/favorite_bloc.dart';
+import 'package:zaza_app/features/product/presentation/bloc/new_product/new_product_bloc.dart';
+import 'core/app_export.dart';
 import 'features/product/presentation/bloc/product/product_bloc.dart';
-import 'features/profile/data/data_sources/profile_api_service.dart';
-import 'features/profile/data/repository/profile_repo_impl.dart';
-import 'features/profile/domain/repository/profile_repo.dart';
-import 'features/profile/domain/usecases/create_phone_usecase.dart';
-import 'features/profile/domain/usecases/delete_phone_usecase.dart';
-import 'features/profile/domain/usecases/get_user_profile_usecase.dart';
-import 'features/profile/presentation/bloc/remote/profile_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -79,7 +10,9 @@ var token;
 
 var routePath;
 
-var limit = 6;
+var limit = 10;
+
+var limitForProductsInHome = 10;
 
 var limitSearch = 10000000;
 var limitOrders = 10000000;
@@ -182,7 +115,7 @@ Future<void> initializeDependencies() async {
   );
 
   // Access and Refresh Token
-  dio.interceptors.add(RefreshTokenInterceptor());
+  dio.interceptors.add(AuthInterceptor(dio));
 
   // init dio
   sl.registerSingleton<Dio>(dio);
@@ -292,6 +225,7 @@ Future<void> initializeDependencies() async {
   sl.registerFactory<ProductBloc>(() => ProductBloc(
         sl<SearchProductsUseCase>(),
         sl<GetProductInfoUseCase>(),
+        sl<AddToFavoritesUseCase>(),
         sl<NetworkInfo>(),
       ));
   sl.registerFactory<ProfileBloc>(() => ProfileBloc(

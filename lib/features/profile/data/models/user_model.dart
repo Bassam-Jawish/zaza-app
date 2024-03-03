@@ -24,7 +24,7 @@ class UserProfileModel extends UserProfileEntity {
       phonesList: map['phones'] != null
           ? List<UserPhonesModel>.from((map['phones'] as List)
           .map((phone) => UserPhonesModel.fromJson(phone)))
-          : null,
+          : [],
     );
   }
 }

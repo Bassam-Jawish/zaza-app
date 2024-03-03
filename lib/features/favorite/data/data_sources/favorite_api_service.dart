@@ -22,7 +22,7 @@ abstract class FavoriteApiService {
       @Query('page') int page,
       @Query('sort') String sort,
       @Query('search') String search,
-      @Query('status') String status,
+      @Query('language') String language,
       );
 
   @POST('/favorite-product/{productId}')

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+
 abstract class Failure extends Equatable {
   final String message;
 
@@ -30,12 +31,13 @@ class ServerFailure extends Failure {
       case DioExceptionType.connectionError:
         return const ServerFailure('No Internet Connection');
       case DioExceptionType.unknown:
-        return const ServerFailure('Ops There was an Error, Please try again');
+        return const ServerFailure('Ops, There was an Error, Please try again');
     }
   }
 
   factory ServerFailure.fromResponse(int statusCode, dynamic response) {
-    if (statusCode == 404) {
+    /*
+    * if (statusCode == 404) {
       return const ServerFailure(
           'Your request was not found, please try later');
     } else if (statusCode == 500) {
@@ -44,9 +46,20 @@ class ServerFailure extends Failure {
     } else if (statusCode == 400 ||
         statusCode == 401 ||
         statusCode == 403 ||
-        statusCode == 422) {
+        statusCode == 422 ) {
       return ServerFailure(response['message']);
     } else {
+      return const ServerFailure('There was an error , please try again');
+    }
+    * */
+    if (response['message'] != null) {
+      print(statusCode);
+      if (response['message'] is List<dynamic>) {
+        return ServerFailure(response['message'][0]);
+      }
+      return ServerFailure(response['message']);
+    } else {
+      print(statusCode);
       return const ServerFailure('There was an error , please try again');
     }
   }

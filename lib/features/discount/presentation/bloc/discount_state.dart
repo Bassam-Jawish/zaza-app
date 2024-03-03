@@ -8,7 +8,9 @@ enum DiscountStatus {
   paginated,
   successAllDiscount,
   errorAllDiscount,
-  addedToFavorite , errorAddedToFavorite, changeSort
+  addedToFavorite,
+  errorAddedToFavorite,
+  changeSort
 }
 
 class DiscountState extends Equatable {
@@ -28,6 +30,8 @@ class DiscountState extends Equatable {
 
   final Map<int, bool>? favorites;
 
+  final bool? isDiscountHomeLoaded;
+
   const DiscountState(
       {this.error,
       this.productEntityHome,
@@ -38,7 +42,8 @@ class DiscountState extends Equatable {
       this.productAllDiscountEntity,
       this.productDiscountList,
       this.scrollController,
-      this.favorites});
+      this.favorites,
+      this.isDiscountHomeLoaded});
 
   DiscountState copyWith({
     Failure? error,
@@ -51,6 +56,7 @@ class DiscountState extends Equatable {
     List<ProductData>? productDiscountList,
     ScrollController? scrollController,
     Map<int, bool>? favorites,
+    bool? isDiscountHomeLoaded,
   }) =>
       DiscountState(
         error: error ?? this.error,
@@ -65,6 +71,7 @@ class DiscountState extends Equatable {
         productDiscountList: productDiscountList ?? this.productDiscountList,
         scrollController: scrollController ?? this.scrollController,
         favorites: favorites ?? this.favorites,
+        isDiscountHomeLoaded: isDiscountHomeLoaded ?? this.isDiscountHomeLoaded,
       );
 
   @override
@@ -78,5 +85,6 @@ class DiscountState extends Equatable {
         productAllDiscountEntity,
         productDiscountList,
         scrollController,
+        isDiscountHomeLoaded,
       ];
 }

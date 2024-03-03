@@ -33,8 +33,8 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
             scrollController: ScrollController())) {
     state.scrollController!.addListener(_scrollListener);
     on<GetFavoriteProducts>(onGetFavoriteProducts);
-    on<AddToFavorite>(onAddToFavorite);
-    on<ChangeSort>(onChangeSort);
+    on<AddToFavoriteFav>(onAddToFavorite);
+    on<ChangeSortFavorite>(onChangeSortFavorite);
   }
 
   Future<void> _scrollListener() async {
@@ -58,7 +58,7 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   void onGetFavoriteProducts(
       GetFavoriteProducts event, Emitter<FavoriteState> emit) async {
     if (state.isFirst!) {
-      emit(state.copyWith(isFirst: false, favoriteCurrentIndex: event.page));
+      emit(state.copyWith(favoriteCurrentIndex: event.page));
     }
 
     final isConnected = await _networkInfo.isConnected;
@@ -73,10 +73,10 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
     try {
       final favoriteParams = FavoriteParams(
           limit: event.limit,
-          page: event.page,
+          page: event.page + 1,
           sort: event.sort,
           search: event.search,
-          status: event.status);
+          language: event.language);
 
       final dataState = await _getFavoritesUseCase(params: favoriteParams);
 
@@ -92,7 +92,7 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
 
         state.favoriteProductsList!.addAll(favoriteProductsEntity.productList!);
 
-        state.favoriteProductsList!.forEach((element) {
+        dataState.data!.productList!.forEach((element) {
           state.favorites!.addAll({
             element.productId!: element.isFavorite!,
           });
@@ -104,6 +104,7 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
           favoriteProductsList: state.favoriteProductsList,
           favoritePaginationNumberSave: favoritePaginationNumberSave,
           favorites: state.favorites,
+          isFirst: false,
         ));
       }
 
@@ -122,7 +123,7 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   }
 
   void onAddToFavorite(
-      AddToFavorite event, Emitter<FavoriteState> emit) async {
+      AddToFavoriteFav event, Emitter<FavoriteState> emit) async {
 
     try {
       final addToFavoriteParams = AddToFavoriteParams(productId: event.productId,);
@@ -166,8 +167,8 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   }
 
 
-  void onChangeSort(
-      ChangeSort event, Emitter<FavoriteState> emit) async {
+  void onChangeSortFavorite(
+      ChangeSortFavorite event, Emitter<FavoriteState> emit) async {
 
     if (sort == 'newest') {
       sort = 'oldest';
