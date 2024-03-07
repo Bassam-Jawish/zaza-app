@@ -1,3 +1,4 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:zaza_app/features/discount/presentation/bloc/discount_bloc.dart';
 import 'package:zaza_app/features/favorite/presentation/bloc/favorite_bloc.dart';
 import 'package:zaza_app/features/product/presentation/bloc/new_product/new_product_bloc.dart';
@@ -178,6 +179,8 @@ Future<void> initializeDependencies() async {
     NetworkInfoImpl(InternetConnectionChecker()),
   );
 
+  sl.registerSingleton<TextEditingController>(TextEditingController());
+
   // Bloc
   sl.registerFactory<AuthBloc>(() => AuthBloc(
         sl<LoginUseCase>(),
@@ -235,4 +238,19 @@ Future<void> initializeDependencies() async {
         sl<NetworkInfo>(),
       ));
   sl.registerFactory<SettingsBloc>(() => SettingsBloc());
+}
+
+void configLoading() {
+  EasyLoading.instance
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.dark
+    ..indicatorSize = 45.0
+    ..radius = 10.0
+    ..progressColor = Colors.yellow
+    ..backgroundColor = Colors.green
+    ..indicatorColor = Colors.yellow
+    ..textColor = Colors.yellow
+    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..userInteractions = true
+    ..dismissOnTap = false;
 }

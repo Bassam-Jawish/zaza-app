@@ -20,7 +20,7 @@ abstract class ProfileApiService {
   @POST('/phone/')
   Future<HttpResponse<void>> createPhoneNumber(
       @Query('language') String languageCode,
-      @Body() Map<String, dynamic> data,
+      @Body() String data,
       );
 
   @DELETE('/phone/{phone_id}')

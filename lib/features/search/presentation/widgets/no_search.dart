@@ -30,7 +30,7 @@ Widget NoSearchYet(height, context) {
       Text(
         '${AppLocalizations.of(context)!.use_the_keyboard}',
         style: TextStyle(
-            color: Colors.black, fontSize: 20.sp, fontWeight: FontWeight.w400),
+            color: Colors.black, fontSize: 18.sp, fontWeight: FontWeight.w400),
         textAlign: TextAlign.center,
       ),
     ],

@@ -26,7 +26,7 @@ class BasketRepositoryImpl implements BasketRepository {
       final httpResponse = await _basketApiService.getBasketProducts(
           limit, page, language, idList);
 
-      if (httpResponse.response.statusCode == HttpStatus.ok) {
+      if (httpResponse.response.statusCode == HttpStatus.ok || httpResponse.response.statusCode == HttpStatus.created) {
         final ProductModel model = httpResponse.data;
         final ProductEntity entity = model;
         return DataSuccess(entity);
@@ -61,6 +61,7 @@ class BasketRepositoryImpl implements BasketRepository {
           .addToBasket(product_unit_id: product_unit_id, quantity: quantity);
       return DataSuccess(addToBasket);
     } on HiveError catch (e) {
+      print('adsgfhdgfhfjdhs');
       return DataFailed2(e);
     }
   }

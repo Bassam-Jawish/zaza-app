@@ -157,5 +157,7 @@
     "create_your_new": "قم بإنشاء كلمة المرور الجديدة لتسجيل الدخول",
     "enter_new_password": "أدخل كلمة المرور الجديدة",
     "confirm_password": "تأكيد كلمة المرور",
-    "create_password": "إنشاء كلمة مرور"
+    "create_password": "إنشاء كلمة مرور",
+
+    "no_result": "لم يتم العثور على نتيجة!"
 }

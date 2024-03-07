@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zaza_app/config/config.dart';
 import 'package:zaza_app/config/theme/colors.dart';
+import 'package:zaza_app/core/app_export.dart';
 import 'package:zaza_app/core/widgets/custom_image_view.dart';
 import 'package:zaza_app/features/product/presentation/pages/product_page.dart';
 
 import '../../../../injection_container.dart';
 import '../../../base/presentation/widgets/push_bottom_bar.dart';
+import '../../../basket/presentation/widgets/quantity_dialog.dart';
 import '../../../favorite/presentation/widgets/like_button.dart';
 
 class ProductCard extends StatelessWidget {
@@ -48,7 +50,7 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    String path = '${baseUrl}${imagePath}';
+    String path = '${imagePath}';
     var theme = Theme.of(context).colorScheme;
 
     return GestureDetector(
@@ -202,7 +204,7 @@ class ProductCard extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       FocusManager.instance.primaryFocus?.unfocus();
-                      /*quantityDialog(
+                      quantityDialog(
                         width,
                         height,
                         context,
@@ -210,7 +212,7 @@ class ProductCard extends StatelessWidget {
                         formKey,
                         product_id,
                         productUnitId,
-                      );*/
+                      );
                     },
                     child: Icon(
                       Icons.shopping_cart,

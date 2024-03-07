@@ -20,7 +20,14 @@ class CreatePhoneUseCase
 class CreatePhoneUseCaseParams {
   final dynamic language;
 
-  final Map<String, dynamic> data;
+  final String data;
 
   CreatePhoneUseCaseParams({required this.language, required this.data});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'language': language,
+      'data': data,
+    };
+  }
 }

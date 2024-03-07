@@ -16,6 +16,9 @@ class $AssetsImagesGen {
 
   $AssetsImagesBasketGen get basket => const $AssetsImagesBasketGen();
 
+  /// File path: assets/images/image_not_found.png
+  AssetGenImage get imageNotFound => const AssetGenImage('assets/images/image_not_found.png');
+
   /// File path: assets/images/img_email.svg
   SvgGenImage get imgEmail => const SvgGenImage('assets/images/img_email.svg');
 
@@ -29,7 +32,7 @@ class $AssetsImagesGen {
   AssetGenImage get profile => const AssetGenImage('assets/images/profile.png');
 
   /// List of all assets
-  List<dynamic> get values => [imgEmail, imgPassword, profile];
+  List<dynamic> get values => [imageNotFound, imgEmail, imgPassword, profile];
 }
 
 class $AssetsImagesBasketGen {

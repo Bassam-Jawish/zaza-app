@@ -53,7 +53,8 @@ Future quantityEditDialog(width, height, index, context, int quantity, formKey,
                         keyboardType: TextInputType.number,
                         controller: state.quantityControllers![index],
                         onChanged: (value) {
-                          context.read<BasketBloc>().add(ChangeTextValue(value));
+                          var chosenQuantity = state.quantityController!.text;
+                          context.read<BasketBloc>().add(ChangeTextValue(value, chosenQuantity));
                         },
                         maxLengthEnforcement: MaxLengthEnforcement.enforced,
                         maxLength: 10,

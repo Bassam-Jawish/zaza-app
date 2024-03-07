@@ -58,6 +58,7 @@ class EmailSection extends StatelessWidget {
                   image: '',
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      FocusManager.instance.primaryFocus?.unfocus();
                       BlocProvider.of<AuthBloc>(context)
                           .add(ForgotPassword(_emailController.text, false));
                     }

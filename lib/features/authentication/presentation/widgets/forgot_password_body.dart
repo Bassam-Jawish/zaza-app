@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zaza_app/core/widgets/custom_toast.dart';
@@ -30,12 +31,14 @@ class ForgotPasswordBody extends StatelessWidget {
           showToast(
               text: AppLocalizations.of(context)!.verification_sent,
               state: ToastState.success);
+          EasyLoading.dismiss();
           if (!state.isResend!) {
             GoRouter.of(context).push(
                 '${AppRouter.kLoginPage}/${AppRouter.kForgotPasswordPage}/${AppRouter.kVerificationForgotPage}/${_emailController.text}');
           }
         }
         if (state.authStatus == AuthStatus.errorForgotPass) {
+          EasyLoading.dismiss();
           showToast(text: state.error!.message, state: ToastState.error);
         }
       },

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:zaza_app/config/config.dart';
 import 'package:zaza_app/config/theme/app_decoration.dart';
 import 'package:zaza_app/config/theme/colors.dart';
 import 'package:zaza_app/core/widgets/custom_image_view.dart';
 
-import '../../../../core/utils/functions/spinkit.dart';
 import '../../../../injection_container.dart';
 import '../../../base/presentation/widgets/push_bottom_bar.dart';
 import '../../../product/presentation/pages/product_page.dart';
@@ -43,7 +41,7 @@ class BuildDiscountProductCard extends StatelessWidget {
     var theme = Theme.of(context).colorScheme;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    String path = '${baseUrl}/${imagePath}';
+    String path = '${imagePath}';
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return GestureDetector(
       onTap: () {

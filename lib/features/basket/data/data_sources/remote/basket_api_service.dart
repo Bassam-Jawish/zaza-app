@@ -18,7 +18,7 @@ abstract class BasketApiService {
   Future<HttpResponse<ProductModel>> getBasketProducts(
       @Query('limit') int limit,
       @Query('page') int page,
-      @Query('language') languageCode,
+      @Query('language') String languageCode,
       @Field("productUnitIds") List<dynamic> idList,
       );
 

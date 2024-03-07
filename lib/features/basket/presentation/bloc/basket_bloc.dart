@@ -51,16 +51,20 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
             subTotal: 0.0,
             total: 0.0,
             basketProductsList: [],
-            quantityController: TextEditingController())) {
-    on<GetBasketProducts>(onGetBasketProducts);
-    on<ClearQuantityController>(onClearQuantityController);
-    on<ChangeTextValue>(onChangeTextValue);
-    on<GetIdQuantityForBasket>(onGetIdQuantityForBasket);
-    on<AddToBasket>(onAddToBasket);
-    on<EditQuantityBasket>(onEditQuantityBasket);
-    on<RemoveOneFromBasket>(onRemoveOneFromBasket);
-    on<DeleteBasket>(onDeleteBasket);
-    on<SendOrder>(onSendOrder);
+            productUnitHelper: [],
+            isLoading: false,quantityController: TextEditingController(), chosenQuantity: '')) {
+
+    on<BasketEvent>((event, emit) async {
+      if (event is GetBasketProducts) await onGetBasketProducts(event, emit);
+      else if (event is ClearQuantityController) onClearQuantityController(event, emit);
+      else if (event is ChangeTextValue) onChangeTextValue(event, emit);
+      else if (event is GetIdQuantityForBasket) await onGetIdQuantityForBasket(event, emit);
+      else if (event is AddToBasket) await onAddToBasket(event, emit);
+      else if (event is EditQuantityBasket) await onEditQuantityBasket(event, emit);
+      else if (event is RemoveOneFromBasket) await onRemoveOneFromBasket(event, emit);
+      else if (event is DeleteBasket) await onDeleteBasket(event, emit);
+      else if (event is SendOrder) await onSendOrder(event, emit);
+    });
   }
 
   Future<void> onGetBasketProducts(
@@ -172,7 +176,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
   }
 
   void onChangeTextValue(ChangeTextValue event, Emitter<BasketState> emit) {
-    emit(state.copyWith(basketStatus: BasketStatus.changeQuantity));
+    emit(state.copyWith(basketStatus: BasketStatus.changeQuantity,chosenQuantity: event.chosenQuantity));
   }
 
   Future<void> onGetIdQuantityForBasket(
@@ -180,7 +184,9 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     final dataState = await _getIdQuantityBasketUseCase();
 
     if (dataState is DataSuccess) {
-      emit(state.copyWith(productUnitHelper: dataState.data,basketStatus: BasketStatus.getIds));
+      emit(state.copyWith(
+          productUnitHelper: dataState.data,
+          basketStatus: BasketStatus.getIds));
       // call onGetBasketProducts
     }
   }
@@ -196,15 +202,15 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     final dataState = await _addToBasketUseCase(params: addToBasketParams);
 
     if (dataState is DataSuccess) {
-      emit(state.copyWith(basketStatus: BasketStatus.add));
+      emit(state.copyWith(basketStatus: BasketStatus.add,));
       // call onGetIdQuantityForBasket
       // call onGetBasketProducts
     }
 
-    if (dataState is DataFailed) {
-      debugPrint(dataState.error!.message);
+    if (dataState is DataFailed2) {
+      debugPrint(dataState.hiveError!.message);
       emit(state.copyWith(
-          error: DatabaseFailure(dataState.error!.message!),
+          error: DatabaseFailure(dataState.hiveError!.message!),
           basketStatus: BasketStatus.errorAdd));
     }
   }
@@ -297,34 +303,36 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
   }
 
   Future<void> onSendOrder(SendOrder event, Emitter<BasketState> emit) async {
-    emit(state.copyWith(basketStatus: BasketStatus.loadingSendOrder));
+    emit(state.copyWith(
+        basketStatus: BasketStatus.loadingSendOrder, isLoading: true));
 
     final isConnected = await _networkInfo.isConnected;
 
     if (!isConnected) {
       emit(state.copyWith(
           error: ConnectionFailure('No Internet Connection'),
-          basketStatus: BasketStatus.errorSendOrder));
+          basketStatus: BasketStatus.errorSendOrder,
+          isLoading: false));
       return;
     }
 
     try {
       final sendOrder = SendOrderParams(
-          language: event.language, productUnitHelper: state.productUnitHelper!);
+          language: event.language,
+          productUnitHelper: state.productUnitHelper!);
 
       final dataState = await _sendOrdersUseCase(params: sendOrder);
 
       if (dataState is DataSuccess) {
-
         dynamic total = 0.0;
         dynamic subTotal = 0.0;
 
         emit(state.copyWith(
-          productEntity: dataState.data,
-          basketStatus: BasketStatus.successSendOrder,
-          total: total,
-          subTotal: subTotal,
-        ));
+            productEntity: dataState.data,
+            basketStatus: BasketStatus.successSendOrder,
+            total: total,
+            subTotal: subTotal,
+            isLoading: true));
 
         // call delete all
         // call onGetIdQuantityForBasket
@@ -334,13 +342,15 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
         debugPrint(dataState.error!.message);
         emit(state.copyWith(
             error: ServerFailure.fromDioError(dataState.error!),
-            basketStatus: BasketStatus.errorSendOrder));
+            basketStatus: BasketStatus.errorSendOrder,
+            isLoading: false));
       }
     } on DioException catch (e) {
       debugPrint(e.toString());
       emit(state.copyWith(
           error: ServerFailure.fromDioError(e),
-          basketStatus: BasketStatus.errorSendOrder));
+          basketStatus: BasketStatus.errorSendOrder,
+          isLoading: false));
     }
   }
 }

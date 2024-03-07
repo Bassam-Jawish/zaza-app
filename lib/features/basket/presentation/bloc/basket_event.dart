@@ -25,10 +25,11 @@ class ClearQuantityController extends BasketEvent {
 class ChangeTextValue extends BasketEvent {
 
   dynamic value;
-  ChangeTextValue(this.value);
+  String chosenQuantity;
+  ChangeTextValue(this.value, this.chosenQuantity);
 
   @override
-  List<Object> get props => [value];
+  List<Object> get props => [value,chosenQuantity];
 }
 
 class GetIdQuantityForBasket extends BasketEvent {

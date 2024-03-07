@@ -142,5 +142,7 @@
     "create_your_new": "Erstellen Sie Ihr neues Passwort zum Anmelden",
     "enter_new_password": "Neues Passwort eingeben",
     "confirm_password": "Passwort bestätigen",
-    "create_password": "Passwort erstellen"
+    "create_password": "Passwort erstellen",
+
+    "no_result": "Kein Ergebnis gefunden!"
 }

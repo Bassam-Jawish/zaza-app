@@ -50,13 +50,12 @@ class _ProfileApiService implements ProfileApiService {
   @override
   Future<HttpResponse<void>> createPhoneNumber(
     String languageCode,
-    Map<String, dynamic> data,
+    String data,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'language': languageCode};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(data);
+    final _data = data;
     final _result =
         await _dio.fetch<void>(_setStreamType<HttpResponse<void>>(Options(
       method: 'POST',

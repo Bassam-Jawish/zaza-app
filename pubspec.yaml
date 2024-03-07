@@ -106,6 +106,9 @@ dependencies:
   #Pinput
   pinput: ^4.0.0
 
+  #Flutter Easyloading
+  flutter_easyloading: ^3.0.5
+
   #Languages
   flutter_localizations:
     sdk: flutter

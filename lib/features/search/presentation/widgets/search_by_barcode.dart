@@ -10,6 +10,7 @@ import '../../../../core/utils/functions/spinkit.dart';
 import '../../../../core/widgets/default_textformfield.dart';
 import '../../../product/presentation/widgets/product_card.dart';
 import 'no_search.dart';
+import 'no_search_found.dart';
 
 class SearchByBarcode extends StatelessWidget {
   SearchByBarcode(this.state, this.searchByBarcodeController, {super.key});
@@ -41,7 +42,7 @@ class SearchByBarcode extends StatelessWidget {
               },
               br: 15,
               label: '${AppLocalizations.of(context)!.search_By_Product_Id}',
-              labelStyle: TextStyle(color: theme.primary, fontSize: 16.sp),
+              labelStyle: TextStyle(color: theme.primary, fontSize: 14.sp),
               prefixIcon: Icon(
                 Icons.search,
                 color: theme.primary,
@@ -55,44 +56,48 @@ class SearchByBarcode extends StatelessWidget {
               condition: state.isSearchByBarcodeLoaded!,
               builder: (context) => ConditionalBuilder(
                 condition: state.searchBarcodeProductsEntity != null,
-                builder: (context) => GridView.builder(
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: width * 0.5,
-                    mainAxisExtent: height * 0.36,
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 5,
+                builder: (context) => ConditionalBuilder(
+                  condition: state.searchBarcodeProductsEntity!.productList!.isNotEmpty,
+                  builder: (context) => GridView.builder(
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: width * 0.5,
+                      mainAxisExtent: height * 0.36,
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 5,
+                    ),
+                    physics: BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return ProductCard(
+                          index,
+                          state.searchBarcodeProductsEntity!.productList![index]
+                              .productId!,
+                          state.searchBarcodeProductsEntity!.productList![index]
+                              .productName!,
+                          state.searchBarcodeProductsEntity!.productList![index]
+                              .image!,
+                          state.searchBarcodeProductsEntity!.productList![index]
+                              .barCode!,
+                          state.searchBarcodeProductsEntity!.productList![index]
+                              .discount!,
+                          state.searchBarcodeProductsEntity!.productList![index]
+                              .productUnitListModel![0].unitId!,
+                          state.searchBarcodeProductsEntity!.productList![index]
+                              .productUnitListModel![0].unitName!,
+                          state.searchBarcodeProductsEntity!.productList![index]
+                              .productUnitListModel![0].description!,
+                          0,
+                          state.searchBarcodeProductsEntity!.productList![index]
+                              .productUnitListModel![0].quantity!,
+                          1,
+                          state.searchBarcodeProductsEntity!.productList![index]
+                              .productUnitListModel![0].price!,
+                          state);
+                    },
+                    itemCount:
+                        state.searchBarcodeProductsEntity!.productList!.length,
                   ),
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return ProductCard(
-                        index,
-                        state.searchBarcodeProductsEntity!.productList![index]
-                            .productId!,
-                        state.searchBarcodeProductsEntity!.productList![index]
-                            .productName!,
-                        state.searchBarcodeProductsEntity!.productList![index]
-                            .image!,
-                        state.searchBarcodeProductsEntity!.productList![index]
-                            .barCode!,
-                        state.searchBarcodeProductsEntity!.productList![index]
-                            .discount!,
-                        state.searchBarcodeProductsEntity!.productList![index]
-                            .productUnitListModel![0].unitId!,
-                        state.searchBarcodeProductsEntity!.productList![index]
-                            .productUnitListModel![0].unitName!,
-                        state.searchBarcodeProductsEntity!.productList![index]
-                            .productUnitListModel![0].description!,
-                        0,
-                        state.searchBarcodeProductsEntity!.productList![index]
-                            .productUnitListModel![0].quantity!,
-                        1,
-                        state.searchBarcodeProductsEntity!.productList![index]
-                            .productUnitListModel![0].price!,
-                        state);
-                  },
-                  itemCount:
-                      state.searchBarcodeProductsEntity!.productList!.length,
+                  fallback: (context) => NoSearchFound(context),
                 ),
                 fallback: (context) => SpinKitApp(width),
               ),

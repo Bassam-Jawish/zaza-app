@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
@@ -8,6 +9,7 @@ import 'package:zaza_app/features/profile/domain/entities/user_profile.dart';
 import 'package:zaza_app/features/profile/domain/usecases/create_phone_usecase.dart';
 import 'package:zaza_app/features/profile/domain/usecases/delete_phone_usecase.dart';
 import 'package:zaza_app/features/profile/domain/usecases/get_user_profile_usecase.dart';
+import 'package:zaza_app/injection_container.dart';
 
 import '../../../../../core/error/failure.dart';
 import '../../../../../core/network/network_info.dart';
@@ -57,6 +59,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       final dataState = await _getUserProfileUseCase(params: userProfileParams);
 
+      print(dataState.data!.phonesList);
       if (dataState is DataSuccess) {
         emit(state.copyWith(
           userProfileEntity: dataState.data,
@@ -64,6 +67,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           isLoaded: true,
         ));
       }
+
 
       if (dataState is DataFailed) {
         debugPrint(dataState.error!.message);
@@ -91,16 +95,20 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       return;
     }
 
-    try {
-      final createPhoneUseCaseParams =
-          CreatePhoneUseCaseParams(language: event.language, data: {
-        "phoneNumbers": [
-          {"code": state.isoCode, "number": state.number}
-        ]
-      });
+    print(state.isoCode);
+    print(state.number);
 
-      final dataState =
-          await _createPhoneUseCase(params: createPhoneUseCaseParams);
+    try {
+      final createPhoneUseCaseParams = CreatePhoneUseCaseParams(
+        language: event.language,
+        data: jsonEncode({
+          "phoneNumbers": [
+            {"code": state.isoCode, "number": state.number}
+          ]
+        }),
+      );
+
+      final dataState = await _createPhoneUseCase(params: createPhoneUseCaseParams);
 
       if (dataState is DataSuccess) {
         emit(state.copyWith(
@@ -167,6 +175,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   void onAddingPhoneNumber(
       AddingPhoneNumber event, Emitter<ProfileState> emit) async {
+    print('sdfjgff');
     emit(state.copyWith(number: event.phoneNumber, isoCode: event.isoCode));
   }
 }

@@ -18,7 +18,8 @@ Widget likeButtonWidget(
   return LikeButton(
     onTap: (bool isLiked) async {
       if (type == 0) {
-        // Favorite 0
+        // New Home Fav 0
+        print(state);
         BlocProvider.of<ProductBloc>(context)
             .add(AddToFavoriteHomeNewProducts(productId, index));
         isLiked = state.newHomeProductsFavorites![productId]!;

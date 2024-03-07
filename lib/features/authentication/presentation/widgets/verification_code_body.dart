@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
@@ -37,6 +38,17 @@ class VerificationCodeBody extends StatelessWidget {
         if (state.authStatus == AuthStatus.errorValidateResetPass) {
           showToast(text: state.error!.message, state: ToastState.error);
         }
+        if (state.authStatus == AuthStatus.loadingForgotPass) {
+          EasyLoading.show();
+        }
+        if (state.authStatus == AuthStatus.successLogout) {
+          EasyLoading.dismiss();
+          showToast(text: AppLocalizations.of(context)!.verification_sent, state: ToastState.success);
+        }
+        if (state.authStatus == AuthStatus.errorForgotPass) {
+          EasyLoading.dismiss();
+          showToast(text: state.error!.message, state: ToastState.error);
+        }
       },
       child: SafeArea(
         child: SingleChildScrollView(
@@ -45,11 +57,17 @@ class VerificationCodeBody extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
               child: Form(
                 key: _formKey,
-                child: Column(children: [
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                   _buildTitle(context, email),
                   SizedBox(height: 40.h),
                   // pin code
                   Pinput(
+                    onCompleted: (val) {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     length: 4,
@@ -60,6 +78,7 @@ class VerificationCodeBody extends StatelessWidget {
                     autofocus: true,
                     pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                     controller: _pinCode,
+                    closeKeyboardWhenCompleted: true,
                     defaultPinTheme: AppDecoration.defaultPinTheme,
                     focusedPinTheme: AppDecoration.focusedPinTheme,
                     submittedPinTheme: AppDecoration.submittedPinTheme,
@@ -86,12 +105,13 @@ class VerificationCodeBody extends StatelessWidget {
                   ),
                   SizedBox(height: 25.h),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text("${AppLocalizations.of(context)!.receive_the} ",
-                          style: Styles.textStyle12.copyWith(
+                          style: Styles.textStyle14.copyWith(
                               fontWeight: FontWeight.w500,
                               color: AppColor.gray500)),
+                      SizedBox(width: 10.w,),
                       TextButton(
                         onPressed: () {
                           context
@@ -104,8 +124,9 @@ class VerificationCodeBody extends StatelessWidget {
                         ),
                         child: Text(
                           '${AppLocalizations.of(context)!.resend}',
-                          style: Styles.textStyle12.copyWith(
+                          style: Styles.textStyle14.copyWith(
                             color: theme.primary,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),

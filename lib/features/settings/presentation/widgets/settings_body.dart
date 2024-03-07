@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:zaza_app/features/favorite/presentation/pages/favorite_page.dart';
 import 'package:zaza_app/features/settings/presentation/widgets/settings_container.dart';
 
@@ -18,8 +19,16 @@ class SettingsBody extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
+        if (state.authStatus == AuthStatus.loadingLogout) {
+          EasyLoading.show();
+        }
         if (state.authStatus == AuthStatus.successLogout) {
-          showToast(text: AppLocalizations.of(context)!.logout, state: state);
+          EasyLoading.dismiss();
+          showToast(text: AppLocalizations.of(context)!.logout, state: ToastState.success);
+        }
+        if (state.authStatus == AuthStatus.errorLogout) {
+          EasyLoading.dismiss();
+          showToast(text: AppLocalizations.of(context)!.logout, state: ToastState.success);
         }
       },
       child: SingleChildScrollView(

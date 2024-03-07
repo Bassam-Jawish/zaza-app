@@ -22,14 +22,14 @@ class _BasketApiService implements BasketApiService {
   Future<HttpResponse<ProductModel>> getBasketProducts(
     int limit,
     int page,
-    dynamic languageCode,
+    String languageCode,
     List<dynamic> idList,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'limit': limit,
       r'page': page,
-      r'language': languageCode.toJson(),
+      r'language': languageCode,
     };
     final _headers = <String, dynamic>{};
     final _data = {'productUnitIds': idList};

@@ -178,7 +178,7 @@ class OrderDetailsBody extends StatelessWidget {
                       scrollDirection: Axis.vertical,
                       itemBuilder: (context, mainIndex) {
                         var path =
-                            '${baseUrl}/${state.orderDetailsEntity!.productsOrderDetailsList![mainIndex].image}';
+                            '${state.orderDetailsEntity!.productsOrderDetailsList![mainIndex].image}';
                         return Container(
                           height: height * 0.3,
                           decoration: BoxDecoration(

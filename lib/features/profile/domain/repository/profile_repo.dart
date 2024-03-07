@@ -10,7 +10,7 @@ abstract class ProfileRepository {
       String language);
 
   Future<DataState<void>> createPhoneNumber(
-      String language, Map<String, dynamic> data);
+      String language, String data);
 
   Future<DataState<void>> deletePhoneNumber(
       int phoneId, String language);

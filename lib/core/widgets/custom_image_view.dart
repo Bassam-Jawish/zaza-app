@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../utils/functions/spinkit.dart';
+import '../utils/gen/assets.gen.dart';
 
 class CustomImageView extends StatelessWidget {
   ///[imagePath] is required parameter for showing image
@@ -86,7 +87,7 @@ class CustomImageView extends StatelessWidget {
   }
 
   Widget _buildImageView() {
-    if (imagePath != null) {
+    if (imagePath != '') {
       switch (imagePath!.imageType) {
         case ImageType.svg:
           return SizedBox(
@@ -127,7 +128,12 @@ class CustomImageView extends StatelessWidget {
           );
       }
     }
-    return const SizedBox();
+    return Image.asset(
+      Assets.images.imageNotFound.path,
+      height: height,
+      width: width,
+      fit: BoxFit.fill,
+    );
   }
 }
 

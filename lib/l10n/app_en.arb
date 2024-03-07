@@ -155,5 +155,7 @@
     "create_your_new": "Create your new password to login",
     "enter_new_password": "Enter new password",
     "confirm_password": "Confirm password",
-    "create_password": "Create Password"
+    "create_password": "Create Password",
+
+    "no_result": "No result found!"
 }

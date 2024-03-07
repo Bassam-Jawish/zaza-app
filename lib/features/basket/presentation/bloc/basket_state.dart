@@ -30,11 +30,11 @@ class BasketState extends Equatable {
   final BasketStatus? basketStatus;
   dynamic subTotal;
   dynamic total;
-  TextEditingController? quantityController;
-
+  final TextEditingController? quantityController;
   List<TextEditingController>? quantityControllers;
   List<ProductUnit>? productUnitHelper;
 
+  final String? chosenQuantity;
   BasketState(
       {this.isLoading,
       this.error,
@@ -47,7 +47,7 @@ class BasketState extends Equatable {
       this.total,
       this.quantityController,
       this.quantityControllers,
-      this.productUnitHelper});
+      this.productUnitHelper, this.chosenQuantity});
 
   BasketState copyWith({
     bool? isLoading,
@@ -62,6 +62,7 @@ class BasketState extends Equatable {
     TextEditingController? quantityController,
     List<TextEditingController>? quantityControllers,
     List<ProductUnit>? productUnitHelper,
+    String? chosenQuantity,
   }) =>
       BasketState(
         isLoading: isLoading ?? this.isLoading,
@@ -77,6 +78,7 @@ class BasketState extends Equatable {
         quantityController: quantityController ?? this.quantityController,
         quantityControllers: quantityControllers ?? this.quantityControllers,
         productUnitHelper: productUnitHelper ?? this.productUnitHelper,
+        chosenQuantity: chosenQuantity ?? this.chosenQuantity,
       );
 
   @override
@@ -93,5 +95,6 @@ class BasketState extends Equatable {
         quantityController,
         quantityControllers,
         productUnitHelper,
+    chosenQuantity,
       ];
 }

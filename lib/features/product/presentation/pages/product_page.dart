@@ -13,13 +13,15 @@ class ProductPage extends StatelessWidget {
   ProductPage({Key? key}) : super(key: key);
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context).colorScheme;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    return BlocProvider<ProductBloc>.value(
-      value: sl()..add(GetProductProfile(productId, languageCode)),
+    return BlocProvider<ProductBloc>(
+      create: (BuildContext context) =>
+      sl()..add(GetProductProfile(productId, languageCode)),
       child: BlocConsumer<ProductBloc, ProductState>(
         listener: (context, state) {
           if (state.productStatus == ProductStatus.errorProductProfile) {
@@ -43,7 +45,7 @@ class ProductPage extends StatelessWidget {
                     formKey,
                     state.productProfile!.productId!,
                     state.productProfile!
-                        .productUnitListModel![state.unitIndex!].unitId!);
+                        .productUnitListModel![state.unitIndex!].productUnitId!);
               },
               elevation: 0.0,
               label: Text(

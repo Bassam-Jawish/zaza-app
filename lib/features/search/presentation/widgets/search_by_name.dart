@@ -10,6 +10,7 @@ import '../../../../core/widgets/default_textformfield.dart';
 import '../../../../injection_container.dart';
 import '../../../product/presentation/widgets/product_card.dart';
 import 'no_search.dart';
+import 'no_search_found.dart';
 
 class SearchByName extends StatelessWidget {
   SearchByName(this.state, this.searchByProductNameController, {super.key});
@@ -32,16 +33,16 @@ class SearchByName extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             def_TextFromField_search(
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.text,
               controller: searchByProductNameController,
               onChanged: (value) {
                 context.read<ProductBloc>()
-                  ..add(GetSearchBarcodeProducts(
-                      limitSearch, 0, 'newest', value, languageCode));
+                  ..add(GetSearchNameProducts(
+                      limit, 0, sort, 'newest', languageCode));
               },
               br: 15,
               label: '${AppLocalizations.of(context)!.search_By_Product_Name}',
-              labelStyle: TextStyle(color: theme.primary, fontSize: 16.sp),
+              labelStyle: TextStyle(color: theme.primary, fontSize: 14.sp),
               prefixIcon: Icon(
                 Icons.search,
                 color: theme.primary,
@@ -55,44 +56,48 @@ class SearchByName extends StatelessWidget {
               condition: state.isSearchByNameLoaded!,
               builder: (context) => ConditionalBuilder(
                 condition: state.searchNameProductsEntity != null,
-                builder: (context) => GridView.builder(
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: width * 0.5,
-                    mainAxisExtent: height * 0.36,
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 5,
+                builder: (context) => ConditionalBuilder(
+                  condition: state.searchNameProductsEntity!.productList!.isNotEmpty,
+                  builder: (context) => GridView.builder(
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: width * 0.5,
+                      mainAxisExtent: height * 0.36,
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 5,
+                    ),
+                    physics: BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return ProductCard(
+                          index,
+                          state.searchNameProductsEntity!.productList![index]
+                              .productId!,
+                          state.searchNameProductsEntity!.productList![index]
+                              .productName!,
+                          state.searchNameProductsEntity!.productList![index]
+                              .image!,
+                          state.searchNameProductsEntity!.productList![index]
+                              .barCode!,
+                          state.searchNameProductsEntity!.productList![index]
+                              .discount!,
+                          state.searchNameProductsEntity!.productList![index]
+                              .productUnitListModel![0].unitId!,
+                          state.searchNameProductsEntity!.productList![index]
+                              .productUnitListModel![0].unitName!,
+                          state.searchNameProductsEntity!.productList![index]
+                              .productUnitListModel![0].description!,
+                          0,
+                          state.searchNameProductsEntity!.productList![index]
+                              .productUnitListModel![0].quantity!,
+                          2,
+                          state.searchNameProductsEntity!.productList![index]
+                              .productUnitListModel![0].price!,
+                          state);
+                    },
+                    itemCount:
+                        state.searchNameProductsEntity!.productList!.length,
                   ),
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return ProductCard(
-                        index,
-                        state.searchNameProductsEntity!.productList![index]
-                            .productId!,
-                        state.searchNameProductsEntity!.productList![index]
-                            .productName!,
-                        state.searchNameProductsEntity!.productList![index]
-                            .image!,
-                        state.searchNameProductsEntity!.productList![index]
-                            .barCode!,
-                        state.searchNameProductsEntity!.productList![index]
-                            .discount!,
-                        state.searchNameProductsEntity!.productList![index]
-                            .productUnitListModel![0].unitId!,
-                        state.searchNameProductsEntity!.productList![index]
-                            .productUnitListModel![0].unitName!,
-                        state.searchNameProductsEntity!.productList![index]
-                            .productUnitListModel![0].description!,
-                        0,
-                        state.searchNameProductsEntity!.productList![index]
-                            .productUnitListModel![0].quantity!,
-                        2,
-                        state.searchNameProductsEntity!.productList![index]
-                            .productUnitListModel![0].price!,
-                        state);
-                  },
-                  itemCount:
-                      state.searchNameProductsEntity!.productList!.length,
+                  fallback: (context) => NoSearchFound(context),
                 ),
                 fallback: (context) => SpinKitApp(width),
               ),

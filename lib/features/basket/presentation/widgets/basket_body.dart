@@ -1,6 +1,8 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zaza_app/config/theme/colors.dart';
+import 'package:zaza_app/core/widgets/custom_button.dart';
+import 'package:zaza_app/core/widgets/custom_toast.dart';
 import 'package:zaza_app/features/basket/presentation/widgets/basket_product_card.dart';
 import 'package:zaza_app/features/product/presentation/widgets/send_order_dialog.dart';
 import 'package:zaza_app/injection_container.dart';
@@ -23,25 +25,24 @@ class BasketBody extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     return BlocConsumer<BasketBloc, BasketState>(
       listener: (context, state) {
-        if (state.basketStatus == BasketStatus.getIds) {
-          context
-              .read<BasketBloc>()
-              .add(GetBasketProducts(100000000, 0, languageCode));
-        }
-        if (state.basketStatus == BasketStatus.add) {
-          context.read<BasketBloc>().add(GetIdQuantityForBasket());
-        }
         if (state.basketStatus == BasketStatus.editBasket) {
+          showToast(text: AppLocalizations.of(context)!.edit_quantity_unit, state: ToastState.success);
           context.read<BasketBloc>().add(GetIdQuantityForBasket());
         }
         if (state.basketStatus == BasketStatus.remove) {
+          showToast(text: AppLocalizations.of(context)!.item_Deleted_Successfully, state: ToastState.success);
           context.read<BasketBloc>().add(GetIdQuantityForBasket());
         }
         if (state.basketStatus == BasketStatus.deleteAll) {
+          showToast(text: AppLocalizations.of(context)!.basket_Cleared, state: ToastState.success);
           context.read<BasketBloc>().add(GetIdQuantityForBasket());
         }
         if (state.basketStatus == BasketStatus.successSendOrder) {
+          showToast(text: AppLocalizations.of(context)!.send_Order, state: ToastState.success);
           context.read<BasketBloc>().add(DeleteBasket());
+        }
+        if (state.basketStatus == BasketStatus.errorSendOrder) {
+          showToast(text: state.error!.message, state: ToastState.success);
         }
       },
       builder: (context, state) {
@@ -57,7 +58,8 @@ class BasketBody extends StatelessWidget {
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: width * 0.03, vertical: height * 0.03),
+                            horizontal: width * 0.03,
+                            vertical: height * 0.03),
                         child: Form(
                           key: formKey,
                           child: ListView.separated(
@@ -66,11 +68,13 @@ class BasketBody extends StatelessWidget {
                               scrollDirection: Axis.vertical,
                               itemBuilder: (context, index) {
                                 ///////////////
-                                dynamic price = state.basketProductsList![index]
-                                    .productUnitListModel![0].price!;
+                                dynamic price = state
+                                    .basketProductsList![index]
+                                    .productUnitListModel![0]
+                                    .price!;
 
-                                int discount =
-                                    state.basketProductsList![index].discount!;
+                                int discount = state
+                                    .basketProductsList![index].discount!;
 
                                 int myQuantity =
                                     state.productUnitHelper![index].quantity;
@@ -83,18 +87,20 @@ class BasketBody extends StatelessWidget {
                                     ((price * (100 - discount)) / 100) *
                                         myQuantity;
                                 String pricePerProductDiscountString =
-                                    pricePerProductDiscount.toStringAsFixed(1);
+                                    pricePerProductDiscount
+                                        .toStringAsFixed(1);
 
                                 return BasketProductCard(
                                     index: index,
                                     state: state,
                                     productIdBasket: state
-                                        .basketProductsList![index].productId!,
+                                        .basketProductsList![index]
+                                        .productId!,
                                     productName: state
                                         .basketProductsList![index]
                                         .productName!,
-                                    image:
-                                        state.basketProductsList![index].image!,
+                                    image: state
+                                        .basketProductsList![index].image!,
                                     discount: discount,
                                     unitId: state.basketProductsList![index]
                                         .productUnitListModel![0].unitId!,
@@ -104,8 +110,10 @@ class BasketBody extends StatelessWidget {
                                         .productUnitId!,
                                     unitName: state.basketProductsList![index]
                                         .productUnitListModel![0].unitName!,
-                                    unitDesc: state.basketProductsList![index]
-                                        .productUnitListModel![0].description!,
+                                    unitDesc: state
+                                        .basketProductsList![index]
+                                        .productUnitListModel![0]
+                                        .description!,
                                     quantity: state.basketProductsList![index]
                                         .productUnitListModel![0].quantity!,
                                     price: price,
@@ -115,7 +123,8 @@ class BasketBody extends StatelessWidget {
                                         pricePerProductDiscountString);
                               },
                               separatorBuilder:
-                                  (BuildContext context, int index) => SizedBox(
+                                  (BuildContext context, int index) =>
+                                      SizedBox(
                                         height: height * 0.02,
                                       ),
                               itemCount: state.basketProductsList!.length),
@@ -201,35 +210,16 @@ class BasketBody extends StatelessWidget {
                         ),
                         SizedBox(height: height * 0.04),
                         !state.isLoading!
-                            ? Container(
-                                height: height * 0.04,
-                                width: width * 0.45,
-                                decoration: BoxDecoration(
-                                  color: AppColor.primaryLight,
-                                  borderRadius: BorderRadius.circular(50.0),
-                                ),
-                                child: ElevatedButton(
-                                  child: Text(
+                            ? CustomButton(
+                                text:
                                     '${AppLocalizations.of(context)!.order_Now}',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16.sp),
-                                  ),
-                                  onPressed: () {
-                                    if (formKey.currentState!.validate() &&
-                                        state.basketProductsList!.isNotEmpty) {
-                                      awsDialogSendOrder(context, width, 0);
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: theme.primary,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(50),
-                                    ),
-                                  ),
-                                ),
-                              )
+                                image: '',
+                                onPressed: () {
+                                  if (formKey.currentState!.validate() &&
+                                      state.basketProductsList!.isNotEmpty) {
+                                    awsDialogSendOrder(context, width, 0);
+                                  }
+                                })
                             : SpinKitApp(width),
                       ],
                     ),

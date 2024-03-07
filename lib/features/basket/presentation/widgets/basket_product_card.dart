@@ -50,7 +50,7 @@ class BasketProductCard extends StatelessWidget {
     var theme = Theme.of(context).colorScheme;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    String path = '${baseUrl}/${image}';
+    String path = '${image}';
     return Stack(
       children: [
         Container(

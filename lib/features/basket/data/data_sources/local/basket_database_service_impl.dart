@@ -24,14 +24,19 @@ class BasketLocalDatabaseServiceImpl implements BasketLocalDatabaseService {
       );
       productExists = true;
     } catch (e) {
+      print('${e.toString()}');
       // No matching product found
       productExists = false;
-      throw HiveError('cannot add again');
     }
 
-    final product =
-        ProductUnit(product_unit_id: product_unit_id, quantity: quantity);
-    box.add(product);
+    if (productExists) {
+      throw HiveError('cannot add again');
+    }
+    else {
+      final product =
+      ProductUnit(product_unit_id: product_unit_id, quantity: quantity);
+      box.add(product);
+    }
   }
 
   @override

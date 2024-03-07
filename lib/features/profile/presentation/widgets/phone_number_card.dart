@@ -28,7 +28,7 @@ class PhoneNumberCard extends StatelessWidget {
               'Mobile:',
               style: TextStyle(
                   color: Colors.grey,
-                  fontSize: 18.sp,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w400),
             ),
             SizedBox(
@@ -38,7 +38,7 @@ class PhoneNumberCard extends StatelessWidget {
               '${number_code}',
               style: TextStyle(
                   color: AppColor.primaryLight,
-                  fontSize: 18.sp,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w600),
             ),
             SizedBox(
@@ -48,7 +48,7 @@ class PhoneNumberCard extends StatelessWidget {
               '${number}',
               style: TextStyle(
                   color: Colors.black,
-                  fontSize: 18.sp,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w400),
             ),
           ],
@@ -61,7 +61,7 @@ class PhoneNumberCard extends StatelessWidget {
           },
           icon: Icon(Icons.delete),
           color: Colors.red,
-          iconSize: 20.sp,
+          iconSize: 20,
         ),
       ],
     );

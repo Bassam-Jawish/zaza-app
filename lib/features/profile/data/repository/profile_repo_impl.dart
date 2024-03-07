@@ -38,7 +38,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<DataState<void>> createPhoneNumber(
-      String language, Map<String, dynamic> data) async {
+      String language, String data) async {
     try {
       final httpResponse =
           await _profileApiService.createPhoneNumber(language, data);

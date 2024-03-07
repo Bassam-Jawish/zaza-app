@@ -38,7 +38,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             isNewHomeLoaded: false,
             isProductProfileLoaded: false,
             isSearchByBarcodeLoaded: false,
-            isSearchByNameLoaded: false)) {
+            isSearchByNameLoaded: false,unitIndex: 0)) {
     on<ProductEvent>((event, emit) async {
       if (event is GetHomeNewProducts) await onGetHomeNewProducts(event, emit);
       if (event is GetSearchBarcodeProducts)
@@ -114,7 +114,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       GetSearchBarcodeProducts event, Emitter<ProductState> emit) async {
     emit(state.copyWith(
         productStatus: ProductStatus.loadingBarcodeSearch,
-        isSearchByBarcodeLoaded: false));
+        searchBarcodeProductsEntity: null));
 
     final isConnected = await _networkInfo.isConnected;
 
@@ -162,7 +162,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       GetSearchNameProducts event, Emitter<ProductState> emit) async {
     emit(state.copyWith(
         productStatus: ProductStatus.loadingNameSearch,
-        isSearchByNameLoaded: false));
+        searchNameProductsEntity: null));
 
     final isConnected = await _networkInfo.isConnected;
 
@@ -256,7 +256,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     ));
   }
 
-  Future<void> onScanBarcode(ScanBarcode event, Emitter<ProductState> emit) async {
+  Future<void> onScanBarcode(
+      ScanBarcode event, Emitter<ProductState> emit) async {
     String scanResult;
     try {
       scanResult = await FlutterBarcodeScanner.scanBarcode(
@@ -288,6 +289,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
               (key, value) => key == event.productId && value == false);
           state.homeNewProductsEntity!.productList!.removeAt(event.index);
         }
+
+        print('dghgsgfgafas');
 
         emit(state.copyWith(
           productStatus: ProductStatus.addedToFavoriteNewProducts,
