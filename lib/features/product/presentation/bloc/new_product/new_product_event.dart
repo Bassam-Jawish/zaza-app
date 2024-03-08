@@ -12,11 +12,13 @@ class GetAllNewProducts extends NewProductEvent {
 
   final String language;
 
+  final bool isRefreshAll;
+
   const GetAllNewProducts(
-      this.limit, this.page, this.sort, this.search, this.language);
+      this.limit, this.page, this.sort, this.search, this.language, this.isRefreshAll);
 
   @override
-  List<Object> get props => [limit, page, sort, search, language];
+  List<Object> get props => [limit, page, sort, search, language, isRefreshAll];
 }
 
 class AddToFavoriteNewProducts extends NewProductEvent {

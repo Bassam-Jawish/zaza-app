@@ -27,9 +27,10 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
       : super(FavoriteState().copyWith(
             favoriteStatus: FavoriteStatus.initial,
             favoriteCurrentIndex: 0,
-            isFirst: true,
+            isFavoriteLoaded: false,
             favoriteProductsList: [],
             favorites: {},
+            isAdded: false,
             scrollController: ScrollController())) {
     state.scrollController!.addListener(_scrollListener);
     on<GetFavoriteProducts>(onGetFavoriteProducts);
@@ -57,8 +58,12 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
 
   void onGetFavoriteProducts(
       GetFavoriteProducts event, Emitter<FavoriteState> emit) async {
-    if (state.isFirst!) {
-      emit(state.copyWith(favoriteCurrentIndex: event.page));
+    if (event.isRefreshAll) {
+      List<ProductData> productDiscountList = [];
+      emit(state.copyWith(
+          isFavoriteLoaded: false,
+          favoriteCurrentIndex: event.page,
+          favoriteProductsList: productDiscountList));
     }
 
     final isConnected = await _networkInfo.isConnected;
@@ -66,7 +71,8 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
     if (!isConnected) {
       emit(state.copyWith(
           error: ConnectionFailure('No Internet Connection'),
-          favoriteStatus: FavoriteStatus.error));
+          favoriteStatus: FavoriteStatus.error,
+          isFavoriteLoaded: false));
       return;
     }
 
@@ -90,10 +96,12 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
               (favoriteProductsEntity.totalNumber! / event.limit).ceil();
         }
 
-        state.favoriteProductsList!.addAll(favoriteProductsEntity.productList!);
+        List<ProductData> favoriteProductsList = state.favoriteProductsList!;
+        favoriteProductsList.addAll(favoriteProductsEntity.productList!);
 
-        dataState.data!.productList!.forEach((element) {
-          state.favorites!.addAll({
+        Map<int, bool> favorites = {};
+        favoriteProductsList.forEach((element) {
+          favorites!.addAll({
             element.productId!: element.isFavorite!,
           });
         });
@@ -101,10 +109,10 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
         emit(state.copyWith(
           favoriteStatus: FavoriteStatus.success,
           favoriteProductsEntity: favoriteProductsEntity,
-          favoriteProductsList: state.favoriteProductsList,
+          favoriteProductsList: favoriteProductsList,
           favoritePaginationNumberSave: favoritePaginationNumberSave,
-          favorites: state.favorites,
-          isFirst: false,
+          favorites: favorites,
+          isFavoriteLoaded: true,
         ));
       }
 
@@ -112,39 +120,45 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
         debugPrint(dataState.error!.message);
         emit(state.copyWith(
             error: ServerFailure.fromDioError(dataState.error!),
-            favoriteStatus: FavoriteStatus.error));
+            favoriteStatus: FavoriteStatus.error,
+            isFavoriteLoaded: false));
       }
     } on DioException catch (e) {
       debugPrint(e.toString());
       emit(state.copyWith(
           error: ServerFailure.fromDioError(e),
-          favoriteStatus: FavoriteStatus.error));
+          favoriteStatus: FavoriteStatus.error,
+          isFavoriteLoaded: false));
     }
   }
 
   void onAddToFavorite(
       AddToFavoriteFav event, Emitter<FavoriteState> emit) async {
-
     try {
-      final addToFavoriteParams = AddToFavoriteParams(productId: event.productId,);
+      emit(state.copyWith(isAdded: false));
 
-      final dataState = await _addToFavoritesUseCase(params: addToFavoriteParams);
+      final addToFavoriteParams = AddToFavoriteParams(
+        productId: event.productId,
+      );
+
+      final dataState =
+          await _addToFavoritesUseCase(params: addToFavoriteParams);
 
       if (dataState is DataSuccess) {
-
         Map<int, bool> favorites = state.favorites!;
         favorites[event.productId] = !favorites[event.productId]!;
 
         if (favorites[event.productId]! == false) {
-          favorites.removeWhere((key, value) => key == event.productId && value == false);
+          favorites.removeWhere(
+              (key, value) => key == event.productId && value == false);
           state.favoriteProductsList!.removeAt(event.index);
         }
 
         emit(state.copyWith(
-          favoriteStatus: FavoriteStatus.addedToFavorite,
-          favoriteProductsList: state.favoriteProductsList,
-          favorites: favorites,
-        ));
+            favoriteStatus: FavoriteStatus.addedToFavorite,
+            favoriteProductsList: state.favoriteProductsList,
+            favorites: favorites,
+            isAdded: true));
       }
 
       if (dataState is DataFailed) {
@@ -153,7 +167,8 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
         favorites[event.productId] = !favorites[event.productId]!;
         emit(state.copyWith(
             error: ServerFailure.fromDioError(dataState.error!),
-            favoriteStatus: FavoriteStatus.errorAddedToFavorite));
+            favoriteStatus: FavoriteStatus.errorAddedToFavorite,
+            isAdded: false));
       }
     } on DioException catch (e) {
       debugPrint(e.toString());
@@ -161,25 +176,22 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
       favorites[event.productId] = !favorites[event.productId]!;
       emit(state.copyWith(
           error: ServerFailure.fromDioError(e),
-          favoriteStatus: FavoriteStatus.errorAddedToFavorite));
+          favoriteStatus: FavoriteStatus.errorAddedToFavorite,
+          isAdded: false));
     }
-
   }
-
 
   void onChangeSortFavorite(
       ChangeSortFavorite event, Emitter<FavoriteState> emit) async {
-
     if (sort == 'newest') {
       sort = 'oldest';
-    }
-    else {
+    } else {
       sort = 'newest';
     }
 
-    emit(state.copyWith(favoriteProductsList: [], favoriteStatus: FavoriteStatus.changeSort));
+    emit(state.copyWith(
+        favoriteProductsList: [], favoriteStatus: FavoriteStatus.changeSort));
 
     // call get favorites
-
   }
 }

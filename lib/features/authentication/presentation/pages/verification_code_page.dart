@@ -25,7 +25,7 @@ class VerificationCodePage extends StatelessWidget {
       },
       child: Scaffold(
         backgroundColor: theme.background,
-        appBar: CustomAppBar('', width, height, context, false),
+        appBar: CustomAppBar('', width, height, context, false,false),
         body: VerificationCodeBody(email, _pinCode, _formKey),
       ),
     );

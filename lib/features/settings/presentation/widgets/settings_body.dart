@@ -8,6 +8,7 @@ import '../../../../core/widgets/custom_toast.dart';
 import '../../../base/presentation/widgets/push_bottom_bar.dart';
 import '../../../orders/presentation/pages/orders_page.dart';
 import 'change_language_dialog.dart';
+import 'logout_dialog.dart';
 
 class SettingsBody extends StatelessWidget {
   const SettingsBody({super.key});
@@ -74,7 +75,7 @@ class SettingsBody extends StatelessWidget {
                   SettingsContainer(
                     Icons.logout,
                     () {
-                      BlocProvider.of<AuthBloc>(context)..add(Logout());
+                      awsDialogLogout(context, width, 0);
                     },
                     AppLocalizations.of(context)!.logout,
                   ),

@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:zaza_app/config/theme/colors.dart';
 
 import '../utils/functions/spinkit.dart';
 import '../utils/gen/assets.gen.dart';
@@ -115,7 +117,7 @@ class CustomImageView extends StatelessWidget {
             fit: fit,
             imageUrl: imagePath!,
             placeholder: (context, url) => SpinKitApp(width),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            errorWidget: (context, url, error) => Icon(Icons.error, color: AppColor.primaryLight,),
           );
         case ImageType.png:
         default:
@@ -128,11 +130,14 @@ class CustomImageView extends StatelessWidget {
           );
       }
     }
-    return Image.asset(
-      Assets.images.imageNotFound.path,
-      height: height,
-      width: width,
-      fit: BoxFit.fill,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10.r),
+      child: Image.asset(
+        Assets.images.imageNotFound.path,
+        height: height,
+        width: width,
+        fit: BoxFit.fill,
+      ),
     );
   }
 }

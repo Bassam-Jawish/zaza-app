@@ -13,7 +13,7 @@ class SettingsPage extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: theme.background,
-      appBar: CustomAppBar(AppLocalizations.of(context)!.more, width, height, context, true),
+      appBar: CustomAppBar(AppLocalizations.of(context)!.more, width, height, context, true,false),
       body: SettingsBody(),
     );
   }

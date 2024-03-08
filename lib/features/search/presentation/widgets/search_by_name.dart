@@ -25,7 +25,7 @@ class SearchByName extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
-      //controller: cubit.scrollController,
+      controller: state.scrollControllerSearchName,
       child: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: width * 0.03, vertical: height * 0.03),
@@ -38,7 +38,7 @@ class SearchByName extends StatelessWidget {
               onChanged: (value) {
                 context.read<ProductBloc>()
                   ..add(GetSearchNameProducts(
-                      limit, 0, sort, 'newest', languageCode));
+                      limitSearch, 0, 'newest', value, languageCode, true));
               },
               br: 15,
               label: '${AppLocalizations.of(context)!.search_By_Product_Name}',
@@ -53,49 +53,57 @@ class SearchByName extends StatelessWidget {
               height: height * 0.06,
             ),
             ConditionalBuilder(
-              condition: state.isSearchByNameLoaded!,
+              condition: state.isFirstSearchName!,
               builder: (context) => ConditionalBuilder(
-                condition: state.searchNameProductsEntity != null,
+                condition: state.isSearchByNameLoaded!,
                 builder: (context) => ConditionalBuilder(
-                  condition: state.searchNameProductsEntity!.productList!.isNotEmpty,
-                  builder: (context) => GridView.builder(
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: width * 0.5,
-                      mainAxisExtent: height * 0.36,
-                      crossAxisSpacing: 5,
-                      mainAxisSpacing: 5,
-                    ),
-                    physics: BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return ProductCard(
-                          index,
-                          state.searchNameProductsEntity!.productList![index]
-                              .productId!,
-                          state.searchNameProductsEntity!.productList![index]
-                              .productName!,
-                          state.searchNameProductsEntity!.productList![index]
-                              .image!,
-                          state.searchNameProductsEntity!.productList![index]
-                              .barCode!,
-                          state.searchNameProductsEntity!.productList![index]
-                              .discount!,
-                          state.searchNameProductsEntity!.productList![index]
-                              .productUnitListModel![0].unitId!,
-                          state.searchNameProductsEntity!.productList![index]
-                              .productUnitListModel![0].unitName!,
-                          state.searchNameProductsEntity!.productList![index]
-                              .productUnitListModel![0].description!,
-                          0,
-                          state.searchNameProductsEntity!.productList![index]
-                              .productUnitListModel![0].quantity!,
-                          2,
-                          state.searchNameProductsEntity!.productList![index]
-                              .productUnitListModel![0].price!,
-                          state);
-                    },
-                    itemCount:
-                        state.searchNameProductsEntity!.productList!.length,
+                  condition: state.productSearchNameList!.isNotEmpty,
+                  builder: (context) => Column(
+                    children: [
+                      GridView.builder(
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: width * 0.5,
+                          mainAxisExtent: height * 0.36,
+                          crossAxisSpacing: 5,
+                          mainAxisSpacing: 5,
+                        ),
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          if (index < state.productSearchNameList!.length) {
+                            return ProductCard(
+                                index,
+                                state.productSearchNameList![index].productId!,
+                                state
+                                    .productSearchNameList![index].productName!,
+                                state.productSearchNameList![index].image!,
+                                state.productSearchNameList![index].barCode!,
+                                state.productSearchNameList![index].discount!,
+                                state.productSearchNameList![index]
+                                    .productUnitListModel![0].unitId!,
+                                state.productSearchNameList![index]
+                                    .productUnitListModel![0].unitName!,
+                                state.productSearchNameList![index]
+                                    .productUnitListModel![0].description!,
+                                0,
+                                state.productSearchNameList![index]
+                                    .productUnitListModel![0].quantity!,
+                                2,
+                                state.productSearchNameList![index]
+                                    .productUnitListModel![0].price!,
+                                state);
+                          }
+                        },
+                        itemCount: state.productStatus ==
+                                ProductStatus.loadingNameSearchPaginated
+                            ? state.productSearchNameList!.length
+                            : state.productSearchNameList!.length + 1,
+                      ),
+                      state.productStatus ==
+                              ProductStatus.loadingNameSearchPaginated
+                          ? Center(child: SpinKitApp(width))
+                          : SizedBox(),
+                    ],
                   ),
                   fallback: (context) => NoSearchFound(context),
                 ),

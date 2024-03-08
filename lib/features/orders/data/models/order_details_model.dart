@@ -24,7 +24,7 @@ class OrderDetailsModel extends OrderDetailsEntity {
       productsOrderDetailsList: map['products'] != null
           ? List<ProductOrderModel>.from((map['products'] as List)
               .map((productOrder) => ProductOrderModel.fromJson(productOrder)))
-          : null,
+          : [],
     );
   }
 }
@@ -50,7 +50,7 @@ class ProductOrderModel extends ProductOrderEntity {
       productUnitsOrderDetailsList: map['productUnit'] != null
           ? List<ProductUnitOrderModel>.from((map['productUnit'] as List)
               .map((unitOrder) => ProductUnitOrderModel.fromJson(unitOrder)))
-          : null,
+          : [],
     );
   }
 }
@@ -104,7 +104,7 @@ class UnitDetailsOrderModel extends UnitDetailsOrderEntity {
   factory UnitDetailsOrderModel.fromJson(Map<String, dynamic> map) {
     return UnitDetailsOrderModel(
       amount: map['amount'] ?? 0,
-      totalPrice: map['totalPrice'],
+      totalPrice: map['totalPrice']?? 0,
     );
   }
 }

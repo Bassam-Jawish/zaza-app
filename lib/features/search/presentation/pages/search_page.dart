@@ -40,15 +40,20 @@ class SearchPage extends StatelessWidget {
           child: Scaffold(
             backgroundColor: theme.background,
             appBar: CustomAppBar(AppLocalizations.of(context)!.search, width,
-                height, context, true),
+                height, context, true, false),
             body: SearchBody(
                 searchByProductNameController, searchByBarcodeController),
             floatingActionButton: FloatingActionButton.extended(
               onPressed: () async {
                 context.read<ProductBloc>().add(ScanBarcode());
                 searchByBarcodeController.text = state.scanBarcode!;
-                context.read<ProductBloc>().add(GetSearchBarcodeProducts(limit,
-                    0, sort, searchByBarcodeController.text, languageCode));
+                context.read<ProductBloc>().add(GetSearchBarcodeProducts(
+                    limit,
+                    0,
+                    'newest',
+                    searchByBarcodeController.text,
+                    languageCode,
+                    true));
               },
               elevation: 0.0,
               label: Text(

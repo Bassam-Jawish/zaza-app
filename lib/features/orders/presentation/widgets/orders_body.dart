@@ -16,10 +16,12 @@ class OrdersBody extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return BlocProvider<OrderBloc>.value(
-        value: sl()..add(GetOrders(limit, 0, sort, 'all')),
+        value: sl()..add(GetOrders(limitOrders, 0, 'newest', 'all')),
         child: BlocConsumer<OrderBloc, OrderState>(
           listener: (context, state) {
-            // TODO: implement listener
+            if (state.orderStatus == OrderStatus.changeStatusSearch) {
+              context.read<OrderBloc>().add(GetOrders(limitOrders, 0, 'newest', state.statusSearch!));
+            }
           },
           builder: (context, state) {
             return ConditionalBuilder(
@@ -45,16 +47,16 @@ class OrdersBody extends StatelessWidget {
                                   icon: Icon(
                                     Icons.arrow_back,
                                     color: theme.secondary,
-                                    size: 20,
+                                    size: 18,
                                   ),
-                                  iconSize: 20,
+                                  iconSize: 18,
                                 ),
                                 Text(
                                   '${AppLocalizations.of(context)!.orders_sent}  (${state.ordersList!.length!})',
                                   style: TextStyle(
                                       color: theme.secondary,
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 20.sp),
+                                      fontSize: 16.sp),
                                 ),
                               ],
                             ),

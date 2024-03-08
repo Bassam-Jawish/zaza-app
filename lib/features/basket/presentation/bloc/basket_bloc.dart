@@ -293,7 +293,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
       emit(state.copyWith(
         subTotal: subTotal,
         total: total,
-        basketStatus: BasketStatus.deleteAll,
+        basketStatus: event.isLogout ? BasketStatus.deleteAllWithLogout : BasketStatus.deleteAll,
         basketProductsList: copy,
       ));
 
@@ -328,11 +328,10 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
         dynamic subTotal = 0.0;
 
         emit(state.copyWith(
-            productEntity: dataState.data,
             basketStatus: BasketStatus.successSendOrder,
             total: total,
             subTotal: subTotal,
-            isLoading: true));
+            isLoading: false));
 
         // call delete all
         // call onGetIdQuantityForBasket

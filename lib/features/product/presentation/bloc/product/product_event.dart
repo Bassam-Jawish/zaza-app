@@ -12,8 +12,9 @@ class GetHomeNewProducts extends ProductEvent {
 
   final String language;
 
+
   const GetHomeNewProducts(
-      this.limit, this.page, this.sort, this.search, this.language);
+      this.limit, this.page, this.sort, this.search, this.language,);
 
   @override
   List<Object> get props => [limit, page, sort, search, language];
@@ -27,11 +28,14 @@ class GetSearchBarcodeProducts extends ProductEvent {
 
   final String language;
 
+  final bool onRefreshAll;
+
+
   const GetSearchBarcodeProducts(
-      this.limit, this.page, this.sort, this.search, this.language);
+      this.limit, this.page, this.sort, this.search, this.language, this.onRefreshAll);
 
   @override
-  List<Object> get props => [limit, page, sort, search, language];
+  List<Object> get props => [limit, page, sort, search, language, onRefreshAll];
 }
 
 class GetSearchNameProducts extends ProductEvent {
@@ -42,11 +46,14 @@ class GetSearchNameProducts extends ProductEvent {
 
   final String language;
 
+  final bool onRefreshAll;
+
+
   const GetSearchNameProducts(
-      this.limit, this.page, this.sort, this.search, this.language);
+      this.limit, this.page, this.sort, this.search, this.language, this.onRefreshAll);
 
   @override
-  List<Object> get props => [limit, page, sort, search, language];
+  List<Object> get props => [limit, page, sort, search, language, onRefreshAll];
 }
 
 class GetProductProfile extends ProductEvent {

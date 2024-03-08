@@ -59,10 +59,10 @@ class _OrderApiService implements OrderApiService {
   @override
   Future<HttpResponse<OrderDetailsModel>> getOrderDetails(
     int order_id,
-    dynamic language,
+    String language,
   ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'language': language.toJson()};
+    final queryParameters = <String, dynamic>{r'language': language};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(

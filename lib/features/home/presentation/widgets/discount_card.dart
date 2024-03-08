@@ -6,6 +6,7 @@ import 'package:zaza_app/core/widgets/custom_image_view.dart';
 
 import '../../../../injection_container.dart';
 import '../../../base/presentation/widgets/push_bottom_bar.dart';
+import '../../../basket/presentation/widgets/quantity_dialog.dart';
 import '../../../product/presentation/pages/product_page.dart';
 
 class BuildDiscountProductCard extends StatelessWidget {
@@ -52,7 +53,8 @@ class BuildDiscountProductCard extends StatelessWidget {
         width: width * 0.8,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
-          gradient: AppDecoration.primaryGradient,
+          //gradient: AppDecoration.primaryGradient,
+          color: AppColor.primaryLight,
         ),
         padding: EdgeInsets.symmetric(
             horizontal: width * 0.04, vertical: height * 0.02),
@@ -142,7 +144,7 @@ class BuildDiscountProductCard extends StatelessWidget {
                             width: width * 0.1,
                             child: ElevatedButton(
                               onPressed: () {
-                                /*quantityDialog(
+                                quantityDialog(
                                     width,
                                     height,
                                     context,
@@ -150,7 +152,7 @@ class BuildDiscountProductCard extends StatelessWidget {
                                     formKey,
                                     product_id,
                                     productUnitId
-                                );*/
+                                );
                               },
                               child: Icon(
                                 Icons.shopping_cart,

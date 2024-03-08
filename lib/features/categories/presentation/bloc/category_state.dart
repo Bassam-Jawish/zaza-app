@@ -23,9 +23,13 @@ class CategoryState extends Equatable {
 
   final ScrollController? scrollController;
 
-  final bool? isFirst;
+  final bool? isPageLoaded;
 
   final Map<int, bool>? favorites;
+
+  final bool? isRefreshAll;
+
+  final bool? isAdded;
 
 
   CategoryState({
@@ -41,8 +45,10 @@ class CategoryState extends Equatable {
     this.productsPaginated,
     this.categoryStatus,
     this.scrollController,
-    this.isFirst,
-    this.favorites
+    this.isPageLoaded,
+    this.favorites,
+    this.isRefreshAll,
+    this.isAdded
   });
 
   @override
@@ -59,8 +65,10 @@ class CategoryState extends Equatable {
     productsPaginated,
     categoryStatus,
     scrollController,
-    isFirst,
+    isPageLoaded,
     favorites,
+    isRefreshAll,
+    isAdded,
   ];
 
   CategoryState copyWith({
@@ -76,9 +84,10 @@ class CategoryState extends Equatable {
     List<ProductData>? productsPaginated,
     CategoryStatus? categoryStatus,
     ScrollController? scrollController,
-    bool? isFirst,
+    bool? isPageLoaded,
     Map<int, bool>? favorites,
-
+    bool? isRefreshAll,
+    bool? isAdded,
   }) {
     return CategoryState(
       error: error ?? this.error,
@@ -93,8 +102,10 @@ class CategoryState extends Equatable {
       productsPaginated: productsPaginated ?? this.productsPaginated,
       categoryStatus: categoryStatus ?? this.categoryStatus,
       scrollController: scrollController ?? this.scrollController,
-      isFirst: isFirst ?? this.isFirst,
+      isPageLoaded: isPageLoaded ?? this.isPageLoaded,
       favorites: favorites ?? this.favorites,
+      isRefreshAll: isRefreshAll ?? this.isRefreshAll,
+      isAdded: isAdded ?? this.isAdded,
     );
   }
 }

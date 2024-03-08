@@ -29,10 +29,10 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
       : super(NewProductState().copyWith(
             newProductStatus: NewProductStatus.initial,
             scrollController: ScrollController(),
-            isFirstNewProductsLoading: true,
+            isNewProductsLoaded: false,
             newAllProductsList: [],
             newAllProductsFavorites: {},
-            newProductsCurrentIndex: 0)) {
+            newProductsCurrentIndex: 0,isAddedNewProducts: false)) {
       state.scrollController!.addListener(_scrollListener);
       on<GetAllNewProducts>(onGetAllNewProducts);
       on<AddToFavoriteNewProducts>(onAddToFavoriteNewProducts);
@@ -61,16 +61,19 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
 
   void onGetAllNewProducts(
       GetAllNewProducts event, Emitter<NewProductState> emit) async {
-    if (state.isFirstNewProductsLoading!) {
+    if (event.isRefreshAll) {
+      List<ProductData> productDiscountList = [];
       emit(state.copyWith(
-          newProductsCurrentIndex: event.page));
+          newProductsCurrentIndex: event.page,
+          isNewProductsLoaded: false, newAllProductsList: productDiscountList));
     }
+
     final isConnected = await _networkInfo.isConnected;
 
     if (!isConnected) {
       emit(state.copyWith(
           error: ConnectionFailure('No Internet Connection'),
-          newProductStatus: NewProductStatus.errorAllNewProducts));
+          newProductStatus: NewProductStatus.errorAllNewProducts, isNewProductsLoaded: false));
       return;
     }
 
@@ -94,10 +97,13 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
               (newProductsEntity.totalNumber! / event.limit).ceil();
         }
 
-        state.newAllProductsList!.addAll(newProductsEntity.productList!);
 
-        dataState.data!.productList!.forEach((element) {
-          state.newAllProductsFavorites!.addAll({
+        List<ProductData> newAllProductsList = state.newAllProductsList!;
+        newAllProductsList!.addAll(newProductsEntity.productList!);
+
+        Map<int,bool>favorites = {};
+        newAllProductsList.forEach((element) {
+          favorites.addAll({
             element.productId!: element.isFavorite!,
           });
         });
@@ -105,10 +111,10 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
         emit(state.copyWith(
           newProductStatus: NewProductStatus.successAllNewProducts,
           newAllProductsEntity: newProductsEntity,
-          newAllProductsList: state.newAllProductsList,
+          newAllProductsList: newAllProductsList,
           newProductsPaginationNumberSave: newPaginationNumberSave,
-          newAllProductsFavorites: state.newAllProductsFavorites,
-          isFirstNewProductsLoading: false,
+          newAllProductsFavorites: favorites,
+          isNewProductsLoaded: true,
         ));
       }
 
@@ -116,19 +122,24 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
         debugPrint(dataState.error!.message);
         emit(state.copyWith(
             error: ServerFailure.fromDioError(dataState.error!),
-            newProductStatus: NewProductStatus.errorAllNewProducts));
+            newProductStatus: NewProductStatus.errorAllNewProducts, isNewProductsLoaded: false));
       }
     } on DioException catch (e) {
       debugPrint(e.toString());
       emit(state.copyWith(
           error: ServerFailure.fromDioError(e),
-          newProductStatus: NewProductStatus.errorAllNewProducts));
+          newProductStatus: NewProductStatus.errorAllNewProducts, isNewProductsLoaded: false));
     }
   }
 
   void onAddToFavoriteNewProducts(
       AddToFavoriteNewProducts event, Emitter<NewProductState> emit) async {
     try {
+
+      emit(state.copyWith(
+        isAddedNewProducts: false,
+      ));
+
       final addToFavoriteParams = AddToFavoriteParams(
         productId: event.productId,
       );
@@ -140,16 +151,11 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
         Map<int, bool> favorites = state.newAllProductsFavorites!;
         favorites[event.productId] = !favorites[event.productId]!;
 
-        if (favorites[event.productId]! == false) {
-          favorites.removeWhere(
-              (key, value) => key == event.productId && value == false);
-          state.newAllProductsList!.removeAt(event.index);
-        }
-
         emit(state.copyWith(
           newProductStatus: NewProductStatus.addedToFavorite,
           newAllProductsList: state.newAllProductsList,
           newAllProductsFavorites: favorites,
+          isAddedNewProducts: true
         ));
       }
 
@@ -159,7 +165,7 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
         favorites[event.productId] = !favorites[event.productId]!;
         emit(state.copyWith(
             error: ServerFailure.fromDioError(dataState.error!),
-            newProductStatus: NewProductStatus.errorAddedToFavorite));
+            newProductStatus: NewProductStatus.errorAddedToFavorite,isAddedNewProducts: false));
       }
     } on DioException catch (e) {
       debugPrint(e.toString());
@@ -167,7 +173,7 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
       favorites[event.productId] = !favorites[event.productId]!;
       emit(state.copyWith(
           error: ServerFailure.fromDioError(e),
-          newProductStatus: NewProductStatus.errorAddedToFavorite));
+          newProductStatus: NewProductStatus.errorAddedToFavorite,isAddedNewProducts: false));
     }
   }
 

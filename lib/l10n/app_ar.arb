@@ -72,6 +72,7 @@
     "language_Settings": "إعدادات اللغة",
     "orders_Details": "تفاصيل الطلبات",
     "logout": "تسجيل الخروج",
+    "do_you_logout": "هل تريد تسجيل الخروج",
 
     "favorite_Products": "المنتجات المفضلة",
 
@@ -112,7 +113,7 @@
     "cancel": "إلغاء",
     "add": "إضافة",
     "enter_quantity_unit": "أدخل كمية الوحدة",
-    "edit_quantity_unit": "عدل كمية الوحدة",
+    "edit_quantity_unit": "تم تغيير الكمية لوحدة المنتج هذه",
     "not_available": "الكمية غير متوفرة الآن",
     "edit": "تعديل",
 

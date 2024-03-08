@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
@@ -9,7 +8,6 @@ import 'package:zaza_app/features/profile/domain/entities/user_profile.dart';
 import 'package:zaza_app/features/profile/domain/usecases/create_phone_usecase.dart';
 import 'package:zaza_app/features/profile/domain/usecases/delete_phone_usecase.dart';
 import 'package:zaza_app/features/profile/domain/usecases/get_user_profile_usecase.dart';
-import 'package:zaza_app/injection_container.dart';
 
 import '../../../../../core/error/failure.dart';
 import '../../../../../core/network/network_info.dart';
@@ -43,14 +41,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   void onGetUserProfile(
       GetUserProfile event, Emitter<ProfileState> emit) async {
-    emit(state.copyWith(profileStatus: ProfileStatus.loading));
+    emit(state.copyWith(profileStatus: ProfileStatus.loading, isLoaded: false));
 
     final isConnected = await _networkInfo.isConnected;
 
     if (!isConnected) {
       emit(state.copyWith(
           error: ConnectionFailure('No Internet Connection'),
-          profileStatus: ProfileStatus.error));
+          profileStatus: ProfileStatus.error,
+          isLoaded: false));
       return;
     }
 
@@ -68,18 +67,19 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         ));
       }
 
-
       if (dataState is DataFailed) {
         debugPrint(dataState.error!.message);
         emit(state.copyWith(
             error: ServerFailure.fromDioError(dataState.error!),
-            profileStatus: ProfileStatus.error));
+            profileStatus: ProfileStatus.error,
+            isLoaded: false));
       }
     } on DioException catch (e) {
       debugPrint(e.toString());
       emit(state.copyWith(
           error: ServerFailure.fromDioError(e),
-          profileStatus: ProfileStatus.error));
+          profileStatus: ProfileStatus.error,
+          isLoaded: false));
     }
   }
 
@@ -108,7 +108,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         }),
       );
 
-      final dataState = await _createPhoneUseCase(params: createPhoneUseCaseParams);
+      final dataState =
+          await _createPhoneUseCase(params: createPhoneUseCaseParams);
 
       if (dataState is DataSuccess) {
         emit(state.copyWith(

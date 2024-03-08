@@ -6,10 +6,10 @@ enum ProductStatus {
   successHomeNewProducts,
   errorHomeNewProducts,
   scannedBarcode,
-  loadingBarcodeSearch,
+  loadingBarcodeSearchPaginated,
   successBarcodeSearch,
   errorBarcodeSearch,
-  loadingNameSearch,
+  loadingNameSearchPaginated,
   successNameSearch,
   errorNameSearch,
   loadingProductProfile,
@@ -28,12 +28,8 @@ class ProductState extends Equatable {
   final Failure? error;
 
   final Map<int, bool>? newHomeProductsFavorites;
-  final Map<int, bool>? searchBarcodeProductsFavorites;
-  final Map<int, bool>? searchNameProductsFavorites;
 
   final ProductEntity? homeNewProductsEntity;
-  final ProductEntity? searchBarcodeProductsEntity;
-  final ProductEntity? searchNameProductsEntity;
 
   final int? unitIndex;
   final ProductData? productProfile;
@@ -45,9 +41,41 @@ class ProductState extends Equatable {
 
   final bool? isProductProfileLoaded;
 
-  final bool? isSearchByBarcodeLoaded;
+  final bool? isAddedHomeNewProducts;
 
+  ///////////////////////////////////////////////////
+
+  final Map<int, bool>? searchBarcodeProductsFavorites;
+
+  final ProductEntity? searchBarcodeProductsEntity;
+  final bool? isAddedSearchByBarcode;
+
+  final bool? isFirstSearchBarcode;
+  final bool? isSearchByBarcodeLoaded;
+  final ScrollController? scrollControllerSearchBarcode;
+
+  final List<ProductData>? productSearchBarcodeList;
+
+  ////////////////////
+
+  final Map<int, bool>? searchNameProductsFavorites;
+
+  final ProductEntity? searchNameProductsEntity;
+
+  final bool? isAddedSearchByName;
+  final bool? isFirstSearchName;
   final bool? isSearchByNameLoaded;
+  final ScrollController? scrollControllerSearchName;
+
+  final int? searchBarcodePaginationNumberSave;
+  final int? searchBarcodeCurrentIndex;
+
+  final int? searchNamePaginationNumberSave;
+  final int? searchNameCurrentIndex;
+
+  final List<ProductData>? productSearchNameList;
+
+  //////////////////////////////////////////////////////////
 
   ProductState(
       {this.error,
@@ -63,8 +91,21 @@ class ProductState extends Equatable {
       this.scanBarcode,
       this.isNewHomeLoaded,
       this.isProductProfileLoaded,
+      this.isAddedHomeNewProducts,
+      this.isAddedSearchByBarcode,
+      this.isFirstSearchBarcode,
       this.isSearchByBarcodeLoaded,
-      this.isSearchByNameLoaded});
+      this.scrollControllerSearchBarcode,
+      this.isAddedSearchByName,
+      this.isFirstSearchName,
+      this.isSearchByNameLoaded,
+      this.scrollControllerSearchName,
+      this.searchBarcodePaginationNumberSave,
+      this.searchBarcodeCurrentIndex,
+      this.searchNamePaginationNumberSave,
+      this.searchNameCurrentIndex,
+      this.productSearchBarcodeList,
+      this.productSearchNameList});
 
   // CopyWith method
   ProductState copyWith({
@@ -81,8 +122,21 @@ class ProductState extends Equatable {
     String? scanBarcode,
     bool? isNewHomeLoaded,
     bool? isProductProfileLoaded,
+    bool? isAddedHomeNewProducts,
+    bool? isAddedSearchByBarcode,
+    bool? isFirstSearchBarcode,
     bool? isSearchByBarcodeLoaded,
+    ScrollController? scrollControllerSearchBarcode,
+    bool? isAddedSearchByName,
+    bool? isFirstSearchName,
     bool? isSearchByNameLoaded,
+    ScrollController? scrollControllerSearchName,
+    int? searchBarcodePaginationNumberSave,
+    int? searchBarcodeCurrentIndex,
+    int? searchNamePaginationNumberSave,
+    int? searchNameCurrentIndex,
+    List<ProductData>? productSearchBarcodeList,
+    List<ProductData>? productSearchNameList,
   }) {
     return ProductState(
       error: error ?? this.error,
@@ -105,9 +159,32 @@ class ProductState extends Equatable {
       isNewHomeLoaded: isNewHomeLoaded ?? this.isNewHomeLoaded,
       isProductProfileLoaded:
           isProductProfileLoaded ?? this.isProductProfileLoaded,
+      isAddedHomeNewProducts:
+          isAddedHomeNewProducts ?? this.isAddedHomeNewProducts,
+      isAddedSearchByBarcode:
+          isAddedSearchByBarcode ?? this.isAddedSearchByBarcode,
+      isFirstSearchBarcode: isFirstSearchBarcode ?? this.isFirstSearchBarcode,
       isSearchByBarcodeLoaded:
           isSearchByBarcodeLoaded ?? this.isSearchByBarcodeLoaded,
+      scrollControllerSearchBarcode:
+          scrollControllerSearchBarcode ?? this.scrollControllerSearchBarcode,
+      isAddedSearchByName: isAddedSearchByName ?? this.isAddedSearchByName,
+      isFirstSearchName: isFirstSearchName ?? this.isFirstSearchName,
       isSearchByNameLoaded: isSearchByNameLoaded ?? this.isSearchByNameLoaded,
+      scrollControllerSearchName:
+          scrollControllerSearchName ?? this.scrollControllerSearchName,
+      searchBarcodePaginationNumberSave: searchBarcodePaginationNumberSave ??
+          this.searchBarcodePaginationNumberSave,
+      searchBarcodeCurrentIndex:
+          searchBarcodeCurrentIndex ?? this.searchBarcodeCurrentIndex,
+      searchNamePaginationNumberSave:
+          searchNamePaginationNumberSave ?? this.searchNamePaginationNumberSave,
+      searchNameCurrentIndex:
+          searchNameCurrentIndex ?? this.searchNameCurrentIndex,
+      productSearchBarcodeList:
+          productSearchBarcodeList ?? this.productSearchBarcodeList,
+      productSearchNameList:
+          productSearchNameList ?? this.productSearchNameList,
     );
   }
 
@@ -126,7 +203,21 @@ class ProductState extends Equatable {
         scanBarcode,
         isNewHomeLoaded,
         isProductProfileLoaded,
+        isSearchByNameLoaded,
+        isAddedHomeNewProducts,
+        isAddedSearchByBarcode,
+        isFirstSearchBarcode,
         isSearchByBarcodeLoaded,
-        isSearchByNameLoaded
+        scrollControllerSearchBarcode,
+        isAddedSearchByName,
+        isFirstSearchName,
+        isSearchByNameLoaded,
+        scrollControllerSearchName,
+        searchBarcodePaginationNumberSave,
+        searchBarcodeCurrentIndex,
+        searchNamePaginationNumberSave,
+        searchNameCurrentIndex,
+        productSearchBarcodeList,
+        productSearchNameList,
       ];
 }

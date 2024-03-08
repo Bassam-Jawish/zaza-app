@@ -14,7 +14,7 @@ class OrdersPage extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: theme.background,
-      appBar: CustomAppBar(AppLocalizations.of(context)!.orders, width, height, context, false),
+      appBar: CustomAppBar(AppLocalizations.of(context)!.orders, width, height, context, false,false),
       body: OrdersBody(),
     );
   }

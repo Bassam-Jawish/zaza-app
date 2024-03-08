@@ -24,7 +24,6 @@ class DiscountState extends Equatable {
   final int? discountPaginationNumberSave;
   final int? discountCurrentIndex;
   final DiscountStatus? discountStatus;
-  final bool? isFirstDiscount;
 
   final ScrollController? scrollController;
 
@@ -32,18 +31,20 @@ class DiscountState extends Equatable {
 
   final bool? isDiscountHomeLoaded;
 
+  final bool? isAdded;
+
   const DiscountState(
       {this.error,
       this.productEntityHome,
       this.discountPaginationNumberSave,
       this.discountCurrentIndex,
       this.discountStatus,
-      this.isFirstDiscount,
       this.productAllDiscountEntity,
       this.productDiscountList,
       this.scrollController,
       this.favorites,
-      this.isDiscountHomeLoaded});
+      this.isDiscountHomeLoaded,
+      this.isAdded});
 
   DiscountState copyWith({
     Failure? error,
@@ -57,6 +58,8 @@ class DiscountState extends Equatable {
     ScrollController? scrollController,
     Map<int, bool>? favorites,
     bool? isDiscountHomeLoaded,
+    bool? isChanged,
+    bool? isAdded,
   }) =>
       DiscountState(
         error: error ?? this.error,
@@ -65,13 +68,13 @@ class DiscountState extends Equatable {
             discountPaginationNumberSave ?? this.discountPaginationNumberSave,
         discountCurrentIndex: discountCurrentIndex ?? this.discountCurrentIndex,
         discountStatus: discountStatus ?? this.discountStatus,
-        isFirstDiscount: isFirstDiscount ?? this.isFirstDiscount,
         productAllDiscountEntity:
             productAllDiscountEntity ?? this.productAllDiscountEntity,
         productDiscountList: productDiscountList ?? this.productDiscountList,
         scrollController: scrollController ?? this.scrollController,
         favorites: favorites ?? this.favorites,
         isDiscountHomeLoaded: isDiscountHomeLoaded ?? this.isDiscountHomeLoaded,
+        isAdded: isAdded ?? this.isAdded,
       );
 
   @override
@@ -81,10 +84,10 @@ class DiscountState extends Equatable {
         discountPaginationNumberSave,
         discountCurrentIndex,
         discountStatus,
-        isFirstDiscount,
         productAllDiscountEntity,
         productDiscountList,
         scrollController,
         isDiscountHomeLoaded,
+        isAdded,
       ];
 }

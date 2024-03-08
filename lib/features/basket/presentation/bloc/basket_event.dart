@@ -79,10 +79,11 @@ class RemoveOneFromBasket extends BasketEvent {
 
 class DeleteBasket extends BasketEvent {
 
-  const DeleteBasket();
+  bool isLogout;
+  DeleteBasket(this.isLogout);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [isLogout];
 }
 
 class SendOrder extends BasketEvent {

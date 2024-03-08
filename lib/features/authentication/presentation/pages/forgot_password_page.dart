@@ -24,7 +24,7 @@ class ForgotPasswordPage extends StatelessWidget {
       },
       child: Scaffold(
         backgroundColor: theme.background,
-        appBar: CustomAppBar('', width, height, context, false),
+        appBar: CustomAppBar('', width, height, context, false,false),
         body: ForgotPasswordBody(_emailController, _emailFocusNode, _formKey),
       ),
     );

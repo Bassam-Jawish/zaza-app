@@ -72,6 +72,8 @@
     "language_Settings": "Language Settings",
     "orders_Details": "Orders Details",
     "logout": "Logout",
+    "do_you_logout": "Do you want to logout?",
+
 
     "favorite_Products": "Favorite Products",
 
@@ -112,7 +114,7 @@
     "cancel": "Cancel",
     "add": "Add",
     "enter_quantity_unit": "Enter quantity for this unit",
-    "edit_quantity_unit": "Edit quantity for this unit",
+    "edit_quantity_unit": "Quantity is changed for this product unit",
     "not_available": "The quantity is not available now",
     "edit": "Edit",
 

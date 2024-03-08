@@ -11,7 +11,7 @@ enum NewProductStatus {
 class NewProductState extends Equatable {
   final Failure? error;
 
-  final bool? isFirstNewProductsLoading;
+  final bool? isNewProductsLoaded;
 
   final int? newProductsCurrentIndex;
   final int? newProductsPaginationNumberSave;
@@ -25,10 +25,11 @@ class NewProductState extends Equatable {
 
   final NewProductStatus? newProductStatus;
 
+  final bool? isAddedNewProducts;
 
   NewProductState({
     this.error,
-    this.isFirstNewProductsLoading,
+    this.isNewProductsLoaded,
     this.newProductsCurrentIndex,
     this.newProductsPaginationNumberSave,
     this.newAllProductsFavorites,
@@ -36,12 +37,13 @@ class NewProductState extends Equatable {
     this.newAllProductsList,
     this.scrollController,
     this.newProductStatus,
+    this.isAddedNewProducts,
   });
 
   // CopyWith method
   NewProductState copyWith({
     Failure? error,
-    bool? isFirstNewProductsLoading,
+    bool? isNewProductsLoaded,
     int? newProductsCurrentIndex,
     int? newProductsPaginationNumberSave,
     Map<int, bool>? newAllProductsFavorites,
@@ -49,11 +51,12 @@ class NewProductState extends Equatable {
     List<ProductData>? newAllProductsList,
     ScrollController? scrollController,
     NewProductStatus? newProductStatus,
+    bool? isAddedNewProducts,
   }) {
     return NewProductState(
       error: error ?? this.error,
-      isFirstNewProductsLoading:
-      isFirstNewProductsLoading ?? this.isFirstNewProductsLoading,
+      isNewProductsLoaded:
+      isNewProductsLoaded ?? this.isNewProductsLoaded,
       newProductsCurrentIndex:
       newProductsCurrentIndex ?? this.newProductsCurrentIndex,
       newProductsPaginationNumberSave: newProductsPaginationNumberSave ??
@@ -64,13 +67,14 @@ class NewProductState extends Equatable {
       newAllProductsList: newAllProductsList ?? this.newAllProductsList,
       scrollController: scrollController ?? this.scrollController,
       newProductStatus: newProductStatus ?? this.newProductStatus,
+      isAddedNewProducts: isAddedNewProducts ?? this.isAddedNewProducts,
     );
   }
 
   @override
   List<Object?> get props => [
     error,
-    isFirstNewProductsLoading,
+    isNewProductsLoaded,
     newProductsCurrentIndex,
     newProductsPaginationNumberSave,
     newAllProductsFavorites,
@@ -78,5 +82,6 @@ class NewProductState extends Equatable {
     newAllProductsList,
     scrollController,
     newProductStatus,
+    isAddedNewProducts,
   ];
 }

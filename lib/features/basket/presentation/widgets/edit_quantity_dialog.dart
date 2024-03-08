@@ -13,6 +13,8 @@ Future quantityEditDialog(width, height, index, context, int quantity, formKey,
     builder: (context) => BlocBuilder<BasketBloc, BasketState>(
       builder: (context, state) {
         return AlertDialog(
+          shadowColor: Colors.white,
+          surfaceTintColor: Colors.white,
           backgroundColor: Colors.white,
           title: Padding(
               padding: EdgeInsets.symmetric(vertical: height*0.01,horizontal: width*0.02),

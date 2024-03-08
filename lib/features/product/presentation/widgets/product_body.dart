@@ -69,7 +69,7 @@ class ProductBody extends StatelessWidget {
                       child: CustomImageView(
                         width: width * 0.6,
                         height: height * 0.2,
-                        imagePath: '${baseUrl}*${state.productProfile!.image!}',
+                        imagePath: '${state.productProfile!.image!}',
                         fit: BoxFit.contain,
                       ),
                     ),

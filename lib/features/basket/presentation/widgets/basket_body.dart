@@ -37,10 +37,14 @@ class BasketBody extends StatelessWidget {
           showToast(text: AppLocalizations.of(context)!.basket_Cleared, state: ToastState.success);
           context.read<BasketBloc>().add(GetIdQuantityForBasket());
         }
-        if (state.basketStatus == BasketStatus.successSendOrder) {
-          showToast(text: AppLocalizations.of(context)!.send_Order, state: ToastState.success);
-          context.read<BasketBloc>().add(DeleteBasket());
+        if (state.basketStatus == BasketStatus.deleteAllWithLogout) {
+          context.read<BasketBloc>().add(GetIdQuantityForBasket());
         }
+        if (state.basketStatus == BasketStatus.successSendOrder) {
+          showToast(text: AppLocalizations.of(context)!.order_Sent_Successfully, state: ToastState.success);
+          context.read<BasketBloc>().add(DeleteBasket(true));
+        }
+
         if (state.basketStatus == BasketStatus.errorSendOrder) {
           showToast(text: state.error!.message, state: ToastState.success);
         }

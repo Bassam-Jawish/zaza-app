@@ -36,8 +36,9 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
             categoryStatus: CategoryStatus.initial,
             catId: 0,
             productsPaginated: [],
-            isFirst: true,
+            isPageLoaded: false,
             favorites: {},
+            isAdded: false,
             scrollController: ScrollController())) {
     state.scrollController!.addListener(_scrollListener);
     on<GetCategoryChildren>(onGetCategoryChildren);
@@ -65,8 +66,12 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
   void onGetCategoryChildren(
       GetCategoryChildren event, Emitter<CategoryState> emit) async {
-    if (state.isFirst!) {
-      emit(state.copyWith(isFirst: false, currentIndex: event.page));
+    if (event.isRefreshAll) {
+      List<ProductData> productDiscountList = [];
+      emit(state.copyWith(
+          discountCurrentIndex: event.page,
+          isPageLoaded: false,
+          productsPaginated: productDiscountList));
     }
 
     final isConnected = await _networkInfo.isConnected;
@@ -74,7 +79,8 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     if (!isConnected) {
       emit(state.copyWith(
           error: ConnectionFailure('No Internet Connection'),
-          categoryStatus: CategoryStatus.error));
+          categoryStatus: CategoryStatus.error,
+          isPageLoaded: false));
       return;
     }
 
@@ -116,25 +122,29 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
           emit(state.copyWith(
             categoryStatus: CategoryStatus.success,
             unknownChildEntity: unknownChildEntity,
+            isPageLoaded: true,
           ));
         } else {
           CategoryParentEntity categoryParentEntity =
               CategoryParentModel.fromJson(dataState.data!);
 
-          state.productsPaginated!
-              .addAll(categoryParentEntity!.productsChildren!);
+          List<ProductData> productsPaginated = state.productsPaginated!;
+          productsPaginated.addAll(categoryParentEntity!.productsChildren!);
 
-          categoryParentEntity.productsChildren!.forEach((element) {
-            state.favorites!.addAll({
+          Map<int, bool> favorites = {};
+          productsPaginated.forEach((element) {
+            favorites!.addAll({
               element.productId!: element.isFavorite!,
             });
           });
 
+          print('fgds');
           emit(state.copyWith(
               categoryStatus: CategoryStatus.success,
               categoryParentEntity: categoryParentEntity,
-              productsPaginated: state.productsPaginated,
-              favorites: state.favorites));
+              productsPaginated: productsPaginated,
+              favorites: favorites,
+              isPageLoaded: true));
         }
       }
 
@@ -142,18 +152,23 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
         debugPrint(dataState.error!.message);
         emit(state.copyWith(
             error: ServerFailure.fromDioError(dataState.error!),
-            categoryStatus: CategoryStatus.error));
+            categoryStatus: CategoryStatus.error,
+            isPageLoaded: false));
       }
     } on DioException catch (e) {
       debugPrint(e.toString());
       emit(state.copyWith(
           error: ServerFailure.fromDioError(e),
-          categoryStatus: CategoryStatus.error));
+          categoryStatus: CategoryStatus.error,
+          isPageLoaded: false));
     }
   }
 
-  void onAddToFavoriteCategory(AddToFavoriteCategory event, Emitter<CategoryState> emit) async {
+  void onAddToFavoriteCategory(
+      AddToFavoriteCategory event, Emitter<CategoryState> emit) async {
     try {
+      emit(state.copyWith(isAdded: false));
+
       final addToFavoriteParams = AddToFavoriteParams(
         productId: event.productId,
       );
@@ -163,18 +178,14 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
       if (dataState is DataSuccess) {
         Map<int, bool> favorites = state.favorites!;
-        favorites[event.productId] = !favorites[event.productId]!;
-
-        if (favorites[event.productId]! == false) {
-          favorites.removeWhere(
-              (key, value) => key == event.productId && value == false);
-          state.productsPaginated!.removeAt(event.index);
-        }
+        int id = event.productId;
+        favorites[id] = !favorites[id]!;
 
         emit(state.copyWith(
           categoryStatus: CategoryStatus.addedToFavorite,
           productsPaginated: state.productsPaginated,
           favorites: favorites,
+          isAdded: true,
         ));
       }
 
@@ -184,7 +195,8 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
         favorites[event.productId] = !favorites[event.productId]!;
         emit(state.copyWith(
             error: ServerFailure.fromDioError(dataState.error!),
-            categoryStatus: CategoryStatus.errorAddedToFavorite));
+            categoryStatus: CategoryStatus.errorAddedToFavorite,
+            isAdded: false));
       }
     } on DioException catch (e) {
       debugPrint(e.toString());
@@ -192,11 +204,13 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       favorites[event.productId] = !favorites[event.productId]!;
       emit(state.copyWith(
           error: ServerFailure.fromDioError(e),
-          categoryStatus: CategoryStatus.errorAddedToFavorite));
+          categoryStatus: CategoryStatus.errorAddedToFavorite,
+          isAdded: false));
     }
   }
 
-  void onChangeSortCategory(ChangeSortCategory event, Emitter<CategoryState> emit) async {
+  void onChangeSortCategory(
+      ChangeSortCategory event, Emitter<CategoryState> emit) async {
     if (sort == 'newest') {
       sort = 'oldest';
     } else {

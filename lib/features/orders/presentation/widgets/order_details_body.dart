@@ -67,12 +67,11 @@ class OrderDetailsBody extends StatelessWidget {
                                 children: [
                                   /*Text('Status: ',style: TextStyle(color: Colors.black,fontSize: 16.sp,fontWeight: FontWeight.w600),),
                                       Text('${cubit.orderDetailsModel!.status}',style: TextStyle(color: Colors.black,fontSize: 16.sp,fontWeight: FontWeight.w600),),*/
-
                                   Text(
                                     '${AppLocalizations.of(context)!.status}: ',
                                     style: TextStyle(
                                         color: Colors.black,
-                                        fontSize: 22.sp,
+                                        fontSize: 20.sp,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   state.orderDetailsEntity!.status == 'approved'
@@ -80,7 +79,7 @@ class OrderDetailsBody extends StatelessWidget {
                                           '${AppLocalizations.of(context)!.approved}',
                                           style: TextStyle(
                                               color: Colors.green,
-                                              fontSize: 22.sp,
+                                              fontSize: 20.sp,
                                               fontWeight: FontWeight.w600),
                                         )
                                       : state.orderDetailsEntity!.status ==
@@ -89,14 +88,14 @@ class OrderDetailsBody extends StatelessWidget {
                                               '${AppLocalizations.of(context)!.pending}',
                                               style: TextStyle(
                                                   color: Colors.yellow,
-                                                  fontSize: 22.sp,
+                                                  fontSize: 20.sp,
                                                   fontWeight: FontWeight.w600),
                                             )
                                           : Text(
                                               '${AppLocalizations.of(context)!.rejected}',
                                               style: TextStyle(
                                                   color: Colors.red,
-                                                  fontSize: 22.sp,
+                                                  fontSize: 20.sp,
                                                   fontWeight: FontWeight.w600),
                                             ),
                                 ],
@@ -105,21 +104,20 @@ class OrderDetailsBody extends StatelessWidget {
                                 children: [
                                   /*Text('Invoice Value: ',style: TextStyle(color: Colors.black,fontSize: 12.sp,fontWeight: FontWeight.w400),),
                                       Text('${cubit.orderDetailsModel!.totalPrice}\€',style: TextStyle(color: Colors.black,fontSize: 12.sp,fontWeight: FontWeight.w400),),*/
-
                                   Text(
                                     '${AppLocalizations.of(context)!.invoice_Value}: ',
                                     style: TextStyle(
                                         color: Colors.black,
-                                        fontSize: 22.sp,
+                                        fontSize: 20.sp,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(
-                                    width: width * 0.34,
+                                    width: width * 0.3,
                                     child: Text(
                                       '${NumberFormat('#,###').format(state.orderDetailsEntity!.totalPrice)}\€',
                                       style: TextStyle(
                                           color: theme.primary,
-                                          fontSize: 16.sp,
+                                          fontSize: 14.sp,
                                           fontWeight: FontWeight.w600),
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -130,7 +128,7 @@ class OrderDetailsBody extends StatelessWidget {
                                 '${DateFormat("yyyy/MM/dd : HH:m:s").format(DateTime.parse(state.orderDetailsEntity!.createdAt!))}',
                                 style: TextStyle(
                                     color: Colors.grey,
-                                    fontSize: 15.sp,
+                                    fontSize: 12.sp,
                                     fontWeight: FontWeight.w300),
                               ),
                               //  Text('${cubit.orderDetailsModel!.createdAt}',style: TextStyle(color: Colors.grey,fontSize: 12.sp,fontWeight: FontWeight.w400),),
@@ -139,7 +137,7 @@ class OrderDetailsBody extends StatelessWidget {
                           Icon(
                             Icons.shopping_cart,
                             color: theme.primary,
-                            size: 45.sp,
+                            size: 45,
                           ),
                           //Image.asset(''),
                         ],
@@ -156,14 +154,14 @@ class OrderDetailsBody extends StatelessWidget {
                             Icon(
                               Icons.add_shopping_cart,
                               color: theme.secondary,
-                              size: 20.sp,
+                              size: 20,
                             ),
                             Text(
                               '${AppLocalizations.of(context)!.ordered_products}',
                               style: TextStyle(
                                   color: theme.secondary,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 20.sp),
+                                  fontSize: 18.sp),
                             ),
                           ],
                         ),
@@ -180,7 +178,7 @@ class OrderDetailsBody extends StatelessWidget {
                         var path =
                             '${state.orderDetailsEntity!.productsOrderDetailsList![mainIndex].image}';
                         return Container(
-                          height: height * 0.3,
+                          height: height * 0.32,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(15),
@@ -202,16 +200,16 @@ class OrderDetailsBody extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   CustomImageView(
-                                    width: width * 0.25,
+                                    width: width * 0.3,
                                     height: height * 0.12,
                                     imagePath: '${path}',
                                     fit: BoxFit.contain,
                                   ),
                                   SizedBox(
-                                    width: width * 0.01,
+                                    width: width * 0.02,
                                   ),
                                   SizedBox(
-                                    width: width * 0.56,
+                                    width: width * 0.5,
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -239,6 +237,9 @@ class OrderDetailsBody extends StatelessWidget {
                                     ),
                                   )
                                 ],
+                              ),
+                              SizedBox(
+                                height: 10.h,
                               ),
                               SizedBox(
                                 height: height * 0.15,

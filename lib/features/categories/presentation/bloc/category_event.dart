@@ -11,10 +11,12 @@ class GetCategoryChildren extends CategoryEvent {
   final int page;
   final String language;
 
-  const GetCategoryChildren(this.id, this.page, this.limit, this.language);
+  final bool isRefreshAll;
+
+  const GetCategoryChildren(this.id, this.page, this.limit, this.language, this.isRefreshAll);
 
   @override
-  List<Object> get props => [id, page, limit, language];
+  List<Object> get props => [id, page, limit, language,isRefreshAll];
 }
 
 

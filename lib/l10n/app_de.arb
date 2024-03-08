@@ -58,6 +58,7 @@
     "language_Settings": "Spracheinstellungen",
     "orders_Details": "Bestelldetails",
     "logout": "Abmelden",
+    "do_you_logout": "Möchten Sie sich abmelden?",
 
     "favorite_Products": "Lieblingsprodukte",
 
@@ -98,7 +99,7 @@
     "cancel": "Abbrechen",
     "add": "Hinzufügen",
     "enter_quantity_unit": "Geben Sie die Menge für diese Einheit ein",
-    "edit_quantity_unit": "Bearbeiten Sie die Menge für diese Einheit",
+    "edit_quantity_unit": "Für diese Produkteinheit wurde die Menge geändert",
     "not_available": "Die Menge ist derzeit nicht verfügbar",
     "edit": "Bearbeiten",
 

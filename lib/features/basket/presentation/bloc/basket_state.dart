@@ -8,6 +8,8 @@ enum BasketStatus {
   add,
   remove,
   deleteAll,
+
+  deleteAllWithLogout,
   editBasket,
   changeQuantity,
   errorAdded,

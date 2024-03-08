@@ -1,4 +1,5 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:zaza_app/config/theme/colors.dart';
 import 'package:zaza_app/core/widgets/custom_toast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:zaza_app/features/product/presentation/widgets/product_card.dart';
@@ -9,25 +10,16 @@ import '../../../../injection_container.dart';
 import '../bloc/discount_bloc.dart';
 
 class DiscountBody extends StatelessWidget {
-  const DiscountBody({super.key});
+  DiscountBody(this.state,{super.key});
+
+  DiscountState state;
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context).colorScheme;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    return BlocConsumer<DiscountBloc, DiscountState>(
-      listener: (context, state) {
-        if (state.discountStatus == DiscountStatus.errorAllDiscount) {
-          showToast(text: state.error!.message, state: ToastState.error);
-        }
-        if (state.discountStatus == DiscountStatus.changeSort) {
-          context.read<DiscountBloc>().add(GetAllDiscountProducts(limit, 0, sort, languageCode));
-        }
-      },
-      builder: (context, state) {
-        final state = context.watch<DiscountBloc>().state;
-        return state.discountStatus == DiscountStatus.successAllDiscount
+        return state.isDiscountHomeLoaded!
             ? SingleChildScrollView(
                 controller: state.scrollController,
                 child: Padding(
@@ -39,6 +31,17 @@ class DiscountBody extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: Icon(
+                              Icons.arrow_back,
+                              color: AppColor.secondaryLight,
+                              size: 20.sp,
+                            ),
+                            iconSize: 20.sp,
+                          ),
                           Text(
                             '${AppLocalizations.of(context)!.number_of_Products} (${state.productAllDiscountEntity!.totalNumber})',
                             style: TextStyle(
@@ -60,7 +63,7 @@ class DiscountBody extends StatelessWidget {
                                       color: theme.primary,
                                       fontWeight: FontWeight.w400,
                                       fontSize: 15.sp),
-                                )
+                                ),
                         ],
                       ),
                       SizedBox(
@@ -68,8 +71,7 @@ class DiscountBody extends StatelessWidget {
                       ),
                       GridView.builder(
                         shrinkWrap: true,
-                        gridDelegate:
-                            SliverGridDelegateWithMaxCrossAxisExtent(
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                           maxCrossAxisExtent: width * 0.5,
                           mainAxisExtent: height * 0.36,
                           crossAxisSpacing: 5,
@@ -81,8 +83,7 @@ class DiscountBody extends StatelessWidget {
                             return ProductCard(
                                 index,
                                 state.productDiscountList![index].productId!,
-                                state
-                                    .productDiscountList![index].productName!,
+                                state.productDiscountList![index].productName!,
                                 state.productDiscountList![index].image!,
                                 state.productDiscountList![index].barCode!,
                                 state.productDiscountList![index].discount!,
@@ -114,7 +115,5 @@ class DiscountBody extends StatelessWidget {
                 ),
               )
             : SpinKitApp(width);
-      },
-    );
   }
 }

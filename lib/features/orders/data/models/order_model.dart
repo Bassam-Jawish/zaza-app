@@ -12,7 +12,7 @@ class GeneralOrdersModel extends GeneralOrdersEntity {
       ordersList: map['orders'] != null
           ? List<GeneralOrderDataModel>.from((map['orders'] as List)
           .map((order) => GeneralOrderDataModel.fromJson(order)))
-          : null,
+          : [],
     );
   }
 }
@@ -33,7 +33,7 @@ class GeneralOrderDataModel extends GeneralOrderData {
   factory GeneralOrderDataModel.fromJson(Map<String, dynamic> map) {
     return GeneralOrderDataModel(
       orderId: map['id'] ?? 0,
-      totalPrice: map['totalPrice'],
+      totalPrice: map['totalPrice'] ?? '',
       createdAt: map['createdAt'] ?? "",
       status: map['status'] ?? "",
     );

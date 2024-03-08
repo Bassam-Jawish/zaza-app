@@ -67,11 +67,11 @@ class OrderCard extends StatelessWidget {
                     fontSize: 14.sp),
               ),
               Container(
-                height: height * 0.034,
-                width: width * 0.3,
+                height: height * 0.04,
+                width: width * 0.26,
                 decoration: BoxDecoration(
                   color: theme.primary,
-                  borderRadius: BorderRadius.circular(12.0),
+                  borderRadius: BorderRadius.circular(12.0.r),
                 ),
                 child: ElevatedButton(
                   child: Text(
@@ -79,7 +79,7 @@ class OrderCard extends StatelessWidget {
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
-                        fontSize: 12.sp),
+                        fontSize: 10.sp),
                   ),
                   onPressed: () {
                     orderId = order_id;
@@ -116,7 +116,7 @@ class OrderCard extends StatelessWidget {
           ),
         ),
         Positioned(
-          left: 0.0,
+          left: 10.0,
           top: 0.0,
           child: Container(
             height: height * 0.024,

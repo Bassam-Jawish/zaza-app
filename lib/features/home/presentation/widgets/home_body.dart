@@ -16,8 +16,21 @@ import '../../../base/presentation/widgets/push_bottom_bar.dart';
 import '../../../product/presentation/bloc/product/product_bloc.dart';
 import '../../../product/presentation/pages/new_products_page.dart';
 
-class HomeBody extends StatelessWidget {
+class HomeBody extends StatefulWidget {
   const HomeBody({super.key});
+
+  @override
+  State<HomeBody> createState() => _HomeBodyState();
+}
+
+class _HomeBodyState extends State<HomeBody> {
+
+  @override
+  void initState() {
+    BlocProvider.of<DiscountBloc>(context).add(GetHomeDiscountProducts(limit, 0, sort, languageCode));
+    BlocProvider.of<BasketBloc>(context).add((GetIdQuantityForBasket()));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,21 +61,18 @@ class HomeBody extends StatelessWidget {
         child: Builder(builder: (context) {
           final state = context.watch<DiscountBloc>().state;
           final stateNewProducts = context.watch<ProductBloc>().state;
-          return stateNewProducts.isNewHomeLoaded!
+          return state.isDiscountHomeLoaded! ? stateNewProducts.isNewHomeLoaded!
               ? RefreshIndicator(
                   onRefresh: () async {
                     context.read<DiscountBloc>().add(GetHomeDiscountProducts(
                         limit, 0, 'newest', languageCode));
-
-                    context.read<ProductBloc>().add(GetHomeNewProducts(
-                        limitForProductsInHome, 0, 'newest', '', languageCode));
-
                     await Future.delayed(Duration(seconds: 2));
                   },
                   child: SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: width * 0.03, vertical: height * 0.03),
+                          horizontal: width * 0.03, vertical: height * 0.02),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -266,7 +276,7 @@ class HomeBody extends StatelessWidget {
                     ),
                   ),
                 )
-              : SpinKitApp(width);
+              : SpinKitApp(width) : SpinKitApp(width);
         }));
   }
 }

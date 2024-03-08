@@ -11,10 +11,12 @@ class GetFavoriteProducts extends FavoriteEvent {
   final String search;
   final String language;
 
-  const GetFavoriteProducts(this.limit, this.page, this.sort, this.search, this.language);
+  final bool isRefreshAll;
+
+  const GetFavoriteProducts(this.limit, this.page, this.sort, this.search, this.language, this.isRefreshAll);
 
   @override
-  List<Object> get props => [limit, page, sort, search, search];
+  List<Object> get props => [limit, page, sort, search, search, isRefreshAll];
 }
 
 class AddToFavoriteFav extends FavoriteEvent {

@@ -38,14 +38,14 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
 
   void onGetProfileOrders(GetProfileOrders event, Emitter<OrderState> emit) async {
-    emit(state.copyWith(orderStatus: OrderStatus.loading));
+    emit(state.copyWith(orderStatus: OrderStatus.loading, isProfileOrdersLoaded: false));
 
     final isConnected = await _networkInfo.isConnected;
 
     if (!isConnected) {
       emit(state.copyWith(
           error: ConnectionFailure('No Internet Connection'),
-          orderStatus: OrderStatus.error));
+          orderStatus: OrderStatus.error, isProfileOrdersLoaded: false));
       return;
     }
 
@@ -75,25 +75,25 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
         debugPrint(dataState.error!.message);
         emit(state.copyWith(
             error: ServerFailure.fromDioError(dataState.error!),
-            orderStatus: OrderStatus.error, ));
+            orderStatus: OrderStatus.error, isProfileOrdersLoaded: false));
       }
     } on DioException catch (e) {
       debugPrint(e.toString());
       emit(state.copyWith(
           error: ServerFailure.fromDioError(e),
-          orderStatus: OrderStatus.error));
+          orderStatus: OrderStatus.error, isProfileOrdersLoaded: false));
     }
   }
 
   void onGetOrders(GetOrders event, Emitter<OrderState> emit) async {
-    emit(state.copyWith(orderStatus: OrderStatus.loading));
+    emit(state.copyWith(orderStatus: OrderStatus.loading,isOrdersLoaded: false,ordersList: []));
 
     final isConnected = await _networkInfo.isConnected;
 
     if (!isConnected) {
       emit(state.copyWith(
           error: ConnectionFailure('No Internet Connection'),
-          orderStatus: OrderStatus.error));
+          orderStatus: OrderStatus.error,isOrdersLoaded: false));
       return;
     }
 
@@ -123,13 +123,13 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
         debugPrint(dataState.error!.message);
         emit(state.copyWith(
             error: ServerFailure.fromDioError(dataState.error!),
-            orderStatus: OrderStatus.error));
+            orderStatus: OrderStatus.error,isOrdersLoaded: false));
       }
     } on DioException catch (e) {
       debugPrint(e.toString());
       emit(state.copyWith(
           error: ServerFailure.fromDioError(e),
-          orderStatus: OrderStatus.error));
+          orderStatus: OrderStatus.error,isOrdersLoaded: false));
     }
   }
 
@@ -180,9 +180,8 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
 
   void onChangeDropdownValue(
       ChangeDropdownValue event, Emitter<OrderState> emit) async {
-
-    emit(state.copyWith(statusSearch: event.val,orderStatus: OrderStatus.changeStatusSearch));
-    // call get Orders
-
+    String item = event.val;
+    sort = item;
+    emit(state.copyWith(statusSearch: item,orderStatus: OrderStatus.changeStatusSearch));
   }
 }

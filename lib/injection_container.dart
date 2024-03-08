@@ -15,7 +15,7 @@ var limit = 10;
 
 var limitForProductsInHome = 10;
 
-var limitSearch = 10000000;
+var limitSearch = 10;
 var limitOrders = 10000000;
 
 var refresh_token;
@@ -36,6 +36,10 @@ var languageCode;
 var selectedLanguageValue;
 
 String sort = 'newest';
+
+String barcodeSearch = '';
+String nameSearch = '';
+
 
 Map<String, String> languagesList = {
   'Germany': 'de',

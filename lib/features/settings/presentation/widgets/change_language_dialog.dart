@@ -14,7 +14,8 @@ Future changeLanguageDialog(
     builder: (context) => BlocBuilder<SettingsBloc, SettingsState>(
       builder: (context, state) {
         return AlertDialog(
-
+          shadowColor: Colors.white,
+          surfaceTintColor: Colors.white,
           backgroundColor: Colors.white,
           title: Column(
             children: [

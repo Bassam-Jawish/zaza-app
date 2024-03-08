@@ -7,6 +7,7 @@ import '../../../../core/app_export.dart';
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 
 import '../../../../core/widgets/custom_toast.dart';
+import '../../../../injection_container.dart';
 
 class SearchBody extends StatelessWidget {
   SearchBody(this.searchByProductNameController, this.searchByBarcodeController,
@@ -29,39 +30,64 @@ class SearchBody extends StatelessWidget {
         if (state.productStatus == ProductStatus.errorNameSearch) {
           showToast(text: state.error!.message, state: ToastState.error);
         }
+
+        if (state.productStatus ==
+            ProductStatus.loadingBarcodeSearchPaginated) {
+          context.read<ProductBloc>().add(GetSearchBarcodeProducts(
+              limit,
+              state.searchBarcodeCurrentIndex!,
+              'newest',
+              barcodeSearch,
+              languageCode,
+              false));
+        }
+
+        if (state.productStatus == ProductStatus.loadingNameSearchPaginated) {
+          print(nameSearch);
+          context.read<ProductBloc>().add(GetSearchNameProducts(
+              limit,
+              state.searchNameCurrentIndex!,
+              'newest',
+              nameSearch,
+              languageCode,
+              false));
+        }
       },
       builder: (context, state) {
-        return ContainedTabBarView(
-          tabs: [
-            //Text('Product Id'),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('${AppLocalizations.of(context)!.product_Id}'),
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          child: ContainedTabBarView(
+            tabs: [
+              //Text('Product Id'),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('${AppLocalizations.of(context)!.product_Id}'),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('${AppLocalizations.of(context)!.product_Name}'),
+              ),
+            ],
+            tabBarProperties: TabBarProperties(
+              indicatorColor: Colors.white,
+              indicatorSize: TabBarIndicatorSize.tab,
+              indicator: ContainerTabIndicator(
+                radius: BorderRadius.circular(12.0.r),
+                color: theme.primary,
+              ),
+              labelColor: Colors.white,
+              unselectedLabelColor: theme.secondary,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('${AppLocalizations.of(context)!.product_Name}'),
-            ),
-          ],
-          tabBarProperties: TabBarProperties(
-            indicatorColor: Colors.white,
-            indicatorSize: TabBarIndicatorSize.tab,
-            indicator: ContainerTabIndicator(
-              radius: BorderRadius.circular(12.0.r),
-              color: theme.primary,
-            ),
-            labelColor: Colors.white,
-            unselectedLabelColor: theme.secondary,
+            views: [
+              //searchByProductId(context, width, height, cubit),
+              SearchByBarcode(state, searchByBarcodeController),
+              SearchByName(state, searchByProductNameController),
+            ],
+            onChange: (index) {
+              FocusManager.instance.primaryFocus?.unfocus();
+              print(index);
+            },
           ),
-          views: [
-            //searchByProductId(context, width, height, cubit),
-            SearchByBarcode(state, searchByBarcodeController),
-            SearchByName(state, searchByProductNameController),
-          ],
-          onChange: (index) {
-            FocusManager.instance.primaryFocus?.unfocus();
-            print(index);
-          },
         );
       },
     );

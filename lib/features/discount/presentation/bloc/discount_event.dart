@@ -24,7 +24,9 @@ class GetAllDiscountProducts extends DiscountEvent {
 
   final dynamic language;
 
-  const GetAllDiscountProducts(this.limit, this.page, this.sort, this.language);
+  final bool isRefreshAll;
+
+  const GetAllDiscountProducts(this.limit, this.page, this.sort, this.language, this.isRefreshAll);
 
   @override
   List<Object> get props => [limit, page, sort, language];

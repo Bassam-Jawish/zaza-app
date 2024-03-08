@@ -41,14 +41,14 @@ class MyApp extends StatelessWidget {
         BlocProvider<DiscountBloc>(
             create: (BuildContext context) =>
             sl()
-              ..add(GetHomeDiscountProducts(limit, 1, sort, languageCode))),
+        ),
         BlocProvider<ProductBloc>(
           create: (BuildContext context) =>
               sl(),
         ),
         BlocProvider<BasketBloc>(
           create: (BuildContext context) =>
-              sl()..add(GetIdQuantityForBasket()),
+              sl(),
         ),
         BlocProvider<OrderBloc>(
           create: (BuildContext context) =>

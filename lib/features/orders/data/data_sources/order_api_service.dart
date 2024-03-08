@@ -26,7 +26,7 @@ abstract class OrderApiService {
   @GET('/order/{order_id}')
   Future<HttpResponse<OrderDetailsModel>> getOrderDetails(
       @Path('order_id') int order_id,
-      @Query('language')  language,
+      @Query('language') String language,
       );
 
 }

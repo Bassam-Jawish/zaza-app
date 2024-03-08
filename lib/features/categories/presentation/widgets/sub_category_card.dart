@@ -30,7 +30,7 @@ class SubCategoryCard extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(30.r),
         boxShadow: [
           BoxShadow(
             offset: const Offset(0, 0.1),
@@ -46,7 +46,7 @@ class SubCategoryCard extends StatelessWidget {
             categoryId = sub_id;
             pushNewScreenWithNavBar(context, CategoryPage(), '/categories');
           },
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(30.r),
           splashColor: Colors.white,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -54,9 +54,9 @@ class SubCategoryCard extends StatelessWidget {
               Container(
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(30),
-                    topLeft: Radius.circular(30),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30.r),
+                    topLeft: Radius.circular(30.r),
                   ),
                   border: Border.all(
                     width: 1,
@@ -68,11 +68,9 @@ class SubCategoryCard extends StatelessWidget {
                     bottomLeft: Radius.circular(30.r),
                     topLeft: Radius.circular(30.r),
                   ),
-                  child:
-
-                  CustomImageView(
+                  child: CustomImageView(
                     imagePath: path,
-                    width: width*0.32,
+                    width: width * 0.32,
                     height: double.infinity,
                     fit: BoxFit.contain,
                   ),
@@ -89,7 +87,8 @@ class SubCategoryCard extends StatelessWidget {
                   children: [
                     Text(
                       '${itemsNumber.toString()} ${AppLocalizations.of(context)!.items}',
-                      style: TextStyle(color: AppColor.secondaryLight, fontSize: 17.sp),
+                      style: TextStyle(
+                          color: AppColor.secondaryLight, fontSize: 17.sp),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

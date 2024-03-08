@@ -1,4 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/app_export.dart';
 
@@ -9,12 +10,13 @@ Future<Object?> awsDialogDeleteForAll(
       dialogType: DialogType.warning,
       borderSide: const BorderSide(
         color: Colors.yellow,
-        width: 2,
+        width: 1,
       ),
       width: width * 0.8,
-      buttonsBorderRadius: const BorderRadius.all(
-        Radius.circular(2),
+      buttonsBorderRadius: BorderRadius.all(
+        Radius.circular(5.r),
       ),
+
       btnCancelText: '${AppLocalizations.of(context)!.cancel}',
       btnOkText: '${AppLocalizations.of(context)!.ok}',
       dismissOnTouchOutside: false,
@@ -28,7 +30,7 @@ Future<Object?> awsDialogDeleteForAll(
       btnOkOnPress: () {
         if (type == 0) {
           //Delete basketInfo
-          BlocProvider.of<BasketBloc>(context).add(DeleteBasket());
+          BlocProvider.of<BasketBloc>(context).add(DeleteBasket(false));
         }
       }).show();
 }

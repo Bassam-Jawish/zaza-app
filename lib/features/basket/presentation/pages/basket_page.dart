@@ -23,7 +23,7 @@ class BasketPage extends StatelessWidget {
       },
       child: Scaffold(
         backgroundColor: theme.background,
-        appBar: CustomAppBar(AppLocalizations.of(context)!.basket, width, height, context, true),
+        appBar: CustomAppBar(AppLocalizations.of(context)!.basket, width, height, context, true, true),
         body: BasketBody(),
       ),
     );

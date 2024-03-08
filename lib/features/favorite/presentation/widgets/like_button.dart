@@ -24,7 +24,7 @@ Widget likeButtonWidget(
             .add(AddToFavoriteHomeNewProducts(productId, index));
         isLiked = state.newHomeProductsFavorites![productId]!;
         print(isLiked);
-        return state.productStatus == ProductStatus.addedToFavoriteNewProducts
+        return state.isAddedHomeNewProducts
             ? !isLiked
             : isLiked;
       } else if (type == 1) {
@@ -33,8 +33,7 @@ Widget likeButtonWidget(
             .add(AddToFavoriteSearchByBarCode(productId, index));
         isLiked = state.searchBarcodeProductsFavorites![productId]!;
         print(isLiked);
-        return state.productStatus ==
-                ProductStatus.addedToFavoriteSearchByBarcode
+        return state.isAddedSearchByBarcode
             ? !isLiked
             : isLiked;
       } else if (type == 2) {
@@ -43,7 +42,7 @@ Widget likeButtonWidget(
             .add(AddToFavoriteSearchByName(productId, index));
         isLiked = state.searchNameProductsFavorites![productId]!;
         print(isLiked);
-        return state.productStatus == ProductStatus.addedToFavoriteSearchByName
+        return state.isAddedSearchByName
             ? !isLiked
             : isLiked;
       } else if (type == 3) {
@@ -52,7 +51,7 @@ Widget likeButtonWidget(
             .add(AddToFavoriteFav(productId, index));
         isLiked = state.favorites![productId]!;
         print(isLiked);
-        return state.favoriteStatus == FavoriteStatus.addedToFavorite
+        return state.isAdded
             ? !isLiked
             : isLiked;
       } else if (type == 4) {
@@ -61,7 +60,7 @@ Widget likeButtonWidget(
             .add(AddToFavoriteDiscount(productId, index));
         isLiked = state.favorites![productId]!;
         print(isLiked);
-        return state.discountStatus == DiscountStatus.addedToFavorite
+        return state.isAdded
             ? !isLiked
             : isLiked;
       } else if (type == 5) {
@@ -70,7 +69,7 @@ Widget likeButtonWidget(
             .add(AddToFavoriteNewProducts(productId, index));
         isLiked = state.newAllProductsFavorites![productId]!;
         print(isLiked);
-        return state.newProductStatus == NewProductStatus.addedToFavorite
+        return state.isAddedNewProducts
             ? !isLiked
             : isLiked;
       } else if (type == 6) {
