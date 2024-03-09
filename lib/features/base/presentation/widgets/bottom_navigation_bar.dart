@@ -36,6 +36,7 @@ class PersistentBottomNavigationBar extends StatelessWidget {
         items: bottomItems(context),
         controller: PersistentTabController(initialIndex: 0),
         confineInSafeArea: true,
+        resizeToAvoidBottomInset: false,
         backgroundColor: AppColor.bottomNavigationBarLight,
         handleAndroidBackButtonPress: true,
         popActionScreens: PopActionScreensType.once,

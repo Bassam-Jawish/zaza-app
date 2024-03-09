@@ -10,12 +10,14 @@ import '../../../base/presentation/widgets/push_bottom_bar.dart';
 
 class OrderCard extends StatelessWidget {
   OrderCard(
-      this.index, this.order_id, this.total_price, this.created_at, this.status,
+      this.index, this.order_id, this.total_price, this.totalPriceAfterTax,this.created_at, this.status,
       {super.key});
 
   int index;
   int order_id;
   dynamic total_price;
+  dynamic totalPriceAfterTax;
+
   String created_at;
   String status;
 
@@ -57,14 +59,28 @@ class OrderCard extends StatelessWidget {
                 style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w600,
-                    fontSize: 16.sp),
+                    fontSize: 15.sp),
               ),
               Text(
                 '${total_price}\€',
                 style: TextStyle(
                     color: theme.primary,
                     fontWeight: FontWeight.w600,
-                    fontSize: 14.sp),
+                    fontSize: 13.sp),
+              ),
+              Text(
+                '${AppLocalizations.of(context)!.invoice_with_tax}',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15.sp),
+              ),
+              Text(
+                '${totalPriceAfterTax}\€',
+                style: TextStyle(
+                    color: theme.primary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13.sp),
               ),
               Container(
                 height: height * 0.04,

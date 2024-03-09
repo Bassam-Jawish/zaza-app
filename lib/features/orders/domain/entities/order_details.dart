@@ -3,6 +3,8 @@ import 'package:equatable/equatable.dart';
 class OrderDetailsEntity extends Equatable {
   final int? orderId;
   final dynamic totalPrice;
+
+  final dynamic totalPriceAfterTax;
   final String? createdAt;
   final String? status;
   final List<ProductOrderEntity>? productsOrderDetailsList;
@@ -10,6 +12,7 @@ class OrderDetailsEntity extends Equatable {
   const OrderDetailsEntity({
     this.orderId,
     this.totalPrice,
+    this.totalPriceAfterTax,
     this.createdAt,
     this.status,
     this.productsOrderDetailsList,
@@ -17,7 +20,7 @@ class OrderDetailsEntity extends Equatable {
 
   @override
   List<Object?> get props =>
-      [orderId, totalPrice, createdAt, status, productsOrderDetailsList];
+      [orderId, totalPrice, totalPriceAfterTax, createdAt, status, productsOrderDetailsList];
 }
 
 class ProductOrderEntity extends Equatable {

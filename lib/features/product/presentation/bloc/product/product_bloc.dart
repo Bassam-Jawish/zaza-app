@@ -398,6 +398,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     } on PlatformException {
       scanResult = 'Failed to get platform version';
     }
+    print(scanResult);
 
     emit(state.copyWith(
         scanBarcode: scanResult, productStatus: ProductStatus.scannedBarcode));

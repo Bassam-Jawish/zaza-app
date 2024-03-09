@@ -42,6 +42,7 @@ class CategoryBody extends StatelessWidget {
           await Future.delayed(Duration(seconds: 2));
         },
         child: SingleChildScrollView(
+          controller: state.scrollController,
           physics: AlwaysScrollableScrollPhysics(),
           child: Padding(
               padding: EdgeInsets.symmetric(
@@ -76,22 +77,21 @@ class CategoryBody extends StatelessWidget {
                       crossAxisSpacing: 5,
                       mainAxisSpacing: 5,
                     ),
-                    itemCount:
-                        state.categoryParentEntity!.categoriesChildren!.length,
+                    itemCount: state.categoryStatus == CategoryStatus.paginated
+                        ? state.categoriesPaginated!.length
+                        : state.categoriesPaginated!.length + 1,
                     physics: BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
                       /*String path =
                                 '${url}${state.productsModel!.productsListChildren![index].image}';*/
                       //print(path);
-                      return CategoryCard(
-                          state.categoryParentEntity!.categoriesChildren![index]
-                              .id!,
-                          state.categoryParentEntity!.categoriesChildren![index]
-                              .categoryName!,
-                          state.categoryParentEntity!.categoriesChildren![index]
-                              .image!,
-                          state.categoryParentEntity!.categoriesChildren![index]
-                              .itemsNumber!);
+                      if (index < state.categoriesPaginated!.length) {
+                        return CategoryCard(
+                            state.categoriesPaginated![index].id!,
+                            state.categoriesPaginated![index].categoryName!,
+                            state.categoriesPaginated![index].image!,
+                            state.categoriesPaginated![index].itemsNumber!);
+                      }
 
                       /*buildCategoryCard(
                           width,
@@ -105,6 +105,9 @@ class CategoryBody extends StatelessWidget {
                         );*/
                     },
                   ),
+                  state.categoryStatus == CategoryStatus.paginated
+                      ? Center(child: SpinKitApp(width))
+                      : SizedBox(),
                 ],
               )),
         ),
@@ -150,6 +153,7 @@ class CategoryBody extends StatelessWidget {
     return ConditionalBuilder(
       condition: state.isPageLoaded!,
       builder: (context) => SingleChildScrollView(
+        controller: state.scrollController,
         child: Padding(
           padding: EdgeInsets.symmetric(
               horizontal: width * 0.03, vertical: height * 0.03),
@@ -185,20 +189,23 @@ class CategoryBody extends StatelessWidget {
               ListView.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount:
-                    state.categoryParentEntity!.categoriesChildren!.length,
+                itemCount: state.categoriesPaginated!.length,
                 separatorBuilder: (BuildContext context, int index) => SizedBox(
                   height: height * 0.02,
                 ),
-                itemBuilder: (context, index) => SubCategoryCard(
-                    state.categoryParentEntity!.categoriesChildren![index].id!,
-                    state.categoryParentEntity!.categoriesChildren![index]
-                        .categoryName!,
-                    state.categoryParentEntity!.categoriesChildren![index]
-                        .image!,
-                    state.categoryParentEntity!.categoriesChildren![index]
-                        .itemsNumber!),
+                itemBuilder: (context, index) {
+                  if (index < state.categoriesPaginated!.length) {
+                    return SubCategoryCard(
+                        state.categoriesPaginated![index].id!,
+                        state.categoriesPaginated![index].categoryName!,
+                        state.categoriesPaginated![index].image!,
+                        state.categoriesPaginated![index].itemsNumber!);
+                  }
+                },
               ),
+              state.categoryStatus == CategoryStatus.paginated
+                  ? Center(child: SpinKitApp(width))
+                  : SizedBox(),
             ],
           ),
         ),
@@ -280,7 +287,7 @@ class CategoryBody extends StatelessWidget {
                         state.productsPaginated![index].barCode!,
                         state.productsPaginated![index].discount!,
                         state.productsPaginated![index].productUnitListModel![0]
-                            .unitId!,
+                            .productUnitId!,
                         state.productsPaginated![index].productUnitListModel![0]
                             .unitName!,
                         state.productsPaginated![index].productUnitListModel![0]

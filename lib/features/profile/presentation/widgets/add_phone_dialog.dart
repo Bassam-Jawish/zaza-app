@@ -19,7 +19,6 @@ Future addPhoneDialog(
     builder: (context) => BlocConsumer<ProfileBloc, ProfileState>(
       listener: (context, state) {
         if (state.profileStatus == ProfileStatus.successCreatePhone) {
-          print('dgfhfghdgs');
           GoRouter.of(context).pop();
           BlocProvider.of<ProfileBloc>(context1)
               .add(GetUserProfile(languageCode));
@@ -53,7 +52,7 @@ Future addPhoneDialog(
                   Text(
                     '${AppLocalizations.of(context)!.add_Phone_Number}',
                     style: TextStyle(
-                        fontSize: 18.sp,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w400,
                         color: AppColor.secondaryLight),
                   ),

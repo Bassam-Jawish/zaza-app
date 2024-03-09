@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:zaza_app/features/categories/data/models/category_parent_model.dart';
 import 'package:zaza_app/features/categories/data/models/choose_type_model.dart';
 import 'package:zaza_app/features/categories/data/models/unknown_type_model.dart';
+import 'package:zaza_app/features/categories/domain/entities/category_entity.dart';
 import 'package:zaza_app/features/categories/domain/entities/category_parent_entity.dart';
 import 'package:zaza_app/features/categories/domain/entities/choose_type_entity.dart';
 import 'package:zaza_app/features/categories/domain/entities/unknown_type_entity.dart';
@@ -35,10 +36,12 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       : super(CategoryState().copyWith(
             categoryStatus: CategoryStatus.initial,
             catId: 0,
+            categoriesPaginated: [],
             productsPaginated: [],
             isPageLoaded: false,
             favorites: {},
             isAdded: false,
+            currentIndex: 0,
             scrollController: ScrollController())) {
     state.scrollController!.addListener(_scrollListener);
     on<GetCategoryChildren>(onGetCategoryChildren);
@@ -68,9 +71,11 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       GetCategoryChildren event, Emitter<CategoryState> emit) async {
     if (event.isRefreshAll) {
       List<ProductData> productDiscountList = [];
+      List<CategoryEntity> categoriesPaginated = [];
       emit(state.copyWith(
           discountCurrentIndex: event.page,
           isPageLoaded: false,
+          categoriesPaginated: categoriesPaginated,
           productsPaginated: productDiscountList));
     }
 
@@ -128,6 +133,9 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
           CategoryParentEntity categoryParentEntity =
               CategoryParentModel.fromJson(dataState.data!);
 
+          List<CategoryEntity> categoriesPaginated = state.categoriesPaginated!;
+          categoriesPaginated.addAll(categoryParentEntity!.categoriesChildren!);
+
           List<ProductData> productsPaginated = state.productsPaginated!;
           productsPaginated.addAll(categoryParentEntity!.productsChildren!);
 
@@ -138,11 +146,11 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
             });
           });
 
-          print('fgds');
           emit(state.copyWith(
               categoryStatus: CategoryStatus.success,
               categoryParentEntity: categoryParentEntity,
               productsPaginated: productsPaginated,
+              categoriesPaginated: categoriesPaginated,
               favorites: favorites,
               isPageLoaded: true));
         }

@@ -29,6 +29,7 @@
     "newest": "Neueste",
     "oldest": "Älteste",
     "new_Products": "Neue Produkte",
+    "invoice_with_tax": "Nach Steuern",
 
     "error_Getting_Categories": "Fehler beim Abrufen der Kategorien",
     "categories": "Kategorien",
@@ -115,7 +116,7 @@
     "basket_Cleared": "Warenkorb geleert",
     "item_Deleted_Successfully": "Element erfolgreich gelöscht",
     "added_To_Basket_Successfully": "Erfolgreich zum Warenkorb hinzugefügt",
-    "cannot_add_again": "Erneutes Hinzufügen nicht möglich, überprüfen Sie den Warenkorb",
+    "cannot_add_again": "Das Produkt wurde bereits hinzugefügt",
     "order_Sent_Successfully": "Bestellung erfolgreich gesendet",
     "invalid_userName_or_password": "Ungültiger Benutzername oder Passwort",
 

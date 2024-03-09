@@ -35,7 +35,9 @@ class BasketLocalDatabaseServiceImpl implements BasketLocalDatabaseService {
     else {
       final product =
       ProductUnit(product_unit_id: product_unit_id, quantity: quantity);
+      print('sfdghdgs');
       box.add(product);
+      print('lfoo');
     }
   }
 

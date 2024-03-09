@@ -5,7 +5,6 @@ class CategoryState extends Equatable {
   final Failure? error;
   final String? screenType;
   final int? catId;
-  final int? discountCurrentIndex;
 
   final int? paginationNumberSave;
 
@@ -17,6 +16,8 @@ class CategoryState extends Equatable {
 
   final CategoryParentEntity? categoryParentEntity;
 
+  final List<CategoryEntity>? categoriesPaginated;
+
   final List<ProductData>? productsPaginated;
 
   final CategoryStatus? categoryStatus;
@@ -27,7 +28,6 @@ class CategoryState extends Equatable {
 
   final Map<int, bool>? favorites;
 
-  final bool? isRefreshAll;
 
   final bool? isAdded;
 
@@ -36,18 +36,17 @@ class CategoryState extends Equatable {
     this.error,
     this.screenType,
     this.catId,
-    this.discountCurrentIndex,
     this.paginationNumberSave,
     this.currentIndex,
     this.chooseTypeEntity,
     this.unknownChildEntity,
     this.categoryParentEntity,
+    this.categoriesPaginated,
     this.productsPaginated,
     this.categoryStatus,
     this.scrollController,
     this.isPageLoaded,
     this.favorites,
-    this.isRefreshAll,
     this.isAdded
   });
 
@@ -56,18 +55,17 @@ class CategoryState extends Equatable {
     error,
     screenType,
     catId,
-    discountCurrentIndex,
     paginationNumberSave,
     currentIndex,
     chooseTypeEntity,
     unknownChildEntity,
     categoryParentEntity,
+    categoriesPaginated,
     productsPaginated,
     categoryStatus,
     scrollController,
     isPageLoaded,
     favorites,
-    isRefreshAll,
     isAdded,
   ];
 
@@ -81,6 +79,7 @@ class CategoryState extends Equatable {
     ChooseTypeEntity? chooseTypeEntity,
     UnknownChildEntity? unknownChildEntity,
     CategoryParentEntity? categoryParentEntity,
+    List<CategoryEntity>? categoriesPaginated,
     List<ProductData>? productsPaginated,
     CategoryStatus? categoryStatus,
     ScrollController? scrollController,
@@ -93,18 +92,17 @@ class CategoryState extends Equatable {
       error: error ?? this.error,
       screenType: screenType ?? this.screenType,
       catId: catId ?? this.catId,
-      discountCurrentIndex: discountCurrentIndex ?? this.discountCurrentIndex,
       paginationNumberSave: paginationNumberSave ?? this.paginationNumberSave,
       currentIndex: currentIndex ?? this.currentIndex,
       chooseTypeEntity: chooseTypeEntity ?? this.chooseTypeEntity,
       unknownChildEntity: unknownChildEntity ?? this.unknownChildEntity,
       categoryParentEntity: categoryParentEntity ?? this.categoryParentEntity,
+      categoriesPaginated: categoriesPaginated ?? this.categoriesPaginated,
       productsPaginated: productsPaginated ?? this.productsPaginated,
       categoryStatus: categoryStatus ?? this.categoryStatus,
       scrollController: scrollController ?? this.scrollController,
       isPageLoaded: isPageLoaded ?? this.isPageLoaded,
       favorites: favorites ?? this.favorites,
-      isRefreshAll: isRefreshAll ?? this.isRefreshAll,
       isAdded: isAdded ?? this.isAdded,
     );
   }

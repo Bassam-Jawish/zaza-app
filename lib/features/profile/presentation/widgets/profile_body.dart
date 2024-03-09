@@ -390,10 +390,11 @@ class _ProfileBodyState extends State<ProfileBody> {
                                               .ordersList![index].orderId!,
                                           orderState.generalOrdersEntity!
                                               .ordersList![index].totalPrice!,
+                                         0,
                                           orderState.generalOrdersEntity!
                                               .ordersList![index].createdAt!,
                                           orderState.generalOrdersEntity!
-                                              .ordersList![index].status!);
+                                              .ordersList![index].status!, );
                                     },
                                     itemCount: orderState.generalOrdersEntity!
                                         .ordersList!.length),

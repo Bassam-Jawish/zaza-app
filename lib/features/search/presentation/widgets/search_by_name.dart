@@ -80,7 +80,7 @@ class SearchByName extends StatelessWidget {
                                 state.productSearchNameList![index].barCode!,
                                 state.productSearchNameList![index].discount!,
                                 state.productSearchNameList![index]
-                                    .productUnitListModel![0].unitId!,
+                                    .productUnitListModel![0].productUnitId!,
                                 state.productSearchNameList![index]
                                     .productUnitListModel![0].unitName!,
                                 state.productSearchNameList![index]

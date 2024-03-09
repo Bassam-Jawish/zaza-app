@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zaza_app/core/app_export.dart';
 import 'package:zaza_app/core/widgets/custom_appbar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:zaza_app/features/product/presentation/widgets/custom_product_appbar.dart';
 
 import '../../../../core/widgets/custom_floating.dart';
 import '../../../../core/widgets/custom_toast.dart';
@@ -42,9 +43,8 @@ class DiscountPage extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             backgroundColor: theme.background,
-            appBar: null,
-            /*appBar: CustomAppBar(
-            AppLocalizations.of(context)!.hot_Deals, width, height, context, true,false),*/
+            //appBar: null,
+            appBar: CustomProductAppBar(AppLocalizations.of(context)!.hot_Deals, width, height, context, false),
             body: DiscountBody(state),
             floatingActionButton:
                 sortFloatingButton('DiscountBloc', context, () {

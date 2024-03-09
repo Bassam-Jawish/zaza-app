@@ -49,7 +49,7 @@ class NewProductsBody extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                             fontSize: 18.sp),
                       ),
-                      /*sort == 'newest'
+                      sort == 'newest'
                           ? Text(
                               '(${AppLocalizations.of(context)!.newest})',
                               style: TextStyle(
@@ -63,7 +63,7 @@ class NewProductsBody extends StatelessWidget {
                                   color: theme.primary,
                                   fontWeight: FontWeight.w400,
                                   fontSize: 15.sp),
-                            ),*/
+                            ),
                     ],
                   ),
                   SizedBox(

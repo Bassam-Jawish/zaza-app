@@ -4,6 +4,7 @@ class OrderDetailsModel extends OrderDetailsEntity {
   const OrderDetailsModel({
     int? orderId,
     dynamic totalPrice,
+    dynamic totalPriceAfterTax,
     String? createdAt,
     String? status,
     List<ProductOrderModel>? productsOrderDetailsList,
@@ -19,6 +20,7 @@ class OrderDetailsModel extends OrderDetailsEntity {
     return OrderDetailsModel(
       orderId: map['id'] ?? 0,
       totalPrice: map['totalPrice'],
+      totalPriceAfterTax: map['totalPriceAfterTax'],
       createdAt: map['createdAt'] ?? "",
       status: map['status'] ?? "",
       productsOrderDetailsList: map['products'] != null

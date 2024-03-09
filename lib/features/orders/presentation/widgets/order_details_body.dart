@@ -124,6 +124,30 @@ class OrderDetailsBody extends StatelessWidget {
                                   ),
                                 ],
                               ),
+                              Row(
+                                children: [
+                                  /*Text('Invoice Value: ',style: TextStyle(color: Colors.black,fontSize: 12.sp,fontWeight: FontWeight.w400),),
+                                      Text('${cubit.orderDetailsModel!.totalPrice}\€',style: TextStyle(color: Colors.black,fontSize: 12.sp,fontWeight: FontWeight.w400),),*/
+                                  Text(
+                                    '${AppLocalizations.of(context)!.invoice_with_tax}: ',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20.sp,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.3,
+                                    child: Text(
+                                      '${NumberFormat('#,###').format(state.orderDetailsEntity!.totalPriceAfterTax ?? 0)}\€',
+                                      style: TextStyle(
+                                          color: theme.primary,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w600),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
                               Text(
                                 '${DateFormat("yyyy/MM/dd : HH:m:s").format(DateTime.parse(state.orderDetailsEntity!.createdAt!))}',
                                 style: TextStyle(

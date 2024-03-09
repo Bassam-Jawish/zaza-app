@@ -44,6 +44,7 @@
     "oldest": "الأقدم",
     "new_Products": "منتجات جديدة",
 
+    "invoice_with_tax": "بعد الضريبة",
     "error_Getting_Categories": "حدث خطأ أثناء الحصول على الفئات",
     "categories": "التصنيفات",
     "main_Categories": "التصنيفات",
@@ -130,7 +131,7 @@
     "basket_Cleared": "تم مسح السلة",
     "item_Deleted_Successfully": "تم حذف العنصر بنجاح",
     "added_To_Basket_Successfully": "تمت الإضافة إلى السلة بنجاح",
-    "cannot_add_again": "رلا يمكن الإضافة مرة أخرى، تحقق من السلة",
+    "cannot_add_again": "تمت إضافة المنتج بالفعل",
     "order_Sent_Successfully": "تم إرسال الطلب بنجاح",
     "invalid_userName_or_password": "خطأ في اسم المستخدم أو كلمة مرور",
 

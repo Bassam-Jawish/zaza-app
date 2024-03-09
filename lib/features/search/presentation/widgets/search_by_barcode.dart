@@ -82,7 +82,7 @@ class SearchByBarcode extends StatelessWidget {
                                 state
                                     .productSearchBarcodeList![index].discount!,
                                 state.productSearchBarcodeList![index]
-                                    .productUnitListModel![0].unitId!,
+                                    .productUnitListModel![0].productUnitId!,
                                 state.productSearchBarcodeList![index]
                                     .productUnitListModel![0].unitName!,
                                 state.productSearchBarcodeList![index]

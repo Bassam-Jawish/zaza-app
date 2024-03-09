@@ -5,9 +5,9 @@ import '../../../../config/theme/styles.dart';
 import '../../../../core/app_export.dart';
 
 PreferredSizeWidget CustomProductAppBar(
-    String title, width, height, context) {
+    String title, width, height, context, bool isShowPop) {
   return AppBar(
-    leading: IconButton(
+    leading: isShowPop ? IconButton(
       onPressed: () {
         Navigator.pop(context);
       },
@@ -17,8 +17,8 @@ PreferredSizeWidget CustomProductAppBar(
         size: 20.sp,
       ),
       iconSize: 20.sp,
-    ),
-    leadingWidth: 100.w,
+    ) : SizedBox(),
+    leadingWidth: 90.w,
     centerTitle: true,
     backgroundColor: AppColor.backgroundColorLight,
     scrolledUnderElevation: 0,

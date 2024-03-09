@@ -102,6 +102,7 @@ class OrdersBody extends StatelessWidget {
                                       .orderId!,
                                   state.generalOrdersEntity!.ordersList![index]
                                       .totalPrice!,
+                                0,
                                   state.generalOrdersEntity!.ordersList![index]
                                       .createdAt!,
                                   state.generalOrdersEntity!.ordersList![index]

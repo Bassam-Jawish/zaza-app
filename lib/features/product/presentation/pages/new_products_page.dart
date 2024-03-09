@@ -8,6 +8,7 @@ import 'package:zaza_app/features/product/presentation/bloc/new_product/new_prod
 import '../../../../core/widgets/custom_floating.dart';
 import '../../../../core/widgets/custom_toast.dart';
 import '../../../../injection_container.dart';
+import '../widgets/custom_product_appbar.dart';
 import '../widgets/new_products_body.dart';
 
 class NewProductsPage extends StatelessWidget {
@@ -25,7 +26,7 @@ class NewProductsPage extends StatelessWidget {
         if (state.newProductStatus == NewProductStatus.changeSort) {
           context
               .read<NewProductBloc>()
-              .add(GetAllNewProducts(limit, 0, 'newest', '', languageCode, true));
+              .add(GetAllNewProducts(limit, 0, sort, '', languageCode, true));
         }
         if (state.newProductStatus == NewProductStatus.errorAllNewProducts) {
           showToast(text: state.error!.message, state: ToastState.error);
@@ -41,13 +42,12 @@ class NewProductsPage extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: theme.background,
-          appBar: null,
-          //appBar: CustomAppBar(AppLocalizations.of(context)!.new_Products, width, height, context, true, false),
+          appBar:CustomProductAppBar(AppLocalizations.of(context)!.new_Products, width, height, context, false),
           body: NewProductsBody(state),
-          /*floatingActionButton:
+          floatingActionButton:
               sortFloatingButton('NewProductBloc', context, () {
             context.read<NewProductBloc>().add(ChangeSortNewProducts());
-          }),*/
+          }),
         );
       },
     ),

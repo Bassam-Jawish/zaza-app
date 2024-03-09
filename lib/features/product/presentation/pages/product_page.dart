@@ -35,7 +35,7 @@ class ProductPage extends StatelessWidget {
                 AppLocalizations.of(context)!.item_Details,
                 width,
                 height,
-                context),
+                context, true),
             body: ProductBody(state),
             floatingActionButton: FloatingActionButton.extended(
               onPressed: () async {

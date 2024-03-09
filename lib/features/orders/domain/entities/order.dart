@@ -13,11 +13,12 @@ class GeneralOrdersEntity extends Equatable {
 class GeneralOrderData extends Equatable {
   final int? orderId;
   final dynamic totalPrice;
+  final dynamic totalPriceAfterTax;
   final String? createdAt;
   final String? status;
 
-  const GeneralOrderData({this.orderId, this.totalPrice, this.createdAt, this.status});
+  const GeneralOrderData({this.orderId, this.totalPrice, this.totalPriceAfterTax, this.createdAt, this.status});
 
   @override
-  List<Object?> get props => [orderId, totalPrice, createdAt, status];
+  List<Object?> get props => [orderId, totalPrice, totalPriceAfterTax,createdAt, status];
 }

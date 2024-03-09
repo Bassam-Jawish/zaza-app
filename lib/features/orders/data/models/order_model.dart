@@ -21,6 +21,7 @@ class GeneralOrderDataModel extends GeneralOrderData {
   const GeneralOrderDataModel({
     int? orderId,
     dynamic totalPrice,
+    dynamic totalPriceAfterTax,
     String? createdAt,
     String? status,
   }) : super(
@@ -33,7 +34,8 @@ class GeneralOrderDataModel extends GeneralOrderData {
   factory GeneralOrderDataModel.fromJson(Map<String, dynamic> map) {
     return GeneralOrderDataModel(
       orderId: map['id'] ?? 0,
-      totalPrice: map['totalPrice'] ?? '',
+      totalPrice: map['totalPrice'] ?? 0,
+      totalPriceAfterTax: map['totalPriceAfterTax'] ?? 0,
       createdAt: map['createdAt'] ?? "",
       status: map['status'] ?? "",
     );

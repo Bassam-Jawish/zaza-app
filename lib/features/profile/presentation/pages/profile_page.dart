@@ -15,7 +15,7 @@ class ProfilePage extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: theme.background,
-        appBar:CustomProductAppBar(AppLocalizations.of(context)!.profile, width, height, context),
+        appBar:CustomProductAppBar(AppLocalizations.of(context)!.profile, width, height, context, true),
       //appBar: CustomAppBar(AppLocalizations.of(context)!.profile, width, height, context, false,false),
       body: ProfileBody(),
     );

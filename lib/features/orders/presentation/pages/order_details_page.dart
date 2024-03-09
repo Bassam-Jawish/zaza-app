@@ -15,7 +15,7 @@ class OrderDetailsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: theme.background,
       //appBar: CustomAppBar(AppLocalizations.of(context)!.order_Details, width, height, context, false,false),
-      appBar:  CustomProductAppBar(AppLocalizations.of(context)!.order_Details, width, height, context),
+      appBar:  CustomProductAppBar(AppLocalizations.of(context)!.order_Details, width, height, context,true),
       body: OrderDetailsBody(),
     );
   }

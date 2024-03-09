@@ -75,6 +75,7 @@
     "do_you_logout": "Do you want to logout?",
 
 
+    "invoice_with_tax": "After tax",
     "favorite_Products": "Favorite Products",
 
     "logout_Successfully": "Logout Successfully",
@@ -130,7 +131,7 @@
     "basket_Cleared": "Basket Cleared",
     "item_Deleted_Successfully": "Item Deleted Successfully",
     "added_To_Basket_Successfully": "Added To Basket Successfully",
-    "cannot_add_again": "Cannot add again, Check Basket",
+    "cannot_add_again": "The product is already added",
     "order_Sent_Successfully": "Order Sent Successfully",
     "invalid_userName_or_password": "Invalid userName or password",
 
