@@ -13,6 +13,7 @@ class HomePage extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      //backgroundColor: Colors.white,
       backgroundColor: theme.background,
       appBar: CustomAppBar(AppLocalizations.of(context)!.hot_Deals, width, height, context, true,false),
       body: HomeBody(),

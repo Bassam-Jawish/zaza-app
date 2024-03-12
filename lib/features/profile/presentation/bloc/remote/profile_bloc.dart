@@ -176,7 +176,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   void onAddingPhoneNumber(
       AddingPhoneNumber event, Emitter<ProfileState> emit) async {
-    print('sdfjgff');
     emit(state.copyWith(number: event.phoneNumber, isoCode: event.isoCode));
   }
 }

@@ -195,7 +195,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           limit: event.limit,
           page: event.page + 1,
           sort: event.sort,
-          search: 'barCode:${event.search}',
+          search: event.search == '' ? '${event.search}' :'barCode:${event.search}',
           language: event.language);
 
       final dataState =
@@ -282,7 +282,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         limit: event.limit,
         page: event.page + 1,
         sort: event.sort,
-        search: 'name:${event.search}',
+        search: event.search == '' ? '${event.search}' :'name:${event.search}',
         language: event.language,
       );
 

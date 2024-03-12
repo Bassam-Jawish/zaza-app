@@ -62,10 +62,10 @@ class UnitCard extends StatelessWidget {
               ),
             ),
             SizedBox(width: width*0.02,),
-            Column(
+            discount != 0 ?  Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                discount != 0 ? Text(
+                Text(
                   '${price.toString()}\$',
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
@@ -75,7 +75,7 @@ class UnitCard extends StatelessWidget {
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                ) : Container(),
+                ),
                 Text(
                   '${(price * (100 - discount)) / 100}\$',
                   style: TextStyle(
@@ -86,6 +86,15 @@ class UnitCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
+            ) : Text(
+              '${price.toString()}\$',
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16.sp,
+                  color: Colors.black,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),

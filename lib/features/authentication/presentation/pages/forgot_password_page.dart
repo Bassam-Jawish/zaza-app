@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zaza_app/features/product/presentation/widgets/custom_product_appbar.dart';
 
 import '../../../../core/app_export.dart';
 import '../../../../core/widgets/custom_appbar.dart';
@@ -24,7 +25,7 @@ class ForgotPasswordPage extends StatelessWidget {
       },
       child: Scaffold(
         backgroundColor: theme.background,
-        appBar: CustomAppBar('', width, height, context, false,false),
+        appBar: CustomProductAppBar('', width, height, context, true),
         body: ForgotPasswordBody(_emailController, _emailFocusNode, _formKey),
       ),
     );

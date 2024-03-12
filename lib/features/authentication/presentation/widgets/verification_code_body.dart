@@ -15,11 +15,13 @@ import '../../../../config/theme/styles.dart';
 import '../../../../core/widgets/custom_button.dart';
 
 class VerificationCodeBody extends StatelessWidget {
-  VerificationCodeBody(this.email, this._pinCode, this._formKey, {super.key});
+  VerificationCodeBody(this.email, this._pinCode, this._formKey, this._pinCodeFocusNode,{super.key});
 
   final String email;
 
   final TextEditingController _pinCode;
+
+  final FocusNode _pinCodeFocusNode;
 
   final GlobalKey<FormState> _formKey;
 
@@ -66,7 +68,7 @@ class VerificationCodeBody extends StatelessWidget {
                   // pin code
                   Pinput(
                     onCompleted: (val) {
-                      FocusManager.instance.primaryFocus?.unfocus();
+                      _pinCodeFocusNode.unfocus();
                     },
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -74,8 +76,8 @@ class VerificationCodeBody extends StatelessWidget {
                     validator: (value) {
                       return null;
                     },
+                    focusNode: _pinCodeFocusNode,
                     showCursor: true,
-                    autofocus: true,
                     pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                     controller: _pinCode,
                     closeKeyboardWhenCompleted: true,
@@ -108,7 +110,7 @@ class VerificationCodeBody extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text("${AppLocalizations.of(context)!.receive_the} ",
-                          style: Styles.textStyle14.copyWith(
+                          style: Styles.textStyle12.copyWith(
                               fontWeight: FontWeight.w500,
                               color: AppColor.gray500)),
                       SizedBox(width: 10.w,),
@@ -124,7 +126,7 @@ class VerificationCodeBody extends StatelessWidget {
                         ),
                         child: Text(
                           '${AppLocalizations.of(context)!.resend}',
-                          style: Styles.textStyle14.copyWith(
+                          style: Styles.textStyle12.copyWith(
                             color: theme.primary,
                             fontWeight: FontWeight.w500,
                           ),

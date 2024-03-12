@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zaza_app/core/app_export.dart';
@@ -46,7 +47,10 @@ class NewProductsPage extends StatelessWidget {
           body: NewProductsBody(state),
           floatingActionButton:
               sortFloatingButton('NewProductBloc', context, () {
-            context.read<NewProductBloc>().add(ChangeSortNewProducts());
+                EasyDebounce.debounce(
+                    'my-debouncer',
+                    const Duration(milliseconds: 300),
+                        () => context.read<NewProductBloc>().add(ChangeSortNewProducts()));
           }),
         );
       },

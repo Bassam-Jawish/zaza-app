@@ -27,6 +27,7 @@ class GeneralOrderDataModel extends GeneralOrderData {
   }) : super(
     orderId: orderId,
     totalPrice: totalPrice,
+    totalPriceAfterTax: totalPriceAfterTax,
     createdAt: createdAt,
     status: status,
   );

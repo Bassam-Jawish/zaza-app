@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zaza_app/features/product/presentation/bloc/product/product_bloc.dart';
+import 'package:zaza_app/features/search/presentation/widgets/shimmer_search_loading.dart';
 import 'package:zaza_app/injection_container.dart';
 
 import '../../../../core/app_export.dart';
@@ -11,6 +12,7 @@ import '../../../../core/widgets/default_textformfield.dart';
 import '../../../product/presentation/widgets/product_card.dart';
 import 'no_search.dart';
 import 'no_search_found.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 
 class SearchByBarcode extends StatelessWidget {
   SearchByBarcode(this.state, this.searchByBarcodeController, {super.key});
@@ -36,9 +38,12 @@ class SearchByBarcode extends StatelessWidget {
               keyboardType: TextInputType.number,
               controller: searchByBarcodeController,
               onChanged: (value) {
-                context.read<ProductBloc>()
-                  ..add(GetSearchBarcodeProducts(
-                      limitSearch, 0, 'newest', value, languageCode, true));
+                EasyDebounce.debounce(
+                    'my-debouncer',
+                    const Duration(milliseconds: 500),
+                        () => context.read<ProductBloc>()
+                ..add(GetSearchBarcodeProducts(
+                limitSearch, 0, 'newest', value, languageCode, true)));
               },
               br: 15,
               label: '${AppLocalizations.of(context)!.search_By_Product_Id}',
@@ -46,7 +51,7 @@ class SearchByBarcode extends StatelessWidget {
               prefixIcon: Icon(
                 Icons.search,
                 color: theme.primary,
-                size: 25.sp,
+                size: 25,
               ),
             ),
             SizedBox(
@@ -109,7 +114,7 @@ class SearchByBarcode extends StatelessWidget {
                   ),
                   fallback: (context) => NoSearchFound(context),
                 ),
-                fallback: (context) => SpinKitApp(width),
+                fallback: (context) => ShimmerSearchLoading(),
               ),
               fallback: (context) => NoSearchYet(height, context),
             ),

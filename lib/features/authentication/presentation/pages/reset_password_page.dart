@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/app_export.dart';
 import '../../../../core/widgets/custom_appbar.dart';
+import '../../../product/presentation/widgets/custom_product_appbar.dart';
 import '../widgets/reset_password_body.dart';
 
 class ResetPasswordPage extends StatelessWidget {
@@ -30,7 +31,7 @@ class ResetPasswordPage extends StatelessWidget {
       },
       child: Scaffold(
         backgroundColor: theme.background,
-        appBar: CustomAppBar('', width, height, context, false,false),
+        appBar: CustomProductAppBar('', width, height, context, true),
         body: ResetPasswordBody(
             email,
             code,

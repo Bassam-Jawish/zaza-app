@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:zaza_app/core/app_export.dart';
 import 'package:zaza_app/core/widgets/custom_appbar.dart';
 import 'package:zaza_app/features/favorite/presentation/bloc/favorite_bloc.dart';
@@ -40,7 +41,10 @@ class FavoritePage extends StatelessWidget {
       body: FavoriteBody(state),
       floatingActionButton:
       sortFloatingButton('FavoriteBloc', context, () {
-        context.read<FavoriteBloc>().add(ChangeSortFavorite());
+        EasyDebounce.debounce(
+            'my-debouncer',
+            const Duration(milliseconds: 300),
+                () => context.read<FavoriteBloc>().add(ChangeSortFavorite()));
       }),
     );
   },

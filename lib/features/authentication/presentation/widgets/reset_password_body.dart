@@ -167,6 +167,7 @@ class ResetPasswordBody extends StatelessWidget {
                               if (_formKey.currentState!.validate()) {
                                 context.read<AuthBloc>().add(ResetPassword(
                                     email, code, _passwordController.text));
+                                FocusManager.instance.primaryFocus?.unfocus();
                               }
                             },
                           );

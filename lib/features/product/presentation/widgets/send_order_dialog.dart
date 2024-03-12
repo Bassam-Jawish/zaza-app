@@ -14,6 +14,8 @@ Future<Object?> awsDialogSendOrder(
         color: Colors.yellow,
         width: 2,
       ),
+      dialogBackgroundColor: Colors.white,
+
       btnCancelText: '${AppLocalizations.of(context)!.cancel}',
       btnOkText: '${AppLocalizations.of(context)!.ok}',
       width: width * 0.8,

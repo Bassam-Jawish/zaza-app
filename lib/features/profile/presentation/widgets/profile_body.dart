@@ -5,6 +5,7 @@ import 'package:zaza_app/core/widgets/custom_toast.dart';
 import 'package:zaza_app/features/orders/presentation/widgets/order_card.dart';
 import 'package:zaza_app/features/profile/presentation/widgets/add_phone_dialog.dart';
 import 'package:zaza_app/features/profile/presentation/widgets/phone_number_card.dart';
+import 'package:zaza_app/features/profile/presentation/widgets/shimmer_profile_loading.dart';
 
 import '../../../../core/app_export.dart';
 import '../../../../injection_container.dart';
@@ -372,7 +373,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                                 height: height * 0.015,
                               ),
                               SizedBox(
-                                height: height * 0.23,
+                                height: height * 0.3,
                                 child: ListView.separated(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: width * 0.03),
@@ -405,8 +406,8 @@ class _ProfileBodyState extends State<ProfileBody> {
                       ),
                     ),
                   )
-                : SpinKitApp(width)
-            : SpinKitApp(width);
+                : ShimmerProfileLoading()
+            : ShimmerProfileLoading();
       }),
     );
   }

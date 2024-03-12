@@ -22,7 +22,8 @@ abstract class Styles {
   static TextStyle textStyle20 = TextStyle(
       fontSize: 20.sp,
       fontWeight: FontWeight.normal,
-      overflow: TextOverflow.ellipsis);
+      overflow: TextOverflow.ellipsis,
+  );
   static TextStyle textStyle24 = TextStyle(
       fontSize: 24.sp,
       fontWeight: FontWeight.bold,

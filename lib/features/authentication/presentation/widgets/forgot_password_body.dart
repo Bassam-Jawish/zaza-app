@@ -45,6 +45,7 @@ class ForgotPasswordBody extends StatelessWidget {
       child: SafeArea(
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               buildTitlePass(context),
               SizedBox(height: 14.h),

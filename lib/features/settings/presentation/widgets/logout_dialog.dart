@@ -6,6 +6,7 @@ import '../../../../injection_container.dart';
 Future<Object?> awsDialogLogout(
     context, width, int type) {
   return AwesomeDialog(
+      dialogBackgroundColor: Colors.white,
       context: context,
       dialogType: DialogType.warning,
       borderSide: const BorderSide(

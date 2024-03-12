@@ -69,7 +69,7 @@ Future quantityDialog(width, height, context, int quantity, formKey,
                                 return '${AppLocalizations.of(context)!.not_available}';
                               }
                             }
-                            if (value!.isEmpty) {
+                            if (value!.isEmpty || value == '0') {
                               return '${AppLocalizations.of(context)!.empty}';
                             }
                             return null;

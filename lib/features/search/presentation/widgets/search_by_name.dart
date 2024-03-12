@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zaza_app/features/product/presentation/bloc/product/product_bloc.dart';
+import 'package:zaza_app/features/search/presentation/widgets/shimmer_search_loading.dart';
 
 import '../../../../core/app_export.dart';
 import '../../../../core/utils/functions/spinkit.dart';
@@ -11,6 +12,7 @@ import '../../../../injection_container.dart';
 import '../../../product/presentation/widgets/product_card.dart';
 import 'no_search.dart';
 import 'no_search_found.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 
 class SearchByName extends StatelessWidget {
   SearchByName(this.state, this.searchByProductNameController, {super.key});
@@ -36,9 +38,12 @@ class SearchByName extends StatelessWidget {
               keyboardType: TextInputType.text,
               controller: searchByProductNameController,
               onChanged: (value) {
-                context.read<ProductBloc>()
-                  ..add(GetSearchNameProducts(
-                      limitSearch, 0, 'newest', value, languageCode, true));
+                EasyDebounce.debounce(
+                    'my-debouncer',
+                    const Duration(milliseconds: 500),
+                        () => context.read<ProductBloc>()
+                ..add(GetSearchNameProducts(
+                limitSearch, 0, 'newest', value, languageCode, true)));
               },
               br: 15,
               label: '${AppLocalizations.of(context)!.search_By_Product_Name}',
@@ -107,7 +112,7 @@ class SearchByName extends StatelessWidget {
                   ),
                   fallback: (context) => NoSearchFound(context),
                 ),
-                fallback: (context) => SpinKitApp(width),
+                fallback: (context) => ShimmerSearchLoading(),
               ),
               fallback: (context) => NoSearchYet(height, context),
             ),

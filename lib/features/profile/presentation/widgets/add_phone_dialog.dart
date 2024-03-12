@@ -63,7 +63,7 @@ Future addPhoneDialog(
                     icon: Icon(
                       Icons.close,
                       color: Colors.black,
-                      size: 18.sp,
+                      size: 18,
                     ),
                   ),
                 ],
@@ -176,7 +176,7 @@ Future addPhoneDialog(
                 style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 15.sp,
-                    color: AppColor.primaryLight),
+                    color: AppColor.gray500),
               ),
             ),
             TextButton(

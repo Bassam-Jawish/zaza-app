@@ -61,14 +61,8 @@ class ProductCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
+          //color: theme.background,
           color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              offset: const Offset(0, 0.1),
-              color: Colors.redAccent.withOpacity(0.2),
-              blurRadius: 6,
-            )
-          ],
         ),
         padding: EdgeInsets.symmetric(
             horizontal: width * 0.015, vertical: height * 0.005),
@@ -107,6 +101,7 @@ class ProductCard extends StatelessWidget {
                 height: height * 0.1,
                 imagePath: path,
                 fit: BoxFit.contain,
+                radius: BorderRadius.circular(10.r),
               ),
             ),
             barCode == ''
@@ -219,7 +214,8 @@ class ProductCard extends StatelessWidget {
                       color: theme.primary,
                     ),
                     style: ButtonStyle(
-                      overlayColor: MaterialStateProperty.all<Color>(AppColor.shadeColor),
+                      overlayColor:
+                          MaterialStateProperty.all<Color>(AppColor.shadeColor),
                       padding: MaterialStateProperty.all(EdgeInsets.zero),
                       backgroundColor:
                           MaterialStateProperty.all<Color>(theme.background),

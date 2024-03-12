@@ -34,16 +34,26 @@ class PersistentBottomNavigationBar extends StatelessWidget {
         context,
         screens: screens,
         items: bottomItems(context),
-        controller: PersistentTabController(initialIndex: 0),
+        controller: c,
         confineInSafeArea: true,
-        resizeToAvoidBottomInset: false,
         backgroundColor: AppColor.bottomNavigationBarLight,
         handleAndroidBackButtonPress: true,
-        popActionScreens: PopActionScreensType.once,
+        popAllScreensOnTapAnyTabs: false,
         stateManagement: true,
         hideNavigationBarWhenKeyboardShows: true,
         navBarStyle: NavBarStyle.style14,
+        itemAnimationProperties: ItemAnimationProperties(
+          duration: Duration(milliseconds: 200),
+          curve: Curves.ease,
+        ),
+        screenTransitionAnimation: ScreenTransitionAnimation(
+          animateTabTransition: true,
+          curve: Curves.ease,
+          duration: Duration(milliseconds: 200),
+        ),
       ),
     );
   }
 }
+
+PersistentTabController? c = PersistentTabController(initialIndex: 0);

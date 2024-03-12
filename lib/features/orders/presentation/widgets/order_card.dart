@@ -39,14 +39,7 @@ class OrderCard extends StatelessWidget {
               color: theme.primary,
               width: 0.5,
             ),
-            borderRadius: BorderRadius.circular(30),
-            boxShadow: [
-              BoxShadow(
-                offset: const Offset(0, 0.1),
-                color: Colors.redAccent.withOpacity(0.2),
-                blurRadius: 6,
-              ),
-            ],
+            borderRadius: BorderRadius.circular(30.r),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -84,7 +77,7 @@ class OrderCard extends StatelessWidget {
               ),
               Container(
                 height: height * 0.04,
-                width: width * 0.26,
+                width: width * 0.34,
                 decoration: BoxDecoration(
                   color: theme.primary,
                   borderRadius: BorderRadius.circular(12.0.r),
@@ -132,18 +125,18 @@ class OrderCard extends StatelessWidget {
           ),
         ),
         Positioned(
-          left: 10.0,
+          left: 5.0,
           top: 0.0,
           child: Container(
             height: height * 0.024,
-            width: width * 0.17,
+            width: width * 0.2,
             decoration: BoxDecoration(
               color: status == 'pending'
                   ? Colors.yellow
                   : status == 'approved'
                       ? Colors.green
                       : Colors.red,
-              borderRadius: BorderRadius.circular(12.0),
+              borderRadius: BorderRadius.circular(8.0),
             ),
             child: Center(
               child: Text(

@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zaza_app/config/theme/colors.dart';
+import 'package:zaza_app/config/theme/styles.dart';
 import 'package:zaza_app/features/categories/presentation/widgets/category_card.dart';
+import 'package:zaza_app/features/categories/presentation/widgets/shimmer_sub_cat_loading.dart';
 import 'package:zaza_app/features/categories/presentation/widgets/sub_category_card.dart';
 import 'package:zaza_app/features/product/presentation/widgets/product_card.dart';
 
 import '../../../../core/utils/functions/spinkit.dart';
 import '../../../../injection_container.dart';
+import '../../../product/presentation/widgets/shimmer_products_loading.dart';
 import '../bloc/category_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -29,7 +32,7 @@ class CategoryBody extends StatelessWidget {
                 ? categoryNodeWidget(context, width, height, state)
                 : state.screenType == 'leaf'
                     ? categoryLeafWidget(context, width, height, state)
-                    : SpinKitApp(width);
+                    : ShimmerProductsLoading();
   }
 
   Widget rootWidget(context, width, height, CategoryState state) {
@@ -59,10 +62,10 @@ class CategoryBody extends StatelessWidget {
                       ),
                       Text(
                         '${AppLocalizations.of(context)!.main_Categories}  (${state.chooseTypeEntity!.totalNumber})',
-                        style: TextStyle(
-                            color: AppColor.secondaryLight,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20.sp),
+                        style: Styles.textStyle20.copyWith(
+                          color: AppColor.secondaryLight,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ],
                   ),
@@ -112,7 +115,7 @@ class CategoryBody extends StatelessWidget {
               )),
         ),
       ),
-      fallback: (context) => SpinKitApp(width),
+      fallback: (context) => ShimmerProductsLoading(),
     );
   }
 
@@ -145,7 +148,7 @@ class CategoryBody extends StatelessWidget {
           ],
         ),
       ),
-      fallback: (context) => SpinKitApp(width),
+      fallback: (context) => ShimmerProductsLoading(),
     );
   }
 
@@ -174,12 +177,17 @@ class CategoryBody extends StatelessWidget {
                     ),
                     iconSize: 20.sp,
                   ),
-                  Text(
-                    '${state.categoryParentEntity!.categoryParentName}   (${state.chooseTypeEntity!.totalNumber})',
-                    style: TextStyle(
-                        color: AppColor.secondaryLight,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20.sp),
+                  SizedBox(
+                    width: 280.w,
+                    child: Text(
+                      '${state.categoryParentEntity!.categoryParentName}   (${state.chooseTypeEntity!.totalNumber})',
+                      style: TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          color: AppColor.secondaryLight,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20.sp),
+                      maxLines: 1,
+                    ),
                   ),
                 ],
               ),
@@ -210,7 +218,7 @@ class CategoryBody extends StatelessWidget {
           ),
         ),
       ),
-      fallback: (context) => SpinKitApp(width),
+      fallback: (context) => ShimmerSubCatLoading(),
     );
   }
 
@@ -236,16 +244,22 @@ class CategoryBody extends StatelessWidget {
                     icon: Icon(
                       Icons.arrow_back,
                       color: AppColor.secondaryLight,
-                      size: 20.sp,
+                      size: 20,
                     ),
-                    iconSize: 20.sp,
+                    iconSize: 20,
                   ),
-                  Text(
-                    '${state.categoryParentEntity!.categoryParentName}  (${state.chooseTypeEntity!.totalNumber})',
-                    style: TextStyle(
+                  SizedBox(
+                    width: 280.w,
+                    child: Text(
+                      '${state.categoryParentEntity!.categoryParentName}  (${state.chooseTypeEntity!.totalNumber})',
+                      style: TextStyle(
                         color: AppColor.secondaryLight,
                         fontWeight: FontWeight.w600,
-                        fontSize: 20.sp),
+                        fontSize: 20.sp,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      maxLines: 1,
+                    ),
                   ),
                   Spacer(),
                   /*sort == 'newest'
@@ -312,7 +326,7 @@ class CategoryBody extends StatelessWidget {
           ),
         ),
       ),
-      fallback: (context) => SpinKitApp(width),
+      fallback: (context) => ShimmerProductsLoading(),
     );
   }
 }

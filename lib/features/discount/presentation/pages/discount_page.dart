@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zaza_app/core/app_export.dart';
@@ -25,30 +26,31 @@ class DiscountPage extends StatelessWidget {
       child: BlocConsumer<DiscountBloc, DiscountState>(
         listener: (context, state) {
           if (state.discountStatus == DiscountStatus.changeSort) {
-            context
-                .read<DiscountBloc>()
-                .add(GetAllDiscountProducts(limit, 0, sort, languageCode, true));
+            context.read<DiscountBloc>().add(
+                GetAllDiscountProducts(limit, 0, sort, languageCode, true));
           }
           if (state.discountStatus == DiscountStatus.errorAllDiscount) {
             showToast(text: state.error!.message, state: ToastState.error);
           }
 
           if (state.discountStatus == DiscountStatus.paginated) {
-            context
-                .read<DiscountBloc>()
-                .add(GetAllDiscountProducts(limit, state.discountCurrentIndex!, sort, languageCode, false));
+            context.read<DiscountBloc>().add(GetAllDiscountProducts(
+                limit, state.discountCurrentIndex!, sort, languageCode, false));
           }
-
         },
         builder: (context, state) {
           return Scaffold(
             backgroundColor: theme.background,
             //appBar: null,
-            appBar: CustomProductAppBar(AppLocalizations.of(context)!.hot_Deals, width, height, context, false),
+            appBar: CustomProductAppBar(AppLocalizations.of(context)!.hot_Deals,
+                width, height, context, false),
             body: DiscountBody(state),
             floatingActionButton:
                 sortFloatingButton('DiscountBloc', context, () {
-              context.read<DiscountBloc>().add(ChangeSortDiscount());
+              EasyDebounce.debounce(
+                  'my-debouncer',
+                  const Duration(milliseconds: 300),
+                  () => context.read<DiscountBloc>().add(ChangeSortDiscount()));
             }),
           );
         },

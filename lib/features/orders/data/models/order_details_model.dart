@@ -11,6 +11,7 @@ class OrderDetailsModel extends OrderDetailsEntity {
   }) : super(
           orderId: orderId,
           totalPrice: totalPrice,
+          totalPriceAfterTax: totalPriceAfterTax,
           createdAt: createdAt,
           status: status,
           productsOrderDetailsList: productsOrderDetailsList,
@@ -20,7 +21,7 @@ class OrderDetailsModel extends OrderDetailsEntity {
     return OrderDetailsModel(
       orderId: map['id'] ?? 0,
       totalPrice: map['totalPrice'],
-      totalPriceAfterTax: map['totalPriceAfterTax'],
+      totalPriceAfterTax: map['totalPriceAfterTax'] ?? 0,
       createdAt: map['createdAt'] ?? "",
       status: map['status'] ?? "",
       productsOrderDetailsList: map['products'] != null
@@ -36,11 +37,13 @@ class ProductOrderModel extends ProductOrderEntity {
     String? image,
     String? barCode,
     String? productName,
+    int? tax,
     List<ProductUnitOrderModel>? productUnitsOrderDetailsList,
   }) : super(
           image: image,
           barCode: barCode,
           productName: productName,
+          tax: tax,
           productUnitsOrderDetailsList: productUnitsOrderDetailsList,
         );
 
@@ -49,6 +52,7 @@ class ProductOrderModel extends ProductOrderEntity {
       image: map['image'] ?? "",
       barCode: map['barCode'] ?? "",
       productName: map['translatedProduct'] ?? "",
+      tax: map['tax'] ?? '',
       productUnitsOrderDetailsList: map['productUnit'] != null
           ? List<ProductUnitOrderModel>.from((map['productUnit'] as List)
               .map((unitOrder) => ProductUnitOrderModel.fromJson(unitOrder)))
@@ -106,7 +110,7 @@ class UnitDetailsOrderModel extends UnitDetailsOrderEntity {
   factory UnitDetailsOrderModel.fromJson(Map<String, dynamic> map) {
     return UnitDetailsOrderModel(
       amount: map['amount'] ?? 0,
-      totalPrice: map['totalPrice']?? 0,
+      totalPrice: map['totalPrice'] ?? 0,
     );
   }
 }

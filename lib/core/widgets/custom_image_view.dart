@@ -112,6 +112,7 @@ class CustomImageView extends StatelessWidget {
           );
         case ImageType.network:
           return CachedNetworkImage(
+            filterQuality: FilterQuality.high,
             height: height,
             width: width,
             fit: fit,

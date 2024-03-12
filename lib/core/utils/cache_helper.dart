@@ -1,7 +1,9 @@
 import 'dart:ui';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zaza_app/features/product/presentation/bloc/product/product_bloc.dart';
 
 import '../../injection_container.dart';
 
@@ -93,5 +95,11 @@ class SecureStorage {
     refresh_token = 'No data found!';
     user_id = 'No data found!';
     user_name = 'No data found!';
+    categoryId = null;
+    productId = null;
+    productName = null;
+    orderId = null;
+    barcodeSearch = '';
+    nameSearch = '';
   }
 }

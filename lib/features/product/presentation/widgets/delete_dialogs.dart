@@ -16,7 +16,7 @@ Future<Object?> awsDialogDeleteForAll(
       buttonsBorderRadius: BorderRadius.all(
         Radius.circular(5.r),
       ),
-
+      dialogBackgroundColor: Colors.white,
       btnCancelText: '${AppLocalizations.of(context)!.cancel}',
       btnOkText: '${AppLocalizations.of(context)!.ok}',
       dismissOnTouchOutside: false,
@@ -43,6 +43,7 @@ Future<Object?> awsDialogDeleteForOne(context, width, int type, int index) {
         color: Colors.yellow,
         width: 2,
       ),
+      dialogBackgroundColor: Colors.white,
       btnCancelText: '${AppLocalizations.of(context)!.cancel}',
       btnOkText: '${AppLocalizations.of(context)!.ok}',
       width: width * 0.8,

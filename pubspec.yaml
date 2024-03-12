@@ -109,6 +109,9 @@ dependencies:
   #Flutter Easyloading
   flutter_easyloading: ^3.0.5
 
+  #Flutter Easy Debounce
+  easy_debounce: ^2.0.3
+
   #Languages
   flutter_localizations:
     sdk: flutter

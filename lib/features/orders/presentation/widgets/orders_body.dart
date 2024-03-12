@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zaza_app/core/utils/functions/spinkit.dart';
+import 'package:zaza_app/features/orders/presentation/widgets/shimmer_orders_loading.dart';
 
 import '../../../../core/app_export.dart';
 import '../../../../core/widgets/nothing_widget.dart';
@@ -20,7 +21,8 @@ class OrdersBody extends StatelessWidget {
         child: BlocConsumer<OrderBloc, OrderState>(
           listener: (context, state) {
             if (state.orderStatus == OrderStatus.changeStatusSearch) {
-              context.read<OrderBloc>().add(GetOrders(limitOrders, 0, 'newest', state.statusSearch!));
+              context.read<OrderBloc>().add(
+                  GetOrders(limitOrders, 0, 'newest', state.statusSearch!));
             }
           },
           builder: (context, state) {
@@ -28,88 +30,98 @@ class OrdersBody extends StatelessWidget {
               condition: state.isOrdersLoaded!,
               builder: (context) => ConditionalBuilder(
                 condition: state.ordersList!.isNotEmpty,
-                builder: (context) => SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: width * 0.03, vertical: height * 0.03),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  icon: Icon(
-                                    Icons.arrow_back,
-                                    color: theme.secondary,
-                                    size: 18,
-                                  ),
-                                  iconSize: 18,
-                                ),
-                                Text(
-                                  '${AppLocalizations.of(context)!.orders_sent}  (${state.ordersList!.length!})',
-                                  style: TextStyle(
+                builder: (context) => RefreshIndicator(
+                  onRefresh: () async {
+                    context
+                        .read<OrderBloc>()
+                        .add(GetOrders(limitOrders, 0, 'newest', 'all'));
+                    await Future.delayed(Duration(seconds: 2));
+                  },
+                  child: SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: width * 0.03, vertical: height * 0.03),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    icon: Icon(
+                                      Icons.arrow_back,
                                       color: theme.secondary,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16.sp),
-                                ),
-                              ],
-                            ),
-                            DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                value: state.statusSearch,
-                                items: statusList
-                                    .map((item) => DropdownMenuItem<String>(
-                                        value: item,
-                                        child: Text(
-                                          item,
-                                          style:
-                                              TextStyle(color: theme.primary),
-                                        )))
-                                    .toList(),
-                                onChanged: (item) {
-                                  print(item);
-                                  context
-                                      .read<OrderBloc>()
-                                      .add(ChangeDropdownValue(item!));
-                                },
+                                      size: 18,
+                                    ),
+                                    iconSize: 18,
+                                  ),
+                                  Text(
+                                    '${AppLocalizations.of(context)!.orders_sent}  (${state.ordersList!.length!})',
+                                    style: TextStyle(
+                                        color: theme.secondary,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16.sp),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: height * 0.025,
-                        ),
-                        GridView.builder(
-                            shrinkWrap: true,
-                            gridDelegate:
-                                SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: width * 0.5,
-                              mainAxisExtent: height * 0.26,
-                              crossAxisSpacing: 5,
-                              mainAxisSpacing: 5,
-                            ),
-                            physics: BouncingScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return OrderCard(
-                                  index,
-                                  state.generalOrdersEntity!.ordersList![index]
-                                      .orderId!,
-                                  state.generalOrdersEntity!.ordersList![index]
-                                      .totalPrice!,
-                                0,
-                                  state.generalOrdersEntity!.ordersList![index]
-                                      .createdAt!,
-                                  state.generalOrdersEntity!.ordersList![index]
-                                      .status!);
-                            },
-                            itemCount: state.ordersList!.length),
-                      ],
+                              DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                  value: state.statusSearch,
+                                  items: statusList
+                                      .map((item) => DropdownMenuItem<String>(
+                                          value: item,
+                                          child: Text(
+                                            item,
+                                            style:
+                                                TextStyle(color: theme.primary),
+                                          )))
+                                      .toList(),
+                                  onChanged: (item) {
+                                    print(item);
+                                    context
+                                        .read<OrderBloc>()
+                                        .add(ChangeDropdownValue(item!));
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.025,
+                          ),
+                          GridView.builder(
+                              shrinkWrap: true,
+                              gridDelegate:
+                                  SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: width * 0.5,
+                                mainAxisExtent: height * 0.3,
+                                crossAxisSpacing: 5,
+                                mainAxisSpacing: 5,
+                              ),
+                              physics: BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return OrderCard(
+                                    index,
+                                    state.generalOrdersEntity!
+                                        .ordersList![index].orderId!,
+                                    state.generalOrdersEntity!
+                                        .ordersList![index].totalPrice!,
+                                    state.generalOrdersEntity!
+                                        .ordersList![index].totalPriceAfterTax!,
+                                    state.generalOrdersEntity!
+                                        .ordersList![index].createdAt!,
+                                    state.generalOrdersEntity!
+                                        .ordersList![index].status!);
+                              },
+                              itemCount: state.ordersList!.length),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -150,7 +162,7 @@ class OrdersBody extends StatelessWidget {
                   ),
                 ),
               ),
-              fallback: (context) => SpinKitApp(width),
+              fallback: (context) => ShimmerOrdersLoading(),
             );
           },
         ));
