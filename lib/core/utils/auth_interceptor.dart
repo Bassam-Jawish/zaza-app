@@ -23,7 +23,7 @@ class AuthInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401 &&
         err.requestOptions.path == '/auth/refresh') {
-      print('logout');
+      debugPrint('logout');
       await SecureStorage.deleteAllSecureData();
       final router = AppRouter.router;
       router.pushReplacement(AppRouter.kOnboardingPage);
@@ -76,13 +76,13 @@ class AuthInterceptor extends Interceptor {
         );
         return true;
       } else {
-        print('logout');
+        debugPrint('logout');
         await SecureStorage.deleteAllSecureData();
         final router = AppRouter.router;
         router.pushReplacement(AppRouter.kOnboardingPage);
       }
     } on DioException catch (dioError) {
-      print('logout');
+      debugPrint('logout');
       await SecureStorage.deleteAllSecureData();
       final router = AppRouter.router;
       router.pushReplacement(AppRouter.kOnboardingPage);

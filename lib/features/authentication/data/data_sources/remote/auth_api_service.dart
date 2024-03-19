@@ -1,8 +1,8 @@
 
 import 'package:dio/dio.dart';
+import 'package:retrofit/retrofit.dart';
 
 import '../../models/user_model.dart';
-import 'package:retrofit/retrofit.dart';
 
 part 'auth_api_service.g.dart';
 
@@ -38,4 +38,7 @@ abstract class AuthApiService {
 
   @GET('/auth/logout')
   Future<HttpResponse<void>> logout();
+
+  @DELETE('/user/')
+  Future<HttpResponse<void>> deleteAccount();
 }

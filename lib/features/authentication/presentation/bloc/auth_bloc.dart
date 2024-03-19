@@ -17,6 +17,7 @@ import '../../../../core/network/network_info.dart';
 import '../../../../core/resources/data_state.dart';
 import '../../../../core/utils/cache_helper.dart';
 import '../../domain/entities/user.dart';
+import '../../domain/usecases/delete_account_usecase.dart';
 import '../../domain/usecases/login_usecase.dart';
 
 part 'auth_event.dart';
@@ -30,6 +31,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final ResetPasswordUseCase _resetPasswordUseCase;
   final LogoutUseCase _logoutUseCase;
 
+  final DeleteAccountUseCase _deleteAccountUseCase;
+
   final NetworkInfo _networkInfo;
 
   AuthBloc(
@@ -38,6 +41,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       this._validateResetPasswordUseCase,
       this._resetPasswordUseCase,
       this._logoutUseCase,
+      this._deleteAccountUseCase,
       this._networkInfo)
       : super(AuthState().copyWith(
             authStatus: AuthStatus.initial,
@@ -51,6 +55,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<ValidateResetPassword>(onValidateResetPassword);
     on<ResetPassword>(onResetPassword);
     on<Logout>(onLogout);
+    on<DeleteAccount>(onDeleteAccount);
   }
 
   void onLogin(Login event, Emitter<AuthState> emit) async {
@@ -285,4 +290,43 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           error: ServerFailure.fromDioError(e)));
     }
   }
+
+  void onDeleteAccount(DeleteAccount event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(authStatus: AuthStatus.loadingDeleteAccount));
+
+    final isConnected = await _networkInfo.isConnected;
+
+    if (!isConnected) {
+      emit(state.copyWith(
+          authStatus: AuthStatus.errorLogout,
+          error: ConnectionFailure('No Internet Connection')));
+      return;
+    }
+
+    try {
+      final dataState = await _deleteAccountUseCase();
+
+      if (dataState is DataSuccess) {
+        emit(state.copyWith(
+          authStatus: AuthStatus.successDeleteAccount,
+        ));
+        await SecureStorage.deleteAllSecureData();
+        final router = AppRouter.router;
+        router.pushReplacement(AppRouter.kLoginPage);
+      }
+
+      if (dataState is DataFailed) {
+        debugPrint(dataState.error!.message);
+        emit(state.copyWith(
+            authStatus: AuthStatus.errorDeleteAccount,
+            error: ServerFailure.fromDioError(dataState.error!)));
+      }
+    } on DioException catch (e) {
+      debugPrint(e.toString());
+      emit(state.copyWith(
+          authStatus: AuthStatus.errorDeleteAccount,
+          error: ServerFailure.fromDioError(e)));
+    }
+  }
+
 }

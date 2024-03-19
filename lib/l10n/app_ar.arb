@@ -161,5 +161,17 @@
     "confirm_password": "تأكيد كلمة المرور",
     "create_password": "إنشاء كلمة مرور",
 
-    "no_result": "لم يتم العثور على نتيجة!"
+    "no_result": "لم يتم العثور على نتيجة!",
+
+    "account_del": "تم حذف الحساب بنجاح",
+
+    "do_you_account": "هل تريد حذف حسابك؟",
+
+    "account": "الحساب",
+    "my_profile": "ملفي الشخصي",
+    "policy_and": "الشروط والبنود",
+    "privacy_policy": "سياسة الخصوصية",
+    "terms": "البنود والظروف",
+    "account_man": "إدارة الحساب",
+    "delete_account": "حذف الحساب"
 }

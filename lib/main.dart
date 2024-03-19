@@ -2,7 +2,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:zaza_app/core/app_export.dart';
 import 'package:zaza_app/features/discount/presentation/bloc/discount_bloc.dart';
 
@@ -27,6 +26,7 @@ void main() async {
   );
   await initializeDependencies();
   configLoading();
+
   runApp(const MyApp());
 }
 
@@ -38,30 +38,21 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(create: (BuildContext context) => sl()),
-        BlocProvider<DiscountBloc>(
-            create: (BuildContext context) =>
-            sl()
-        ),
+        BlocProvider<DiscountBloc>(create: (BuildContext context) => sl()),
         BlocProvider<ProductBloc>(
-          create: (BuildContext context) =>
-              sl(),
+          create: (BuildContext context) => sl(),
         ),
         BlocProvider<BasketBloc>(
-          create: (BuildContext context) =>
-              sl(),
+          create: (BuildContext context) => sl(),
         ),
         BlocProvider<OrderBloc>(
-          create: (BuildContext context) =>
-              sl(),
+          create: (BuildContext context) => sl(),
         ),
         BlocProvider<SettingsBloc>(
-          create: (BuildContext context) =>
-              sl(),
-
+          create: (BuildContext context) => sl(),
         ),
         BlocProvider<ProfileBloc>(
-          create: (BuildContext context) =>
-              sl(),
+          create: (BuildContext context) => sl(),
         ),
         //BlocProvider<HomeBloc>(create: (BuildContext context) => sl()),
       ],
@@ -72,7 +63,8 @@ class MyApp extends StatelessWidget {
           return BlocBuilder<SettingsBloc, SettingsState>(
             builder: (context, state) {
               return MaterialApp.router(
-                builder: EasyLoading.init(),/*(context, child) {
+                builder: EasyLoading.init(),
+                /*(context, child) {
                   final MediaQueryData data = MediaQuery.of(context);
                   return MediaQuery(
                     data: data.copyWith(textScaler: TextScaler.linear(1.0)),

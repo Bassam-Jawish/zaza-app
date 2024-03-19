@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:zaza_app/config/theme/app_decoration.dart';
 import 'package:zaza_app/config/theme/colors.dart';
 import 'package:zaza_app/core/widgets/custom_image_view.dart';
 

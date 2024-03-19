@@ -27,9 +27,11 @@ TextFormField def_TextFromField({
   AutovalidateMode autValidateMode = AutovalidateMode.onUserInteraction,
   double br = 25.0,
   String? hintText,
-  TextStyle? hintStyle
+  TextStyle? hintStyle,
+  Key? key
 }) {
   return TextFormField(
+    key: key,
     onTap: onTap,
     style: TextStyle(fontSize: 16.sp, color: Colors.black),
     maxLength: maxLength,

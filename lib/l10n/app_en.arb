@@ -68,11 +68,12 @@
     "order_Now": "Order Now",
 
     "more": "More",
-    "my_Favorites": "My Favorites",
-    "language_Settings": "Language Settings",
-    "orders_Details": "Orders Details",
+    "my_Favorites": "My favorites",
+    "language_Settings": "Language settings",
+    "orders_Details": "Orders details",
     "logout": "Logout",
     "do_you_logout": "Do you want to logout?",
+    "do_you_account": "Do you want to delete your account?",
 
 
     "invoice_with_tax": "After tax",
@@ -87,13 +88,15 @@
     "determine": "Determine product unit to add to the basket.",
     "aDD_TO_BASKET": "ADD TO BASKET",
 
+    "account_del": "Account deleted successfully",
+
     "phone_Deleted_Successfully": "Phone Deleted Successfully",
     "phone_Created_Successfully": "Phone Created Successfully",
     "profile": "Profile",
     "restaurant_Name": "Restaurant Name",
     "phone_Numbers": "Phone Numbers",
     "add_Phone_Number": "Add Phone Number",
-    "my_Orders": "My Orders",
+    "my_Orders": "My orders",
     "invoice_price": "Invoice Price",
     "see_details": "See details",
     "invoice_Date": "Invoice Date",
@@ -160,5 +163,13 @@
     "confirm_password": "Confirm password",
     "create_password": "Create Password",
 
-    "no_result": "No result found!"
+    "no_result": "No result found!",
+
+    "account": "Account",
+    "my_profile": "My profile",
+    "policy_and": "Policy & account terms",
+    "privacy_policy": "Privacy policy",
+    "terms": "Terms & conditions",
+    "account_man": "Account management",
+    "delete_account": "Delete account"
 }

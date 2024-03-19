@@ -97,8 +97,14 @@ dependencies:
   #device_info_plus
   device_info_plus: ^9.1.2
 
+  #package_info_plus
+  package_info_plus: ^5.0.1
+
   #Shimmer
   shimmer: ^3.0.0
+
+  #Markdown
+  flutter_markdown: ^0.6.20
 
   #make request to api
   retrofit: ^4.1.0
@@ -112,10 +118,18 @@ dependencies:
   #Flutter Easy Debounce
   easy_debounce: ^2.0.3
 
+  #Functional programming in Dart
+  dartz: ^0.10.1
+
+  #Badges
+  badges: ^3.1.2
+
+
   #Languages
   flutter_localizations:
     sdk: flutter
   flutter_launcher_icons: ^0.13.1
+  mocktail: ^1.0.3
 
 dev_dependencies:
   flutter_test:
@@ -124,6 +138,8 @@ dev_dependencies:
   hive_generator: ^2.0.1
   retrofit_generator: ^8.1.0
   build_runner: ^2.4.8
+  bloc_test: ^9.1.6
+  mockito: ^5.4.4
 
 flutter_icons:
   android: true
@@ -159,6 +175,7 @@ flutter:
     - assets/images/onboarding/
     - assets/images/basket/
     - assets/images/
+    - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # fonts:

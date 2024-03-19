@@ -1,43 +1,47 @@
-
 import '../../domain/entities/user.dart';
 
-class UserInfoModel extends UserInfoEntity{
+class UserInfoModel extends UserInfoEntity {
   const UserInfoModel({
     String? accessToken,
     String? refreshToken,
-    UserEntity? user,
+    User? user,
   }) : super(
-      accessToken: accessToken,
-      refreshToken: refreshToken,
-    userEntity: user,
-  );
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+          userEntity: user,
+        );
 
-  factory UserInfoModel.fromJson(Map<String,dynamic> map) {
+  factory UserInfoModel.fromJson(Map<String, dynamic> map) {
     return UserInfoModel(
       accessToken: map['accessToken'] ?? "",
       refreshToken: map['refreshToken'] ?? "",
-      user : map['user'] != null ? User.fromJson(map['user']) : null,
+      user: map['user'] != null ? User.fromJson(map['user']) : null,
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'accessToken': accessToken,
+      'refreshToken': refreshToken,
+      'user': userEntity != null ? (userEntity as User).toJson() : null,
+    };
+  }
 }
-class User extends UserEntity{
 
+class User extends UserEntity {
   const User({
-
     int? userId,
     String? userName,
     String? name,
     String? email,
-
   }) : super(
-    userId: userId,
-    userName: userName,
-    name: name,
-    email: email,
-  );
+          userId: userId,
+          userName: userName,
+          name: name,
+          email: email,
+        );
 
-  factory User.fromJson(Map<String,dynamic> map) {
+  factory User.fromJson(Map<String, dynamic> map) {
     return User(
       userId: map['id'] ?? "",
       userName: map['userName'] ?? "",
@@ -46,4 +50,12 @@ class User extends UserEntity{
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': userId,
+      'userName': userName,
+      'name': name,
+      'email': email,
+    };
+  }
 }

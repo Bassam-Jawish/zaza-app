@@ -146,5 +146,17 @@
     "confirm_password": "Passwort bestätigen",
     "create_password": "Passwort erstellen",
 
-    "no_result": "Kein Ergebnis gefunden!"
+    "no_result": "Kein Ergebnis gefunden!",
+
+    "account_del": "Konto erfolgreich gelöscht",
+
+    "do_you_account": "Möchten Sie Ihr Konto löschen?",
+
+    "account": "Konto",
+    "my_profile": "Mein Profil",
+    "policy_and": "Richtlinien- und Kontobedingungen",
+    "privacy_policy": "Datenschutzrichtlinie",
+    "terms": "Allgemeine Geschäftsbedingungen",
+    "account_man": "Kontoverwaltung",
+    "delete_account": "Konto löschen"
 }

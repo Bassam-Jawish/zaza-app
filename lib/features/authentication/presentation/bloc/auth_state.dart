@@ -18,6 +18,12 @@ enum AuthStatus {
   loadingLogout,
   successLogout,
   errorLogout,
+
+  loadingDeleteAccount,
+
+  successDeleteAccount,
+
+  errorDeleteAccount,
 }
 
 class AuthState extends Equatable {

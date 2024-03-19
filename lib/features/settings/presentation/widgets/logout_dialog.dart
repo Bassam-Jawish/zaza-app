@@ -24,13 +24,17 @@ Future<Object?> awsDialogLogout(
       headerAnimationLoop: true,
       animType: AnimType.topSlide,
       title: '${AppLocalizations.of(context)!.warning}',
-      desc: '${AppLocalizations.of(context)!.do_you_logout}',
+      desc: type == 0 ? '${AppLocalizations.of(context)!.do_you_logout}' : '${AppLocalizations.of(context)!.do_you_account}',
       showCloseIcon: true,
       btnCancelOnPress: () {},
       btnOkOnPress: () {
         if (type == 0) {
           //Logout
           BlocProvider.of<AuthBloc>(context).add(Logout());
+          BlocProvider.of<BasketBloc>(context).add(DeleteBasket(true));
+        } else {
+          //Delete Account
+          BlocProvider.of<AuthBloc>(context).add(DeleteAccount());
           BlocProvider.of<BasketBloc>(context).add(DeleteBasket(true));
         }
       }).show();

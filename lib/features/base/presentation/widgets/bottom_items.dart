@@ -1,14 +1,13 @@
-
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:zaza_app/core/app_export.dart';
 import 'package:zaza_app/features/basket/presentation/pages/basket_page.dart';
 import 'package:zaza_app/features/categories/presentation/pages/categories_page.dart';
 import 'package:zaza_app/features/home/presentation/pages/home_page.dart';
 import 'package:zaza_app/features/search/presentation/pages/search_page.dart';
 import 'package:zaza_app/features/settings/presentation/pages/settings_page.dart';
-
-import '../../../../config/theme/colors.dart';
+import 'package:badges/badges.dart' as badges;
 
 List<PersistentBottomNavBarItem> bottomItems(context) {
   var theme = Theme.of(context).colorScheme;
@@ -41,9 +40,29 @@ List<PersistentBottomNavBarItem> bottomItems(context) {
       inactiveColorPrimary: theme.background,
     ),
     PersistentBottomNavBarItem(
-      icon: const Icon(
-        Icons.shopping_basket,
-        size: 26,
+      icon: BlocBuilder<BasketBloc, BasketState>(
+        builder: (context, state) {
+          int itemCount = state.basketProductsList!.length;
+          return state.basketProductsList!.isNotEmpty
+              ? badges.Badge(
+                  badgeContent: Text(
+                    '$itemCount',
+                    style: TextStyle(fontSize: 10, color: Colors.white),
+                  ),
+                  badgeStyle: badges.BadgeStyle(
+                    shape: badges.BadgeShape.circle,
+                    badgeColor: Colors.red,
+                    padding: EdgeInsets.all(4),
+                    borderRadius: BorderRadius.circular(8),
+                    elevation: 0,
+                  ),
+                  child: Icon(Icons.shopping_basket, size: 26),
+                )
+              : const Icon(
+                  Icons.shopping_basket,
+                  size: 26,
+                );
+        },
       ),
       title: (AppLocalizations.of(context)!.basket),
       activeColorPrimary: Colors.white,

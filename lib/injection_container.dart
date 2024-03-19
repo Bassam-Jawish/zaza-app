@@ -1,4 +1,6 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:zaza_app/features/authentication/domain/usecases/delete_account_usecase.dart';
 import 'package:zaza_app/features/discount/presentation/bloc/discount_bloc.dart';
 import 'package:zaza_app/features/favorite/presentation/bloc/favorite_bloc.dart';
 import 'package:zaza_app/features/product/presentation/bloc/new_product/new_product_bloc.dart';
@@ -40,7 +42,6 @@ String sort = 'newest';
 String barcodeSearch = '';
 String nameSearch = '';
 
-
 Map<String, String> languagesList = {
   'Germany': 'de',
   'English': 'en',
@@ -48,6 +49,14 @@ Map<String, String> languagesList = {
 };
 
 List<String> statusList = ['all', 'pending', 'approved', 'rejected'];
+
+String appName = '';
+
+String packageName = '';
+
+String version = '';
+
+String buildNumber = '';
 
 Future<void> initializeDependencies() async {
   await Hive.initFlutter();
@@ -104,6 +113,13 @@ Future<void> initializeDependencies() async {
   debugPrint('locale=${locale}');
   debugPrint('languageCode=${languageCode}');
 
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+  appName = packageInfo.appName;
+  packageName = packageInfo.packageName;
+  version = packageInfo.version;
+  buildNumber = packageInfo.buildNumber;
+
   // Dio
   Dio dio = Dio(
     BaseOptions(
@@ -156,6 +172,7 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<ValidateResetPasswordUseCase>(
       ValidateResetPasswordUseCase(sl()));
   sl.registerSingleton<ResetPasswordUseCase>(ResetPasswordUseCase(sl()));
+  sl.registerSingleton<DeleteAccountUseCase>(DeleteAccountUseCase(sl()));
   sl.registerSingleton<LogoutUseCase>(LogoutUseCase(sl()));
   sl.registerSingleton<GetDiscountUseCase>(GetDiscountUseCase(sl()));
   sl.registerSingleton<AddToFavoritesUseCase>(AddToFavoritesUseCase(sl()));
@@ -192,6 +209,7 @@ Future<void> initializeDependencies() async {
         sl<ValidateResetPasswordUseCase>(),
         sl<ResetPasswordUseCase>(),
         sl<LogoutUseCase>(),
+        sl<DeleteAccountUseCase>(),
         sl<NetworkInfo>(),
       ));
   sl.registerFactory<DiscountBloc>(() => DiscountBloc(

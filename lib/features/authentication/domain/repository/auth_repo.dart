@@ -12,4 +12,6 @@ abstract class AuthRepository {
   Future<DataState<void>> resetPassword(String email, String token, String password);
 
   Future<DataState<void>> logout();
+
+  Future<DataState<void>> deleteAccount();
 }

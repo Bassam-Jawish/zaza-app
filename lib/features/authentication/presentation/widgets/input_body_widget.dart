@@ -78,6 +78,7 @@ class InputBodyWidget extends StatelessWidget {
                   ),
                 ),
                 def_TextFromField(
+                  key: Key('username_field'),
                   cursorColor: theme.primary,
                   autValidateMode:
                   AutovalidateMode.onUserInteraction,
@@ -113,6 +114,7 @@ class InputBodyWidget extends StatelessWidget {
                   ),
                 ),
                 def_TextFromField(
+                  key: Key('password_field'),
                   cursorColor: theme.primary,
                   focusNode: _passwordFocusNode,
                   keyboardType: TextInputType.visiblePassword,

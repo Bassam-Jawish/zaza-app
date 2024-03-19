@@ -69,7 +69,7 @@ Future changeLanguageDialog(
                             .add(ChangeLanguage(value));
                       },
                       activeColor: AppColor.primaryLight,
-                      title: Text('${AppLocalizations.of(context)!.germany}'),
+                      title: Text('Deutschland'),
                       selected: selectedLanguageValue == 1,
                     ),
                     RadioListTile(
@@ -80,7 +80,7 @@ Future changeLanguageDialog(
                             .add(ChangeLanguage(value));
                       },
                       activeColor: AppColor.primaryLight,
-                      title: Text('${AppLocalizations.of(context)!.english}'),
+                      title: Text('English'),
                       selected: selectedLanguageValue == 2,
                     ),
                     RadioListTile(
@@ -91,7 +91,7 @@ Future changeLanguageDialog(
                             .add(ChangeLanguage(value));
                       },
                       activeColor: AppColor.primaryLight,
-                      title: Text('${AppLocalizations.of(context)!.arabic}'),
+                      title: Text('العربية'),
                       selected: selectedLanguageValue == 3,
                     ),
                     Divider(
