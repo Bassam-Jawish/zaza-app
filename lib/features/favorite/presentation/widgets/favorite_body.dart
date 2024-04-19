@@ -80,7 +80,7 @@ class FavoriteBody extends StatelessWidget {
                       shrinkWrap: true,
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent: width * 0.5,
-                        mainAxisExtent: height * 0.36,
+                        mainAxisExtent: height * 0.4,
                         crossAxisSpacing: 5,
                         mainAxisSpacing: 5,
                       ),

@@ -8,7 +8,6 @@ enum BasketStatus {
   add,
   remove,
   deleteAll,
-
   deleteAllWithLogout,
   editBasket,
   changeQuantity,
@@ -19,7 +18,6 @@ enum BasketStatus {
   loadingSendOrder,
   successSendOrder,
   errorSendOrder,
-
 }
 
 class BasketState extends Equatable {
@@ -36,7 +34,12 @@ class BasketState extends Equatable {
   List<TextEditingController>? quantityControllers;
   List<ProductUnit>? productUnitHelper;
 
+  Map<dynamic, dynamic>? quantityMap;
+
   final String? chosenQuantity;
+
+  final bool? isRefreshingBasket;
+
   BasketState(
       {this.isLoading,
       this.error,
@@ -49,7 +52,10 @@ class BasketState extends Equatable {
       this.total,
       this.quantityController,
       this.quantityControllers,
-      this.productUnitHelper, this.chosenQuantity});
+      this.productUnitHelper,
+      this.chosenQuantity,
+      this.quantityMap,
+      this.isRefreshingBasket});
 
   BasketState copyWith({
     bool? isLoading,
@@ -64,7 +70,9 @@ class BasketState extends Equatable {
     TextEditingController? quantityController,
     List<TextEditingController>? quantityControllers,
     List<ProductUnit>? productUnitHelper,
+    Map<dynamic, dynamic>? quantityMap,
     String? chosenQuantity,
+    bool? isRefreshingBasket,
   }) =>
       BasketState(
         isLoading: isLoading ?? this.isLoading,
@@ -80,7 +88,9 @@ class BasketState extends Equatable {
         quantityController: quantityController ?? this.quantityController,
         quantityControllers: quantityControllers ?? this.quantityControllers,
         productUnitHelper: productUnitHelper ?? this.productUnitHelper,
+        quantityMap: quantityMap ?? this.quantityMap,
         chosenQuantity: chosenQuantity ?? this.chosenQuantity,
+        isRefreshingBasket: isRefreshingBasket ?? this.isRefreshingBasket,
       );
 
   @override
@@ -97,6 +107,8 @@ class BasketState extends Equatable {
         quantityController,
         quantityControllers,
         productUnitHelper,
-    chosenQuantity,
+        quantityMap,
+        chosenQuantity,
+        isRefreshingBasket,
       ];
 }

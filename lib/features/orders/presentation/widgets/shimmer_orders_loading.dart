@@ -1,6 +1,7 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../../config/theme/colors.dart';
 import '../../../../core/app_export.dart';
 import '../../../../core/widgets/shimmer_placeholder.dart';
 
@@ -12,8 +13,8 @@ class ShimmerOrdersLoading extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Shimmer.fromColors(
-      baseColor: Colors.grey[400]!,
-      highlightColor: Colors.grey[100]!,
+      baseColor: AppColor.shimmerBaseColor!,
+      highlightColor: AppColor.shimmerHighlightColor!,
       child: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),
         child: Padding(
@@ -39,7 +40,7 @@ class ShimmerOrdersLoading extends StatelessWidget {
                   gridDelegate:
                   SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: width * 0.5,
-                    mainAxisExtent: height * 0.3,
+                    mainAxisExtent: height * 0.4,
                     crossAxisSpacing: 5,
                     mainAxisSpacing: 5,
                   ),

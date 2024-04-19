@@ -62,10 +62,10 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
   void onGetAllNewProducts(
       GetAllNewProducts event, Emitter<NewProductState> emit) async {
     if (event.isRefreshAll) {
-      List<ProductData> productDiscountList = [];
+      List<ProductData> newAllProductsList = [];
       emit(state.copyWith(
           newProductsCurrentIndex: event.page,
-          isNewProductsLoaded: false, newAllProductsList: productDiscountList));
+          isNewProductsLoaded: false, newAllProductsList: newAllProductsList));
     }
 
     final isConnected = await _networkInfo.isConnected;
@@ -97,9 +97,11 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
               (newProductsEntity.totalNumber! / event.limit).ceil();
         }
 
+        print('sfdhfhghdfsgaf');
+        print( newProductsEntity.productList!.length);
 
-        List<ProductData> newAllProductsList = state.newAllProductsList!;
-        newAllProductsList!.addAll(newProductsEntity.productList!);
+        List<ProductData> newAllProductsList = event.isRefreshAll ? [] : state.newAllProductsList!;
+        newAllProductsList.addAll(newProductsEntity.productList!);
 
         Map<int,bool>favorites = {};
         newAllProductsList.forEach((element) {
@@ -185,9 +187,10 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
       sort = 'newest';
     }
 
-    emit(state.copyWith(
-        newAllProductsList: [], newProductStatus: NewProductStatus.changeSort));
+    List<ProductData> newAllProductsList = [];
 
-    // call get favorites
+    emit(state.copyWith(
+        newAllProductsList: newAllProductsList, newProductStatus: NewProductStatus.changeSort));
+
   }
 }

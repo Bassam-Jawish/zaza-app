@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:zaza_app/config/routes/app_router.dart';
 import 'package:zaza_app/config/theme/colors.dart';
 import 'package:zaza_app/features/authentication/presentation/bloc/auth_bloc.dart';

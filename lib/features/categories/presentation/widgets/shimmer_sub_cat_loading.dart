@@ -1,6 +1,7 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../../config/theme/colors.dart';
 import '../../../../core/app_export.dart';
 import '../../../../core/widgets/shimmer_placeholder.dart';
 
@@ -12,8 +13,8 @@ class ShimmerSubCatLoading extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Shimmer.fromColors(
-      baseColor: Colors.grey[400]!,
-      highlightColor: Colors.grey[100]!,
+      baseColor: AppColor.shimmerBaseColor,
+      highlightColor: AppColor.shimmerHighlightColor,
       child: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(

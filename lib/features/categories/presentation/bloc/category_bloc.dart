@@ -136,7 +136,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
           List<CategoryEntity> categoriesPaginated = state.categoriesPaginated!;
           categoriesPaginated.addAll(categoryParentEntity!.categoriesChildren!);
 
-          List<ProductData> productsPaginated = state.productsPaginated!;
+          List<ProductData> productsPaginated = event.isRefreshAll ? [] : state.productsPaginated!;
           productsPaginated.addAll(categoryParentEntity!.productsChildren!);
 
           Map<int, bool> favorites = {};

@@ -93,7 +93,7 @@
     "phone_Deleted_Successfully": "Phone Deleted Successfully",
     "phone_Created_Successfully": "Phone Created Successfully",
     "profile": "Profile",
-    "restaurant_Name": "Restaurant Name",
+    "restaurant_Name": "Company Name",
     "phone_Numbers": "Phone Numbers",
     "add_Phone_Number": "Add Phone Number",
     "my_Orders": "My orders",
@@ -120,6 +120,7 @@
     "enter_quantity_unit": "Enter quantity for this unit",
     "edit_quantity_unit": "Quantity is changed for this product unit",
     "not_available": "The quantity is not available now",
+    "quantity_wrong": "The quantity is invalid",
     "edit": "Edit",
 
     "warning": "Warning",
@@ -171,5 +172,19 @@
     "privacy_policy": "Privacy policy",
     "terms": "Terms & conditions",
     "account_man": "Account management",
-    "delete_account": "Delete account"
+    "delete_account": "Delete account",
+
+    "invoice_Number": "Invoice Number:",
+    "invoice_Date": "Invoice Date:",
+    "status": "Status:",
+    "iNVOICE": "INVOICE",
+    "product_Name": "Product Name",
+    "barcode": "Barcode",
+    "vat": "Vat",
+    "unit_Name": "Unit Name",
+    "desc": "Desc",
+    "quantity": "Quantity",
+    "unit_Price": "Unit Price",
+    "net_total": "Net total",
+    "total_amount_with_vat": "Total amount with vat"
 }

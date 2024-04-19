@@ -151,7 +151,7 @@ class DiscountBloc extends Bloc<DiscountEvent, DiscountState> {
               (discountProductsEntity.totalNumber! / event.limit).ceil();
         }
 
-        List<ProductData> productDiscountList = state.productDiscountList!;
+        List<ProductData> productDiscountList = event.isRefreshAll ? [] : state.productDiscountList!;
         productDiscountList!.addAll(discountProductsEntity.productList!);
 
         Map<int,bool>favorites = {};

@@ -9,8 +9,10 @@ import '../../../../core/utils/functions/spinkit.dart';
 import '../bloc/product/product_bloc.dart';
 
 class ProductBody extends StatelessWidget {
-  ProductBody(this.state, {super.key});
+  ProductBody(this.state, this.formKey, {super.key});
   ProductState state;
+
+  GlobalKey<FormState> formKey;
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +121,7 @@ class ProductBody extends StatelessWidget {
                     SizedBox(
                       height: height * 0.01,
                     ),
-                    Text(
+                    /*Text(
                       '${AppLocalizations.of(context)!.tax}: ${state.productProfile!.taxName} (${state.productProfile!.taxPercent}%)',
                       style: TextStyle(
                           color: Colors.black,
@@ -128,7 +130,7 @@ class ProductBody extends StatelessWidget {
                     ),
                     SizedBox(
                       height: height * 0.01,
-                    ),
+                    ),*/
                     Text(
                       '${AppLocalizations.of(context)!.product_No}: #${state.productProfile!.barCode}',
                       style: TextStyle(
@@ -166,7 +168,16 @@ class ProductBody extends StatelessWidget {
                       state.productProfile!.productUnitListModel![index]
                           .description!,
                       state.productProfile!.productUnitListModel![index].price,
-                      state),
+                      state,
+                      state.productProfile!
+                          .productUnitListModel![index].quantity!,
+                      formKey,
+                      state.productProfile!.productId!,
+                      state
+                          .productProfile!
+                          .productUnitListModel![index]
+                          .productUnitId!,
+                  ),
                   separatorBuilder: (BuildContext context, int index) =>
                       SizedBox(
                         height: height * 0.02,

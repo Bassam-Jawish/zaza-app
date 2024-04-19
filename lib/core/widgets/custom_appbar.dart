@@ -7,6 +7,7 @@ import 'package:zaza_app/features/product/presentation/widgets/delete_dialogs.da
 import '../../config/theme/colors.dart';
 import '../../features/base/presentation/widgets/push_bottom_bar.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
+import '../../injection_container.dart';
 import '../utils/gen/assets.gen.dart';
 
 PreferredSizeWidget CustomAppBar(
@@ -15,7 +16,7 @@ PreferredSizeWidget CustomAppBar(
     leading: showClearBasket
         ? TextButton(
             onPressed: () {
-                awsDialogDeleteForAll(context, width, 0);
+              awsDialogDeleteForAll(context, width, 0);
             },
             child: Text(
               'Clear All',

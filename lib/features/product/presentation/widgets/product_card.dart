@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:zaza_app/config/config.dart';
 import 'package:zaza_app/config/theme/colors.dart';
+import 'package:zaza_app/config/theme/styles.dart';
 import 'package:zaza_app/core/app_export.dart';
 import 'package:zaza_app/core/widgets/custom_image_view.dart';
 import 'package:zaza_app/features/product/presentation/pages/product_page.dart';
@@ -52,7 +53,6 @@ class ProductCard extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     String path = '${imagePath}';
     var theme = Theme.of(context).colorScheme;
-
     return GestureDetector(
       onTap: () {
         productId = product_id;
@@ -126,7 +126,7 @@ class ProductCard extends StatelessWidget {
                   color: theme.primary,
                   fontWeight: FontWeight.bold,
                   fontSize: 15.sp),
-              maxLines: 2,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(
@@ -150,102 +150,184 @@ class ProductCard extends StatelessWidget {
                   color: theme.primary,
                   fontWeight: FontWeight.w500,
                   fontSize: 11.sp),
-              maxLines: 2,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(
               height: height * 0.003,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: width * 0.2,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      discount != 0
-                          ? Text(
-                              "${price}\€",
-                              style: TextStyle(
-                                color: AppColor.shadeColor,
-                                decoration: TextDecoration.lineThrough,
-                                decorationColor: AppColor.shadeColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15.sp,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                            )
-                          : Container(),
-                      SizedBox(
-                        height: height * 0.003,
-                      ),
-                      Text(
-                        "${(price * (100 - discount)) / 100}\€",
-                        style: TextStyle(
-                          color: theme.secondary,
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w600,
+            SizedBox(
+              width: width * 0.4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  discount != 0
+                      ? Text(
+                          "${price}\€",
+                          style: TextStyle(
+                            color: AppColor.shadeColor,
+                            decoration: TextDecoration.lineThrough,
+                            decorationColor: AppColor.shadeColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15.sp,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        )
+                      : Container(),
+                  SizedBox(
+                    height: height * 0.003,
+                  ),
+                  Text(
+                    "${(price * (100 - discount)) / 100}\€",
+                    style: TextStyle(
+                      color: theme.secondary,
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ],
+              ),
+            ),
+            Spacer(),
+            BlocBuilder<BasketBloc, BasketState>(
+              builder: (context, state) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: width * 0.1,
+                      height: height * 0.05,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (state.quantityMap![productUnitId] != null) {
+                            if (state.quantityMap![productUnitId] != 0) {
+                              context.read<BasketBloc>().add(AddToBasket(
+                                  productUnitId,
+                                  state.quantityMap![productUnitId]! - 1));
+                            }
+                          }
+                        },
+                        child: Icon(
+                          Icons.exposure_minus_1,
+                          color: theme.primary,
+                          size: 15,
                         ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: width * 0.1,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      quantityDialog(
-                        width,
-                        height,
-                        context,
-                        quantity,
-                        formKey,
-                        product_id,
-                        productUnitId,
-                      );
-                    },
-                    child: Icon(
-                      Icons.shopping_cart,
-                      color: theme.primary,
-                    ),
-                    style: ButtonStyle(
-                      overlayColor:
-                          MaterialStateProperty.all<Color>(AppColor.shadeColor),
-                      padding: MaterialStateProperty.all(EdgeInsets.zero),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(theme.background),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                        style: ButtonStyle(
+                          overlayColor: MaterialStateProperty.all<Color>(
+                              AppColor.gray300),
+                          padding: MaterialStateProperty.all(EdgeInsets.zero),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              theme.background),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-                /*SizedBox(
-                width: width * 0.1,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: const Icon(Icons.add),
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all(EdgeInsets.zero),
-                    backgroundColor:
-                    MaterialStateProperty.all<Color>(primaryColor),
-                    shape:
-                    MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                    SizedBox(
+                      width: width * 0.1,
+                      child: Center(
+                        child: Text(
+                          state.quantityMap![productUnitId] == null
+                              ? '0'
+                              : state.quantityMap![productUnitId].toString(),
+                          style: Styles.textStyle12
+                              .copyWith(color: AppColor.primaryLight),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),*/
-              ],
+                    SizedBox(
+                      width: width * 0.1,
+                      height: height * 0.05,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (state.quantityMap![productUnitId] == null) {
+                            context
+                                .read<BasketBloc>()
+                                .add(AddToBasket(productUnitId, 1));
+                          } else {
+                            if (state.quantityMap![productUnitId] < quantity) {
+                              context.read<BasketBloc>().add(AddToBasket(
+                                  productUnitId,
+                                  state.quantityMap![productUnitId]! + 1));
+                            }
+                          }
+                        },
+                        child: Icon(
+                          Icons.plus_one,
+                          color: theme.primary,
+                          size: 15,
+                        ),
+                        style: ButtonStyle(
+                          overlayColor: MaterialStateProperty.all<Color>(
+                              AppColor.gray300),
+                          padding: MaterialStateProperty.all(EdgeInsets.zero),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              theme.background),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: width * 0.1,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          if (state.quantityMap![productUnitId] != null) {
+                            int quantityy = 0;
+                            quantityy = state.quantityMap![productUnitId]! ?? 0;
+                            context
+                                  .read<BasketBloc>()
+                                  .add(ChangeTextValue(quantityy.toString()));
+                          } else {
+                            context
+                                .read<BasketBloc>()
+                                .add(ChangeTextValue('0'));
+                          }
+                          quantityDialog(
+                            width,
+                            height,
+                            context,
+                            quantity,
+                            formKey,
+                            product_id,
+                            productUnitId,
+                          );
+                        },
+                        child: Icon(
+                          Icons.shopping_cart,
+                          color: theme.primary,
+                        ),
+                        style: ButtonStyle(
+                          overlayColor: MaterialStateProperty.all<Color>(
+                              AppColor.shadeColor),
+                          padding: MaterialStateProperty.all(EdgeInsets.zero),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              theme.background),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ],
         ),

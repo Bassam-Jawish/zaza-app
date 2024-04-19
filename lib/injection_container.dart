@@ -42,6 +42,10 @@ String sort = 'newest';
 String barcodeSearch = '';
 String nameSearch = '';
 
+String phoneNumber = '';
+String dialCode = '';
+
+
 Map<String, String> languagesList = {
   'Germany': 'de',
   'English': 'en',

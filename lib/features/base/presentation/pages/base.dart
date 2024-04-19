@@ -16,7 +16,7 @@ class BasePage extends StatelessWidget {
     return BlocListener<BasketBloc, BasketState>(
       listener: (context, state) {
         if (state.basketStatus == BasketStatus.add) {
-          showToast(text: AppLocalizations.of(context)!.added_To_Basket_Successfully, state: ToastState.success);
+          //showToast(text: AppLocalizations.of(context)!.added_To_Basket_Successfully, state: ToastState.success);
           context.read<BasketBloc>().add(GetIdQuantityForBasket());
         }
         if (state.basketStatus == BasketStatus.errorAdd) {

@@ -8,6 +8,7 @@ import 'package:zaza_app/features/profile/domain/entities/user_profile.dart';
 import 'package:zaza_app/features/profile/domain/usecases/create_phone_usecase.dart';
 import 'package:zaza_app/features/profile/domain/usecases/delete_phone_usecase.dart';
 import 'package:zaza_app/features/profile/domain/usecases/get_user_profile_usecase.dart';
+import 'package:zaza_app/injection_container.dart';
 
 import '../../../../../core/error/failure.dart';
 import '../../../../../core/network/network_info.dart';
@@ -35,8 +36,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             isLoaded: false)) {
     on<GetUserProfile>(onGetUserProfile);
     on<CreatePhone>(onCreatePhone);
-    on<DeletePhone>(onDeletePhone);
-    on<AddingPhoneNumber>(onAddingPhoneNumber);
+    on<DeletePhone>(onDeletePhone);;
   }
 
   void onGetUserProfile(
@@ -58,7 +58,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       final dataState = await _getUserProfileUseCase(params: userProfileParams);
 
-      print(dataState.data!.phonesList);
       if (dataState is DataSuccess) {
         emit(state.copyWith(
           userProfileEntity: dataState.data,
@@ -95,15 +94,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       return;
     }
 
-    print(state.isoCode);
-    print(state.number);
+    print(dialCode);
+    print(phoneNumber);
 
     try {
       final createPhoneUseCaseParams = CreatePhoneUseCaseParams(
         language: event.language,
         data: jsonEncode({
           "phoneNumbers": [
-            {"code": state.isoCode, "number": state.number}
+            {"code": dialCode, "number": phoneNumber}
           ]
         }),
       );
@@ -174,8 +173,4 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
   }
 
-  void onAddingPhoneNumber(
-      AddingPhoneNumber event, Emitter<ProfileState> emit) async {
-    emit(state.copyWith(number: event.phoneNumber, isoCode: event.isoCode));
-  }
 }

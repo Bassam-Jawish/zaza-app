@@ -17,7 +17,8 @@ Future quantityEditDialog(width, height, index, context, int quantity, formKey,
           surfaceTintColor: Colors.white,
           backgroundColor: Colors.white,
           title: Padding(
-              padding: EdgeInsets.symmetric(vertical: height*0.01,horizontal: width*0.02),
+              padding: EdgeInsets.symmetric(
+                  vertical: height * 0.01, horizontal: width * 0.02),
               child: Text('${AppLocalizations.of(context)!.basket}')),
           titleTextStyle: TextStyle(
             color: AppColor.primaryLight,
@@ -26,8 +27,7 @@ Future quantityEditDialog(width, height, index, context, int quantity, formKey,
           ),
           content: SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: width * 0.02),
+              padding: EdgeInsets.symmetric(horizontal: width * 0.02),
               child: Container(
                 height: height * 0.2,
                 width: width * 0.7,
@@ -41,7 +41,7 @@ Future quantityEditDialog(width, height, index, context, int quantity, formKey,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${AppLocalizations.of(context)!.edit_quantity_unit}',
+                        '${AppLocalizations.of(context)!.enter_quantity_unit}',
                         style: TextStyle(
                             fontSize: 15.sp,
                             fontWeight: FontWeight.w400,
@@ -55,22 +55,29 @@ Future quantityEditDialog(width, height, index, context, int quantity, formKey,
                         keyboardType: TextInputType.number,
                         controller: state.quantityControllers![index],
                         onChanged: (value) {
-                          var chosenQuantity = state.quantityController!.text;
-                          context.read<BasketBloc>().add(ChangeTextValue(value, chosenQuantity));
+                          var chosenQuantity =
+                              state.quantityControllers![index].text;
+                          context.read<BasketBloc>().add(
+                              ChangeTextValue(chosenQuantity));
                         },
                         maxLengthEnforcement: MaxLengthEnforcement.enforced,
                         maxLength: 10,
                         br: 15,
                         counterText:
-                        '${state.quantityControllers![index].text}/${quantity}',
+                            '${state.quantityControllers![index].text}/${quantity}',
                         validator: (value) {
+                          if (value!.isEmpty) {
+                            return '${AppLocalizations.of(context)!.empty}';
+                          }
+                          if (value[0] == '0' ||
+                              value.contains('.') ||
+                              value.contains('-')) {
+                            return '${AppLocalizations.of(context)!.quantity_wrong}';
+                          }
                           if (value != '') {
                             if ((int.parse(value) > quantity)) {
                               return '${AppLocalizations.of(context)!.not_available}';
                             }
-                          }
-                          if (value!.isEmpty) {
-                            return '${AppLocalizations.of(context)!.empty}';
                           }
                           return null;
                         },
@@ -84,7 +91,8 @@ Future quantityEditDialog(width, height, index, context, int quantity, formKey,
           actions: [
             TextButton(
               style: ButtonStyle(
-                overlayColor: MaterialStateColor.resolveWith((states) => AppColor.shadeColor),
+                overlayColor: MaterialStateColor.resolveWith(
+                    (states) => AppColor.shadeColor),
               ),
               onPressed: () {
                 Navigator.pop(context);
@@ -103,11 +111,15 @@ Future quantityEditDialog(width, height, index, context, int quantity, formKey,
             ),
             TextButton(
               style: ButtonStyle(
-                overlayColor: MaterialStateColor.resolveWith((states) => AppColor.shadeColor),
+                overlayColor: MaterialStateColor.resolveWith(
+                    (states) => AppColor.shadeColor),
               ),
               onPressed: () {
                 if (formKey.currentState!.validate()) {
-                  context.read<BasketBloc>().add(EditQuantityBasket(productUnitId, int.parse(state.quantityControllers![index].text), index));
+                  context.read<BasketBloc>().add(EditQuantityBasket(
+                      productUnitId,
+                      int.parse(state.quantityControllers![index].text),
+                      index));
                   Navigator.pop(context);
                 }
               },

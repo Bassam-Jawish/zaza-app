@@ -13,7 +13,11 @@ import 'l10n/l10n.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+/*
+  LicenseRegistry.addLicense(() async* {
+    final license = await rootBundle.loadString('fonts/OFL.txt');
+    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
+  });*/
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
@@ -52,8 +56,8 @@ class MyApp extends StatelessWidget {
           create: (BuildContext context) => sl(),
         ),
         BlocProvider<ProfileBloc>(
-          create: (BuildContext context) => sl(),
-        ),
+          create: (BuildContext context) => sl()..add(GetUserProfile(languageCode)),
+        )
         //BlocProvider<HomeBloc>(create: (BuildContext context) => sl()),
       ],
       child: ScreenUtilInit(

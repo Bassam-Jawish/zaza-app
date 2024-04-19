@@ -4,7 +4,7 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 Future<void> pushNewScreenWithNavBar(context, screen, routeName) async {
   PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
     context,
-    withNavBar: true,
+    withNavBar: false,
     settings: RouteSettings(name: routeName),
     screen: screen,
   );

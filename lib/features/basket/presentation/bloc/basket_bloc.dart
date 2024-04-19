@@ -52,17 +52,27 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
             total: 0.0,
             basketProductsList: [],
             productUnitHelper: [],
-            isLoading: false,quantityController: TextEditingController(), chosenQuantity: '')) {
-
+            isLoading: false,
+            quantityController: TextEditingController(text: '0'),
+            chosenQuantity: '',
+            isRefreshingBasket: true)) {
     on<BasketEvent>((event, emit) async {
-      if (event is GetBasketProducts) await onGetBasketProducts(event, emit);
-      else if (event is ClearQuantityController) onClearQuantityController(event, emit);
-      else if (event is ChangeTextValue) onChangeTextValue(event, emit);
-      else if (event is GetIdQuantityForBasket) await onGetIdQuantityForBasket(event, emit);
-      else if (event is AddToBasket) await onAddToBasket(event, emit);
-      else if (event is EditQuantityBasket) await onEditQuantityBasket(event, emit);
-      else if (event is RemoveOneFromBasket) await onRemoveOneFromBasket(event, emit);
-      else if (event is DeleteBasket) await onDeleteBasket(event, emit);
+      if (event is GetBasketProducts)
+        await onGetBasketProducts(event, emit);
+      else if (event is ClearQuantityController)
+        onClearQuantityController(event, emit);
+      else if (event is ChangeTextValue)
+        onChangeTextValue(event, emit);
+      else if (event is GetIdQuantityForBasket)
+        await onGetIdQuantityForBasket(event, emit);
+      else if (event is AddToBasket)
+        await onAddToBasket(event, emit);
+      else if (event is EditQuantityBasket)
+        await onEditQuantityBasket(event, emit);
+      else if (event is RemoveOneFromBasket)
+        await onRemoveOneFromBasket(event, emit);
+      else if (event is DeleteBasket)
+        await onDeleteBasket(event, emit);
       else if (event is SendOrder) await onSendOrder(event, emit);
     });
   }
@@ -148,6 +158,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
           total: total,
           subTotal: subTotal,
           basketPaginationNumberSave: basketPaginationNumberSave,
+          isRefreshingBasket: false,
         ));
       }
 
@@ -168,25 +179,43 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
   void onClearQuantityController(
       ClearQuantityController event, Emitter<BasketState> emit) {
     TextEditingController copy = state.quantityController!;
-
-    copy.clear();
-
+    //copy.text = '';
     emit(state.copyWith(
         quantityController: copy, basketStatus: BasketStatus.clearController));
   }
 
   void onChangeTextValue(ChangeTextValue event, Emitter<BasketState> emit) {
-    emit(state.copyWith(basketStatus: BasketStatus.changeQuantity,chosenQuantity: event.chosenQuantity));
+    String chosenQuantity = event.chosenQuantity!;
+    TextEditingController updatedController = state.quantityController!;
+    updatedController.text = chosenQuantity;
+    emit(state.copyWith(
+      basketStatus: BasketStatus.changeQuantity,
+      chosenQuantity: chosenQuantity,
+      quantityController: updatedController,
+    ));
   }
 
+  // get stored local database
   Future<void> onGetIdQuantityForBasket(
       GetIdQuantityForBasket event, Emitter<BasketState> emit) async {
     final dataState = await _getIdQuantityBasketUseCase();
 
     if (dataState is DataSuccess) {
+      List<dynamic> idList = dataState.data!
+          .map((ProductUnit product) => product.product_unit_id)
+          .toList();
+
+      List<dynamic> quantityList =
+          dataState.data!.map((product) => product.quantity).toList();
+
+      Map<dynamic, dynamic> combinedMap =
+          Map.fromIterables(idList, quantityList);
+
       emit(state.copyWith(
-          productUnitHelper: dataState.data,
-          basketStatus: BasketStatus.getIds));
+        productUnitHelper: dataState.data,
+        basketStatus: BasketStatus.getIds,
+        quantityMap: combinedMap,
+      ));
       // call onGetBasketProducts
     }
   }
@@ -196,13 +225,23 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     print(event.productUnitId);
     print(event.quantity);
 
+    if (event.quantity == 0) {
+      emit(state.copyWith(
+        isRefreshingBasket: true,
+      ));
+    }
+
     final addToBasketParams = AddToBasketParams(
         product_unit_id: event.productUnitId, quantity: event.quantity);
 
     final dataState = await _addToBasketUseCase(params: addToBasketParams);
 
     if (dataState is DataSuccess) {
-      emit(state.copyWith(basketStatus: BasketStatus.add,));
+      Map<dynamic, dynamic> quan = state.quantityMap!;
+      quan[event.productUnitId] = event.quantity;
+
+      emit(state.copyWith(basketStatus: BasketStatus.add, quantityMap: quan));
+
       // call onGetIdQuantityForBasket
       // call onGetBasketProducts
     }
@@ -215,6 +254,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     }
   }
 
+  // edit price calculation when editing in basket
   Future<void> onEditQuantityBasket(
       EditQuantityBasket event, Emitter<BasketState> emit) async {
     final editQuantityBasketParams = EditQuantityBasketParams(
@@ -293,7 +333,9 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
       emit(state.copyWith(
         subTotal: subTotal,
         total: total,
-        basketStatus: event.isLogout ? BasketStatus.deleteAllWithLogout : BasketStatus.deleteAll,
+        basketStatus: event.isLogout
+            ? BasketStatus.deleteAllWithLogout
+            : BasketStatus.deleteAll,
         basketProductsList: copy,
       ));
 

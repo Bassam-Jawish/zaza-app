@@ -30,4 +30,9 @@ abstract class AppColor {
   static const Color gray600 = Color(0XFF6D747C);
   static const Color gray700 = Color(0X147C7C7C);
 
+  // Shimmer Color
+
+  static Color shimmerBaseColor = Colors.grey[300]!;
+  static Color shimmerHighlightColor = Colors.grey[100]!;
+
 }

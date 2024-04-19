@@ -56,7 +56,7 @@ class BuildDiscountProductCard extends StatelessWidget {
           color: AppColor.primaryLight,
         ),
         padding: EdgeInsets.symmetric(
-            horizontal: width * 0.04, vertical: height * 0.02),
+            horizontal: width * 0.03, vertical: height * 0.01),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -119,7 +119,7 @@ class BuildDiscountProductCard extends StatelessWidget {
                                 decoration: TextDecoration.lineThrough,
                                 decorationColor: AppColor.shadeColor,
                                 fontWeight: FontWeight.w600,
-                                fontSize: 15.sp,
+                                fontSize: 12.sp,
                               ),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
@@ -150,8 +150,7 @@ class BuildDiscountProductCard extends StatelessWidget {
                                     quantity,
                                     formKey,
                                     product_id,
-                                    productUnitId
-                                );
+                                    productUnitId);
                               },
                               child: Icon(
                                 Icons.shopping_cart,

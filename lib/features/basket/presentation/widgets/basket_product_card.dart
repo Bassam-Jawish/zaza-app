@@ -149,7 +149,7 @@ class BasketProductCard extends StatelessWidget {
                                 '${price.toString()}\€',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 19.sp,
+                                    fontSize: 16.sp,
                                     color: Colors.grey,
                                     decoration: TextDecoration.lineThrough),
                                 maxLines: 1,
@@ -292,7 +292,7 @@ class BasketProductCard extends StatelessWidget {
             height: height * 0.03,
             child: Center(
               child: Text(
-                '${state.productUnitHelper![index].quantity}/${quantity}',
+                '${state.productUnitHelper![index].quantity ?? 0}/${quantity}',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 13.sp,

@@ -65,7 +65,7 @@ class SecureStorage {
 
   static initStorage()
   {
-    storage = const FlutterSecureStorage();
+    storage = FlutterSecureStorage(aOptions: _secureOption());
   }
 
   static AndroidOptions _secureOption() => const AndroidOptions(

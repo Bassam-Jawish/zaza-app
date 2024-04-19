@@ -72,10 +72,12 @@
     "determine": "Produkteinheit bestimmen, die dem Warenkorb hinzugefügt werden soll.",
     "aDD_TO_BASKET": "In den Warenkorb",
 
+    "quantity_wrong": "Die Menge ist ungültig",
+
     "phone_Deleted_Successfully": "Telefon erfolgreich gelöscht",
     "phone_Created_Successfully": "Telefon erfolgreich erstellt",
     "profile": "Profil",
-    "restaurant_Name": "Restaurantname",
+    "restaurant_Name": "Firmenname",
     "phone_Numbers": "Telefonnummern",
     "add_Phone_Number": "Telefonnummer hinzufügen",
     "my_Orders": "Meine Bestellungen",
@@ -158,5 +160,19 @@
     "privacy_policy": "Datenschutzrichtlinie",
     "terms": "Allgemeine Geschäftsbedingungen",
     "account_man": "Kontoverwaltung",
-    "delete_account": "Konto löschen"
+    "delete_account": "Konto löschen",
+
+    "invoice_Number": "Rechnungsnummer:",
+    "invoice_Date": "Rechnungsdatum:",
+    "status": "Status:",
+    "iNVOICE": "RECHNUNG",
+    "product_Name": "Produktname",
+    "barcode": "Barcode",
+    "vat": "Mehrwertsteuer",
+    "unit_Name": "Einheitsname",
+    "desc": "Beschreibung",
+    "quantity": "Menge",
+    "unit_Price": "Einheitspreis",
+    "net_total": "Nettosumme",
+    "total_amount_with_vat": "Gesamtbetrag inklusive Mehrwertsteuer"
 }

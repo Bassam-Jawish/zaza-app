@@ -24,14 +24,13 @@ class ProfileState extends Equatable {
 
   final bool? isLoaded;
 
-  ProfileState({
-    this.error,
-    this.userProfileEntity,
-    this.profileStatus,
-    this.number,
-    this.isoCode,
-    this.isLoaded,
-  });
+  ProfileState(
+      {this.error,
+      this.userProfileEntity,
+      this.profileStatus,
+      this.number,
+      this.isoCode,
+      this.isLoaded,});
 
   // CopyWith function for immutability
   ProfileState copyWith({

@@ -3,6 +3,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/app_export.dart';
 import '../../../../core/widgets/shimmer_placeholder.dart';
+import 'package:zaza_app/config/theme/colors.dart';
 
 class ShimmerSearchLoading extends StatelessWidget {
   const ShimmerSearchLoading({super.key});
@@ -12,8 +13,8 @@ class ShimmerSearchLoading extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Shimmer.fromColors(
-      baseColor: Colors.grey[400]!,
-      highlightColor: Colors.grey[100]!,
+      baseColor: AppColor.shimmerBaseColor,
+      highlightColor: AppColor.shimmerHighlightColor,
       child: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),
         child: Padding(
@@ -23,7 +24,7 @@ class ShimmerSearchLoading extends StatelessWidget {
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: width * 0.5,
-              mainAxisExtent: height * 0.36,
+              mainAxisExtent: height * 0.4,
               crossAxisSpacing: 5,
               mainAxisSpacing: 5,
             ),

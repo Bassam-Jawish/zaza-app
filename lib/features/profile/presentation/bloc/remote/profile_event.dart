@@ -34,13 +34,3 @@ class DeletePhone extends ProfileEvent {
   @override
   List<Object> get props => [language, phoneId, index];
 }
-
-class AddingPhoneNumber extends ProfileEvent {
-  final String isoCode;
-  final String phoneNumber;
-
-  const AddingPhoneNumber(this.phoneNumber, this.isoCode);
-
-  @override
-  List<Object> get props => [phoneNumber, isoCode];
-}

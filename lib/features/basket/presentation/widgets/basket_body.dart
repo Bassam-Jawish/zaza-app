@@ -26,22 +26,30 @@ class BasketBody extends StatelessWidget {
     return BlocConsumer<BasketBloc, BasketState>(
       listener: (context, state) {
         if (state.basketStatus == BasketStatus.editBasket) {
-          showToast(text: AppLocalizations.of(context)!.edit_quantity_unit, state: ToastState.success);
+          showToast(
+              text: AppLocalizations.of(context)!.edit_quantity_unit,
+              state: ToastState.success);
           context.read<BasketBloc>().add(GetIdQuantityForBasket());
         }
         if (state.basketStatus == BasketStatus.remove) {
-          showToast(text: AppLocalizations.of(context)!.item_Deleted_Successfully, state: ToastState.success);
+          showToast(
+              text: AppLocalizations.of(context)!.item_Deleted_Successfully,
+              state: ToastState.success);
           context.read<BasketBloc>().add(GetIdQuantityForBasket());
         }
         if (state.basketStatus == BasketStatus.deleteAll) {
-          showToast(text: AppLocalizations.of(context)!.basket_Cleared, state: ToastState.success);
+          showToast(
+              text: AppLocalizations.of(context)!.basket_Cleared,
+              state: ToastState.success);
           context.read<BasketBloc>().add(GetIdQuantityForBasket());
         }
         if (state.basketStatus == BasketStatus.deleteAllWithLogout) {
           context.read<BasketBloc>().add(GetIdQuantityForBasket());
         }
         if (state.basketStatus == BasketStatus.successSendOrder) {
-          showToast(text: AppLocalizations.of(context)!.order_Sent_Successfully, state: ToastState.success);
+          showToast(
+              text: AppLocalizations.of(context)!.order_Sent_Successfully,
+              state: ToastState.success);
           context.read<BasketBloc>().add(DeleteBasket(true));
         }
 
@@ -51,7 +59,7 @@ class BasketBody extends StatelessWidget {
       },
       builder: (context, state) {
         return ConditionalBuilder(
-          condition: state.productEntity != null,
+          condition: !state.isRefreshingBasket!,
           builder: (context) => Container(
             height: height,
             width: width,
@@ -62,8 +70,7 @@ class BasketBody extends StatelessWidget {
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: width * 0.03,
-                            vertical: height * 0.03),
+                            horizontal: width * 0.03, vertical: height * 0.03),
                         child: Form(
                           key: formKey,
                           child: ListView.separated(
@@ -72,16 +79,21 @@ class BasketBody extends StatelessWidget {
                               scrollDirection: Axis.vertical,
                               itemBuilder: (context, index) {
                                 ///////////////
-                                dynamic price = state
+                                dynamic price = state.basketProductsList![index]
+                                    .productUnitListModel![0].price!;
+
+                                int discount =
+                                    state.basketProductsList![index].discount!;
+
+                                print(state.quantityMap![state
                                     .basketProductsList![index]
                                     .productUnitListModel![0]
-                                    .price!;
+                                    .productUnitId!]);
 
-                                int discount = state
-                                    .basketProductsList![index].discount!;
-
-                                int myQuantity =
-                                    state.productUnitHelper![index].quantity;
+                                int myQuantity = state.quantityMap![state
+                                    .basketProductsList![index]
+                                    .productUnitListModel![0]
+                                    .productUnitId!] ?? 0;
 
                                 dynamic pricePerProduct = price * myQuantity;
                                 String pricePerProductString =
@@ -91,20 +103,18 @@ class BasketBody extends StatelessWidget {
                                     ((price * (100 - discount)) / 100) *
                                         myQuantity;
                                 String pricePerProductDiscountString =
-                                    pricePerProductDiscount
-                                        .toStringAsFixed(1);
+                                    pricePerProductDiscount.toStringAsFixed(1);
 
                                 return BasketProductCard(
                                     index: index,
                                     state: state,
                                     productIdBasket: state
-                                        .basketProductsList![index]
-                                        .productId!,
+                                        .basketProductsList![index].productId!,
                                     productName: state
                                         .basketProductsList![index]
                                         .productName!,
-                                    image: state
-                                        .basketProductsList![index].image!,
+                                    image:
+                                        state.basketProductsList![index].image!,
                                     discount: discount,
                                     unitId: state.basketProductsList![index]
                                         .productUnitListModel![0].unitId!,
@@ -114,12 +124,10 @@ class BasketBody extends StatelessWidget {
                                         .productUnitId!,
                                     unitName: state.basketProductsList![index]
                                         .productUnitListModel![0].unitName!,
-                                    unitDesc: state
-                                        .basketProductsList![index]
-                                        .productUnitListModel![0]
-                                        .description!,
+                                    unitDesc: state.basketProductsList![index]
+                                        .productUnitListModel![0].description!,
                                     quantity: state.basketProductsList![index]
-                                        .productUnitListModel![0].quantity!,
+                                        .productUnitListModel![0].quantity! ?? 0,
                                     price: price,
                                     pricePerProductString:
                                         pricePerProductString,
@@ -127,8 +135,7 @@ class BasketBody extends StatelessWidget {
                                         pricePerProductDiscountString);
                               },
                               separatorBuilder:
-                                  (BuildContext context, int index) =>
-                                      SizedBox(
+                                  (BuildContext context, int index) => SizedBox(
                                         height: height * 0.02,
                                       ),
                               itemCount: state.basketProductsList!.length),

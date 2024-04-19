@@ -1,6 +1,7 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zaza_app/config/theme/colors.dart';
-import 'package:zaza_app/core/utils/functions/spinkit.dart';
 import 'package:zaza_app/core/widgets/custom_toast.dart';
 import 'package:zaza_app/features/orders/presentation/widgets/order_card.dart';
 import 'package:zaza_app/features/profile/presentation/widgets/add_phone_dialog.dart';
@@ -12,19 +13,8 @@ import '../../../../injection_container.dart';
 import '../../../base/presentation/widgets/push_bottom_bar.dart';
 import '../../../orders/presentation/pages/orders_page.dart';
 
-class ProfileBody extends StatefulWidget {
+class ProfileBody extends StatelessWidget {
   ProfileBody({super.key});
-
-  @override
-  State<ProfileBody> createState() => _ProfileBodyState();
-}
-
-class _ProfileBodyState extends State<ProfileBody> {
-  @override
-  void initState() {
-    BlocProvider.of<ProfileBloc>(context)..add(GetUserProfile(languageCode));
-    super.initState();
-  }
 
   TextEditingController phoneNumberController = TextEditingController();
 
@@ -37,12 +27,37 @@ class _ProfileBodyState extends State<ProfileBody> {
       listeners: [
         BlocListener<ProfileBloc, ProfileState>(
           listener: (context, state) {
+            if (state.profileStatus == ProfileStatus.loadingCreatePhone) {
+              EasyLoading.show();
+            }
+            if (state.profileStatus == ProfileStatus.errorCreatePhone) {
+              EasyLoading.dismiss();
+              showToast(text: state.error!.message, state: ToastState.error);
+            }
+            if (state.profileStatus == ProfileStatus.successCreatePhone) {
+              BlocProvider.of<ProfileBloc>(context)
+                ..add(GetUserProfile(languageCode));
+              Navigator.of(context).pop();
+              showToast(
+                  text:
+                      '${AppLocalizations.of(context)!.phone_Created_Successfully}',
+                  state: ToastState.success);
+              EasyLoading.dismiss();
+            }
+            if (state.profileStatus == ProfileStatus.loadingCreatePhone) {
+              EasyLoading.show();
+            }
+
+            if (state.profileStatus == ProfileStatus.loadingDeletePhone) {
+              EasyLoading.show();
+            }
+
+            //////////////////////////////////////////////////////////////////////////////////
+
             if (state.profileStatus == ProfileStatus.error) {
               showToast(text: state.error!.message, state: ToastState.error);
             }
-            if (state.profileStatus == ProfileStatus.errorCreatePhone) {
-              showToast(text: state.error!.message, state: ToastState.error);
-            }
+
             if (state.profileStatus == ProfileStatus.errorDeletePhone) {
               showToast(text: state.error!.message, state: ToastState.error);
             }
@@ -56,6 +71,8 @@ class _ProfileBodyState extends State<ProfileBody> {
                   text:
                       '${AppLocalizations.of(context)!.phone_Deleted_Successfully}',
                   state: ToastState.success);
+              EasyLoading.dismiss();
+
             }
           },
         ),
@@ -91,12 +108,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                               width: double.infinity,
                               height: height * 0.2,
                               decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Colors.red,
-                                    theme.primary,
-                                  ],
-                                ),
+                                color: AppColor.primaryLight,
                                 borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(50),
                                   bottomRight: Radius.circular(50),
@@ -108,15 +120,15 @@ class _ProfileBodyState extends State<ProfileBody> {
                               child: Column(
                                 children: [
                                   /*CircleAvatar(
-                                radius: 50,
-                                backgroundColor: Colors.white,
-                                child: Image.asset(
-                                  'assets/images/profile.png',
-                                  width: width * 0.3,
-                                  height: height * 0.15,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),*/
+                          radius: 50,
+                          backgroundColor: Colors.white,
+                          child: Image.asset(
+                            'assets/images/profile.png',
+                            width: width * 0.3,
+                            height: height * 0.15,
+                            fit: BoxFit.fill,
+                          ),
+                        ),*/
                                   SizedBox(
                                     height: height * 0.01,
                                   ),
@@ -190,7 +202,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                                         style: TextStyle(
                                             fontSize: 18.sp,
                                             fontWeight: FontWeight.w300,
-                                            color: Colors.white54),
+                                            color: Colors.white),
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                       ),
@@ -223,9 +235,9 @@ class _ProfileBodyState extends State<ProfileBody> {
                                         Text(
                                           '${AppLocalizations.of(context)!.phone_Numbers}',
                                           style: TextStyle(
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 18.sp),
+                                              color: theme.secondary,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 20.sp),
                                         ),
                                       ],
                                     ),
@@ -248,8 +260,8 @@ class _ProfileBodyState extends State<ProfileBody> {
                                           ),
                                         ),
                                         onPressed: () {
-                                          addPhoneDialog(context, width, height,
-                                              phoneNumberController);
+                                          addPhoneDialog(
+                                              context, width, height);
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: theme.primary,
@@ -386,16 +398,20 @@ class _ProfileBodyState extends State<ProfileBody> {
                                             ),
                                     itemBuilder: (context, index) {
                                       return OrderCard(
-                                          index,
-                                          orderState.generalOrdersEntity!
-                                              .ordersList![index].orderId!,
-                                          orderState.generalOrdersEntity!
-                                              .ordersList![index].totalPrice!,
-                                         0,
-                                          orderState.generalOrdersEntity!
-                                              .ordersList![index].createdAt!,
-                                          orderState.generalOrdersEntity!
-                                              .ordersList![index].status!, );
+                                        index,
+                                        orderState.generalOrdersEntity!
+                                            .ordersList![index].orderId!,
+                                        orderState.generalOrdersEntity!
+                                            .ordersList![index].totalPrice!,
+                                        orderState
+                                            .generalOrdersEntity!
+                                            .ordersList![index]
+                                            .totalPriceAfterTax!,
+                                        orderState.generalOrdersEntity!
+                                            .ordersList![index].createdAt!,
+                                        orderState.generalOrdersEntity!
+                                            .ordersList![index].status!,
+                                      );
                                     },
                                     itemCount: orderState.generalOrdersEntity!
                                         .ordersList!.length),

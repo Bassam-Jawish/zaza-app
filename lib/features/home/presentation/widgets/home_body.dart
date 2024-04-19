@@ -231,7 +231,7 @@ class _HomeBodyState extends State<HomeBody> {
                                 gridDelegate:
                                     SliverGridDelegateWithMaxCrossAxisExtent(
                                   maxCrossAxisExtent: width * 0.5,
-                                  mainAxisExtent: height * 0.36,
+                                  mainAxisExtent: height * 0.4,
                                   crossAxisSpacing: 5,
                                   mainAxisSpacing: 5,
                                 ),

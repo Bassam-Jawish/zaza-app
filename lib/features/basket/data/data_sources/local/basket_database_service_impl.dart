@@ -23,21 +23,27 @@ class BasketLocalDatabaseServiceImpl implements BasketLocalDatabaseService {
         (product) => product.product_unit_id == product_unit_id,
       );
       productExists = true;
+
+      final int index = box.values.toList().indexOf(existingProduct);
+
+      if (quantity == 0) {
+        return box.deleteAt(index);
+      }
+      else {
+        final updatedProduct = ProductUnit(
+          product_unit_id: product_unit_id,
+          quantity: quantity,
+        );
+        box.putAt(index, updatedProduct);
+      }
+
     } catch (e) {
       print('${e.toString()}');
       // No matching product found
       productExists = false;
-    }
-
-    if (productExists) {
-      throw HiveError('cannot add again');
-    }
-    else {
       final product =
       ProductUnit(product_unit_id: product_unit_id, quantity: quantity);
-      print('sfdghdgs');
       box.add(product);
-      print('lfoo');
     }
   }
 

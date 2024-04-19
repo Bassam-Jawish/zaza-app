@@ -30,7 +30,7 @@ class SearchByBarcode extends StatelessWidget {
       controller: state.scrollControllerSearchBarcode,
       child: Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: width * 0.03, vertical: height * 0.03),
+            horizontal: width * 0.01, vertical: height * 0.03),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -69,7 +69,7 @@ class SearchByBarcode extends StatelessWidget {
                         shrinkWrap: true,
                         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                           maxCrossAxisExtent: width * 0.5,
-                          mainAxisExtent: height * 0.36,
+                          mainAxisExtent: height * 0.4,
                           crossAxisSpacing: 5,
                           mainAxisSpacing: 5,
                         ),

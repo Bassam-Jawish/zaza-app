@@ -96,7 +96,7 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
               (favoriteProductsEntity.totalNumber! / event.limit).ceil();
         }
 
-        List<ProductData> favoriteProductsList = state.favoriteProductsList!;
+        List<ProductData> favoriteProductsList = event.isRefreshAll ? [] : state.favoriteProductsList!;
         favoriteProductsList.addAll(favoriteProductsEntity.productList!);
 
         Map<int, bool> favorites = {};
