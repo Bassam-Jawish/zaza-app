@@ -37,6 +37,7 @@ class LoginBody extends StatelessWidget {
           showToast(text: state.error!.message, state: ToastState.error);
         }
         if (state.authStatus == AuthStatus.success) {
+
           token = state.accessToken;
           user_id = state.userEntity!.userId;
           user_name = state.userEntity!.userName;
@@ -51,6 +52,11 @@ class LoginBody extends StatelessWidget {
           showToast(text: 'Login Successfully', state: state);
           GoRouter.of(context).pushReplacement(AppRouter.kBasePage);
         }
+
+        if (state.authStatus == AuthStatus.loading) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        }
+
       },
       child: SingleChildScrollView(
         child: Stack(

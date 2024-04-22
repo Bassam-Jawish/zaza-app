@@ -137,6 +137,20 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
     try {
       emit(state.copyWith(isAdded: false));
 
+      Map<int, bool> favorites = state.favorites!;
+      favorites[event.productId] = !favorites[event.productId]!;
+
+      if (favorites[event.productId]! == false) {
+        favorites.removeWhere(
+                (key, value) => key == event.productId && value == false);
+        state.favoriteProductsList!.removeAt(event.index);
+      }
+
+      emit(state.copyWith(
+          favoriteProductsList: state.favoriteProductsList,
+          favorites: favorites,
+          isAdded: true));
+
       final addToFavoriteParams = AddToFavoriteParams(
         productId: event.productId,
       );
@@ -145,20 +159,10 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
           await _addToFavoritesUseCase(params: addToFavoriteParams);
 
       if (dataState is DataSuccess) {
-        Map<int, bool> favorites = state.favorites!;
-        favorites[event.productId] = !favorites[event.productId]!;
 
-        if (favorites[event.productId]! == false) {
-          favorites.removeWhere(
-              (key, value) => key == event.productId && value == false);
-          state.favoriteProductsList!.removeAt(event.index);
-        }
 
         emit(state.copyWith(
-            favoriteStatus: FavoriteStatus.addedToFavorite,
-            favoriteProductsList: state.favoriteProductsList,
-            favorites: favorites,
-            isAdded: true));
+            favoriteStatus: FavoriteStatus.addedToFavorite,));
       }
 
       if (dataState is DataFailed) {

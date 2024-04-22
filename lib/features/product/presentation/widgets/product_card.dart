@@ -92,7 +92,7 @@ class ProductCard extends StatelessWidget {
                       )
                     : Container(),
                 likeButtonWidget(
-                    context, 30.0, product_id, likeButtonType, index, state)
+                    context, 35.0, product_id, likeButtonType, index, state)
               ],
             ),
             Center(

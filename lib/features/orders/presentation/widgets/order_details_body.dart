@@ -275,7 +275,7 @@ class OrderDetailsBody extends StatelessWidget {
                                           height: height * 0.01,
                                         ),
                                         Text(
-                                          'Tax:${state.orderDetailsEntity!.productsOrderDetailsList![mainIndex].tax}%',
+                                          state.orderDetailsEntity!.productsOrderDetailsList![mainIndex].tax != 0 ? 'Tax:${state.orderDetailsEntity!.productsOrderDetailsList![mainIndex].tax}%': 'No Tax',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 12.sp,

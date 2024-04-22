@@ -177,6 +177,16 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     try {
       emit(state.copyWith(isAdded: false));
 
+      Map<int, bool> favorites = state.favorites!;
+      int id = event.productId;
+      favorites[id] = !favorites[id]!;
+
+      emit(state.copyWith(
+        productsPaginated: state.productsPaginated,
+        favorites: favorites,
+        isAdded: true,
+      ));
+
       final addToFavoriteParams = AddToFavoriteParams(
         productId: event.productId,
       );
@@ -185,15 +195,9 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
           await _addToFavoritesUseCase(params: addToFavoriteParams);
 
       if (dataState is DataSuccess) {
-        Map<int, bool> favorites = state.favorites!;
-        int id = event.productId;
-        favorites[id] = !favorites[id]!;
 
         emit(state.copyWith(
           categoryStatus: CategoryStatus.addedToFavorite,
-          productsPaginated: state.productsPaginated,
-          favorites: favorites,
-          isAdded: true,
         ));
       }
 

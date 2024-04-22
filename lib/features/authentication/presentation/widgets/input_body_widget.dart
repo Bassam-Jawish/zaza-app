@@ -13,13 +13,15 @@ import '../bloc/auth_bloc.dart';
 import 'login_button.dart';
 
 class InputBodyWidget extends StatelessWidget {
-  InputBodyWidget(this._userNameController, this._userNameFocusNode, this._passwordController, this._passwordFocusNode, this._formKey, {super.key});
+  InputBodyWidget(this._userNameController, this._userNameFocusNode,
+      this._passwordController, this._passwordFocusNode, this._formKey,
+      {super.key});
 
-  TextEditingController _userNameController = TextEditingController();
-  FocusNode _userNameFocusNode = FocusNode();
-  TextEditingController _passwordController = TextEditingController();
-  FocusNode _passwordFocusNode = FocusNode();
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController _userNameController;
+  FocusNode _userNameFocusNode;
+  TextEditingController _passwordController;
+  FocusNode _passwordFocusNode;
+  GlobalKey<FormState> _formKey;
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +41,11 @@ class InputBodyWidget extends StatelessWidget {
               topRight: Radius.circular(40.0.r),
             ),
           ),
-
           padding: EdgeInsets.only(
-              left: width * 0.08,right: width * 0.08, top: height * 0.03,bottom: 0.035),
+              left: width * 0.08,
+              right: width * 0.08,
+              top: height * 0.03,
+              bottom: 0.035),
           child: Form(
             key: _formKey,
             child: Column(
@@ -80,8 +84,10 @@ class InputBodyWidget extends StatelessWidget {
                 def_TextFromField(
                   key: Key('username_field'),
                   cursorColor: theme.primary,
-                  autValidateMode:
-                  AutovalidateMode.onUserInteraction,
+                  onChanged: (val) {
+                    print(val);
+                  },
+                  autValidateMode: AutovalidateMode.onUserInteraction,
                   keyboardType: TextInputType.text,
                   controller: _userNameController,
                   focusNode: _userNameFocusNode,
@@ -91,8 +97,7 @@ class InputBodyWidget extends StatelessWidget {
                     color: theme.secondary,
                   ),
                   onFieldSubmitted: (value) {
-                    FocusScope.of(context)
-                        .requestFocus(_passwordFocusNode);
+                    FocusScope.of(context).requestFocus(_passwordFocusNode);
                   },
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -116,34 +121,34 @@ class InputBodyWidget extends StatelessWidget {
                 def_TextFromField(
                   key: Key('password_field'),
                   cursorColor: theme.primary,
+                  onChanged: (val) {
+                    print(val);
+                  },
                   focusNode: _passwordFocusNode,
                   keyboardType: TextInputType.visiblePassword,
                   maxLines: 1,
                   controller: _passwordController,
                   obscureText: !state.isPasswordVis!,
-                  autValidateMode:
-                  AutovalidateMode.onUserInteraction,
+                  autValidateMode: AutovalidateMode.onUserInteraction,
                   prefixIcon: Icon(
                     Icons.lock,
                     color: theme.secondary,
                   ),
                   suffixIcon: IconButton(
                     onPressed: () {
-                      context
-                          .read<AuthBloc>()
-                          .add(const ChangePassword());
+                      context.read<AuthBloc>().add(const ChangePassword());
                     },
                     icon: state.isPasswordVis!
                         ? const Icon(
-                      Icons.visibility_outlined,
-                      color: Colors.grey,
-                      size: 26,
-                    )
+                            Icons.visibility_outlined,
+                            color: Colors.grey,
+                            size: 26,
+                          )
                         : const Icon(
-                      Icons.visibility_off_outlined,
-                      color: Colors.grey,
-                      size: 26,
-                    ),
+                            Icons.visibility_off_outlined,
+                            color: Colors.grey,
+                            size: 26,
+                          ),
                   ),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -162,13 +167,11 @@ class InputBodyWidget extends StatelessWidget {
                         '${AppRouter.kLoginPage}/${AppRouter.kForgotPasswordPage}');
                   },
                   style: ButtonStyle(
-                    overlayColor:
-                    MaterialStateColor.resolveWith(
-                            (states) => AppColor.shadeColor),
+                    overlayColor: MaterialStateColor.resolveWith(
+                        (states) => AppColor.shadeColor),
                   ),
                   child: Text(
-                    AppLocalizations.of(context)!
-                        .forgot_Password,
+                    AppLocalizations.of(context)!.forgot_Password,
                     style: TextStyle(
                       color: theme.secondary,
                       fontSize: 14.sp,
@@ -180,10 +183,45 @@ class InputBodyWidget extends StatelessWidget {
                 ),
                 ConditionalBuilder(
                   condition: state.authStatus != AuthStatus.loading,
-                  builder: (context) => LoginButton(
-                      _userNameController.text,
-                      _passwordController.text,
-                      _formKey),
+                  builder: (context) => Center(
+                    child: Container(
+                      height: height * 0.06,
+                      width: width * 0.55,
+                      decoration: BoxDecoration(
+                        color: theme.primary,
+                        borderRadius: BorderRadius.circular(20.0.r),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: const Offset(0, 2),
+                            color: Colors.redAccent.withOpacity(0.5),
+                            blurRadius: 1,
+                          )
+                        ],
+                      ),
+                      child: ElevatedButton(
+                        child: Text(
+                          AppLocalizations.of(context)!.login,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20.sp),
+                        ),
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            context.read<AuthBloc>().add(Login(
+                                _userNameController.text,
+                                _passwordController.text));
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: theme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   fallback: (context) => SpinKitApp(width),
                 ),
               ],

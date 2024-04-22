@@ -142,6 +142,15 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
         isAddedNewProducts: false,
       ));
 
+      Map<int, bool> favorites = state.newAllProductsFavorites!;
+      favorites[event.productId] = !favorites[event.productId]!;
+
+      emit(state.copyWith(
+          newAllProductsList: state.newAllProductsList,
+          newAllProductsFavorites: favorites,
+          isAddedNewProducts: true
+      ));
+
       final addToFavoriteParams = AddToFavoriteParams(
         productId: event.productId,
       );
@@ -150,14 +159,8 @@ class NewProductBloc extends Bloc<NewProductEvent, NewProductState> {
           await _addToFavoritesUseCase(params: addToFavoriteParams);
 
       if (dataState is DataSuccess) {
-        Map<int, bool> favorites = state.newAllProductsFavorites!;
-        favorites[event.productId] = !favorites[event.productId]!;
-
         emit(state.copyWith(
           newProductStatus: NewProductStatus.addedToFavorite,
-          newAllProductsList: state.newAllProductsList,
-          newAllProductsFavorites: favorites,
-          isAddedNewProducts: true
         ));
       }
 

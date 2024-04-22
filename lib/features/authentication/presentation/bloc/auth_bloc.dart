@@ -5,7 +5,6 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:zaza_app/core/app_export.dart';
-import 'package:zaza_app/core/widgets/custom_toast.dart';
 import 'package:zaza_app/features/authentication/domain/usecases/forgot_password_usecase.dart';
 import 'package:zaza_app/features/authentication/domain/usecases/logout_usecase.dart';
 import 'package:zaza_app/features/authentication/domain/usecases/reset_password_usecase.dart';
@@ -60,6 +59,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void onLogin(Login event, Emitter<AuthState> emit) async {
     emit(state.copyWith(authStatus: AuthStatus.loading));
+
+    print('sfdgfjgjhfd');
+    print(event.userName);
+    print(event.password);
+
     final isConnected = await _networkInfo.isConnected;
 
     if (!isConnected) {
@@ -77,6 +81,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final dataState = await _loginUseCase(params: loginParams);
 
       if (dataState is DataSuccess) {
+
         emit(state.copyWith(
           authStatus: AuthStatus.success,
           accessToken: dataState.data!.accessToken!,

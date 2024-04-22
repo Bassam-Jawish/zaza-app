@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:zaza_app/injection_container.dart';
 
 import '../bloc/auth_bloc.dart';
 
@@ -42,6 +43,9 @@ class LoginButton extends StatelessWidget {
                 fontSize: 20.sp),
           ),
           onPressed: () {
+            print(userName);
+            print(password);
+
             if (form.currentState!.validate()) {
               context.read<AuthBloc>().add(Login(userName, password));
 

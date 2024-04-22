@@ -35,6 +35,7 @@ class ProfileBody extends StatelessWidget {
               showToast(text: state.error!.message, state: ToastState.error);
             }
             if (state.profileStatus == ProfileStatus.successCreatePhone) {
+
               BlocProvider.of<ProfileBloc>(context)
                 ..add(GetUserProfile(languageCode));
               Navigator.of(context).pop();
@@ -45,6 +46,7 @@ class ProfileBody extends StatelessWidget {
               EasyLoading.dismiss();
             }
             if (state.profileStatus == ProfileStatus.loadingCreatePhone) {
+              FocusManager.instance.primaryFocus?.unfocus();
               EasyLoading.show();
             }
 

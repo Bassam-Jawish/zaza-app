@@ -407,8 +407,20 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   Future<void> onAddToFavoriteHomeNewProducts(
       AddToFavoriteHomeNewProducts event, Emitter<ProductState> emit) async {
     try {
+
+      // isAddedHomeNewProducts should be always false then true
+
       emit(state.copyWith(
         isAddedHomeNewProducts: false,
+      ));
+
+      Map<int, bool> favorites = state.newHomeProductsFavorites!;
+      favorites[event.productId] = !favorites[event.productId]!;
+
+      emit(state.copyWith(
+        homeNewProductsEntity: state.homeNewProductsEntity,
+        newHomeProductsFavorites: favorites,
+        isAddedHomeNewProducts: true,
       ));
 
       final addToFavoriteParams = AddToFavoriteParams(
@@ -419,14 +431,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           await _addToFavoritesUseCase(params: addToFavoriteParams);
 
       if (dataState is DataSuccess) {
-        Map<int, bool> favorites = state.newHomeProductsFavorites!;
-        favorites[event.productId] = !favorites[event.productId]!;
 
         emit(state.copyWith(
           productStatus: ProductStatus.addedToFavoriteNewProducts,
-          homeNewProductsEntity: state.homeNewProductsEntity,
-          newHomeProductsFavorites: favorites,
-          isAddedHomeNewProducts: true,
         ));
       }
 
@@ -457,6 +464,16 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       emit(state.copyWith(isAddedSearchByBarcode: false));
 
+      Map<int, bool> favorites = state.searchBarcodeProductsFavorites!;
+      favorites[event.productId] = !favorites[event.productId]!;
+
+      emit(state.copyWith(
+        searchBarcodeProductsEntity: state.searchBarcodeProductsEntity,
+        searchBarcodeProductsFavorites: favorites,
+        isAddedSearchByBarcode: true,
+      ));
+
+
       final addToFavoriteParams = AddToFavoriteParams(
         productId: event.productId,
       );
@@ -465,14 +482,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           await _addToFavoritesUseCase(params: addToFavoriteParams);
 
       if (dataState is DataSuccess) {
-        Map<int, bool> favorites = state.searchBarcodeProductsFavorites!;
-        favorites[event.productId] = !favorites[event.productId]!;
 
         emit(state.copyWith(
           productStatus: ProductStatus.addedToFavoriteSearchByBarcode,
-          searchBarcodeProductsEntity: state.searchBarcodeProductsEntity,
-          searchBarcodeProductsFavorites: favorites,
-          isAddedSearchByBarcode: true,
         ));
       }
 
@@ -501,6 +513,15 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       emit(state.copyWith(isAddedSearchByName: false));
 
+      Map<int, bool> favorites = state.searchNameProductsFavorites!;
+      favorites[event.productId] = !favorites[event.productId]!;
+
+      emit(state.copyWith(
+        searchNameProductsEntity: state.searchNameProductsEntity,
+        searchNameProductsFavorites: favorites,
+        isAddedSearchByName: true,
+      ));
+
       final addToFavoriteParams = AddToFavoriteParams(
         productId: event.productId,
       );
@@ -509,14 +530,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           await _addToFavoritesUseCase(params: addToFavoriteParams);
 
       if (dataState is DataSuccess) {
-        Map<int, bool> favorites = state.searchNameProductsFavorites!;
-        favorites[event.productId] = !favorites[event.productId]!;
 
         emit(state.copyWith(
           productStatus: ProductStatus.addedToFavoriteSearchByName,
-          searchNameProductsEntity: state.searchNameProductsEntity,
-          searchNameProductsFavorites: favorites,
-          isAddedSearchByName: true,
         ));
       }
 

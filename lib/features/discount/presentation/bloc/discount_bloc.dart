@@ -195,6 +195,15 @@ class DiscountBloc extends Bloc<DiscountEvent, DiscountState> {
       emit(state.copyWith(
           isAdded: false));
 
+      Map<int, bool> favorites = state.favorites!;
+      int id = event.productId;
+      favorites[id] = !favorites[id]!;
+
+      emit(state.copyWith(
+        favorites: favorites,
+        isAdded: true,
+      ));
+
       final addToFavoriteParams = AddToFavoriteParams(
         productId: event.productId,
       );
@@ -203,14 +212,8 @@ class DiscountBloc extends Bloc<DiscountEvent, DiscountState> {
           await _addToFavoritesUseCase(params: addToFavoriteParams);
 
       if (dataState is DataSuccess) {
-        Map<int, bool> favorites = state.favorites!;
-        int id = event.productId;
-        favorites[id] = !favorites[id]!;
-
         emit(state.copyWith(
           discountStatus: DiscountStatus.addedToFavorite,
-          favorites: favorites,
-          isAdded: true,
         ));
       }
 

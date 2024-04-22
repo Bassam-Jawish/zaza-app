@@ -50,7 +50,7 @@ class FavoriteBody extends StatelessWidget {
                           iconSize: 20.sp,
                         ),
                         Text(
-                          '${AppLocalizations.of(context)!.number_of_Products} (${state.favoriteProductsEntity!.totalNumber})',
+                          '${AppLocalizations.of(context)!.number_of_Products} (${state.favoriteProductsList!.length})',
                           style: TextStyle(
                               color: theme.secondary,
                               fontWeight: FontWeight.w600,

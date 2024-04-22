@@ -52,7 +52,7 @@ class ProductOrderModel extends ProductOrderEntity {
       image: map['image'] ?? "",
       barCode: map['barCode'] ?? "",
       productName: map['translatedProduct'] ?? "",
-      tax: map['tax'] ?? '',
+      tax: map['tax'] ?? 0,
       productUnitsOrderDetailsList: map['productUnit'] != null
           ? List<ProductUnitOrderModel>.from((map['productUnit'] as List)
               .map((unitOrder) => ProductUnitOrderModel.fromJson(unitOrder)))

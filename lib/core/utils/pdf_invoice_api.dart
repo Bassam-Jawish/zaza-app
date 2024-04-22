@@ -129,9 +129,9 @@ class PdfInvoiceApi {
         data.add([
           product.productName,
           product.barCode,
-          '${product.tax}%',
+          product.tax == 0 ? 'No Tax' : '${product.tax}%',
           unit.unitOrderModel!.unitName,
-          desc,
+          s,
           '${unit.unitDetailsOrderModel!.amount}',
           '\€${(priceOneUnit).toStringAsFixed(2)}',
         ]);
