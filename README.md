@@ -1,6 +1,6 @@
 # 🔥👏 Zaza App
 
-An e-commerce created with Flutter and Node Js 💻
+An e-commerce app created with Flutter and Node Js 💻
 
 ## Getting Started
 
