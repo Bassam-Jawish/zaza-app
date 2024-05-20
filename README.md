@@ -73,7 +73,7 @@ Hit me on
 This project was done By:
 
 [@Bassam-Jawish](https://github.com/Bassam-Jawish)
-[@batoul-khadamaljame](https://github.com/batoul-khadamaljame)
+[@Qusai Armoush](https://github.com/Qusai963)
 
 
 Pull requests are welcome.
