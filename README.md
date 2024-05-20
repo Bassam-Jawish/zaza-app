@@ -26,33 +26,33 @@ Star ⭐ the repo to support the project.
 ## Screenshots
 
 <p float="left">
-  <img src="screenshots/VideoCapture_20230313-004159.jpg" width="220" height = "450"/>
-  <img src="screenshots/VideoCapture_20230313-004058.jpg" width="220" height = "450"/> 
-  <img src="screenshots/VideoCapture_20230313-004143.jpg" width="220" height = "450"/>
+  <img src="screenshots/Screenshot_20240312_170847.jpg" width="220" height = "450"/>
+  <img src="screenshots/Screenshot_20240319_152525.jpg" width="220" height = "450"/> 
+  <img src="screenshots/Screenshot_20240319_152529.jpg" width="220" height = "450"/>
 </p>
 
 <p float="left">
-  <img src="screenshots/VideoCapture_20230313-004253.jpg" width="220" height = "450"/>
-  <img src="screenshots/VideoCapture_20230313-004313.jpg" width="220" height = "450"/> 
-  <img src="screenshots/VideoCapture_20230313-004339.jpg" width="220" height = "450"/>
+  <img src="screenshots/Screenshot_20240319_152533.jpg" width="220" height = "450"/>
+  <img src="screenshots/Screenshot_20240319_152538.jpg" width="220" height = "450"/> 
+  <img src="screenshots/Screenshot_20240319_152711.jpg" width="220" height = "450"/>
 </p>
 
 <p float="left">
-  <img src="screenshots/VideoCapture_20230313-004418.jpg" width="220" height = "450"/>
-  <img src="screenshots/VideoCapture_20230313-004446.jpg" width="220" height = "450"/> 
-  <img src="screenshots/VideoCapture_20230313-004530.jpg" width="220" height = "450"/>
+  <img src="screenshots/Screenshot_20240319_152728.jpg" width="220" height = "450"/>
+  <img src="screenshots/Screenshot_20240319_152745.jpg" width="220" height = "450"/> 
+  <img src="screenshots/Screenshot_20240319_152753.jpg" width="220" height = "450"/>
 </p>
 
 <p float="left">
-  <img src="screenshots/VideoCapture_20230313-004601.jpg" width="220" height = "450"/>
-  <img src="screenshots/VideoCapture_20230313-004610.jpg" width="220" height = "450"/> 
-  <img src="screenshots/VideoCapture_20230313-004651.jpg" width="220" height = "450"/>
+  <img src="screenshots/Screenshot_20240319_152803.jpg" width="220" height = "450"/>
+  <img src="screenshots/Screenshot_20240319_153047.jpg" width="220" height = "450"/> 
+  <img src="screenshots/Screenshot_20240319_153054.jpg" width="220" height = "450"/>
 </p>
 
 <p float="left">
-  <img src="screenshots/VideoCapture_20230313-004705.jpg" width="220" height = "450"/>
-  <img src="screenshots/VideoCapture_20230313-004818.jpg" width="220" height = "450"/> 
-  <img src="screenshots/VideoCapture_20230313-005016.jpg" width="220" height = "450"/>
+  <img src="screenshots/Screenshot_20240319_153107.jpg" width="220" height = "450"/>
+  <img src="screenshots/Screenshot_20240319_153130.jpg" width="220" height = "450"/> 
+  <img src="screenshots/Screenshot_20240319_153213.jpg" width="220" height = "450"/>
 </p>
 
 ## Tools
