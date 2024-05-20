@@ -16,13 +16,19 @@ class PdfInvoiceApi {
     final pdf = Document();
     final Uint8List img = await loadImage();
 
-    var fallbackAr = [Font.ttf(await rootBundle.load("fonts/Cairo/Cairo-Medium.ttf"))];
-    var fallback = [Font.ttf(await rootBundle.load("fonts/OpenSans/OpenSans-Medium.ttf"))];
+    var fallbackAr = [
+      Font.ttf(await rootBundle.load("fonts/Cairo/Cairo-Medium.ttf"))
+    ];
+    var fallback = [
+      Font.ttf(await rootBundle.load("fonts/OpenSans/OpenSans-Medium.ttf"))
+    ];
 
     var myTheme = ThemeData.withFont(
-      base: Font.ttf(await rootBundle.load("fonts/OpenSans/OpenSans-Medium.ttf")),
+      base: Font.ttf(
+          await rootBundle.load("fonts/OpenSans/OpenSans-Medium.ttf")),
       bold: Font.ttf(await rootBundle.load("fonts/OpenSans/OpenSans-Bold.ttf")),
-      italic: Font.ttf(await rootBundle.load("fonts/OpenSans/OpenSans-Italic.ttf")),
+      italic: Font.ttf(
+          await rootBundle.load("fonts/OpenSans/OpenSans-Italic.ttf")),
       fontFallback: fallbackAr,
     );
 
@@ -34,16 +40,18 @@ class PdfInvoiceApi {
 
     pdf.addPage(MultiPage(
       pageFormat: PdfPageFormat.a4,
-      textDirection: languageCode == 'ar' ?  pw.TextDirection.rtl :  pw.TextDirection.ltr,
+      textDirection: languageCode == 'ar' ? pw.TextDirection.rtl : pw
+          .TextDirection.ltr,
       theme: languageCode == 'ar' ? myThemeAr : myTheme,
-      build: (context) => [
+      build: (context) =>
+      [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                buildInvoiceInfo(invoice,buildContext),
+                buildInvoiceInfo(invoice, buildContext),
                 pw.Image(
                     pw.MemoryImage(
                       img,
@@ -70,7 +78,7 @@ class PdfInvoiceApi {
 
   static Future<Uint8List> loadImage() async {
     final ByteData data =
-        await rootBundle.load('${Assets.images.logos.logoColored512.path}');
+    await rootBundle.load('${Assets.images.logos.logoColored512.path}');
     return data.buffer.asUint8List();
   }
 
@@ -82,7 +90,8 @@ class PdfInvoiceApi {
     ];
     final data = <String>[
       info.orderId.toString(),
-      '${DateFormat("yyyy/MM/dd : HH:m:s").format(DateTime.parse(info.createdAt!))}',
+      '${DateFormat("yyyy/MM/dd : HH:m:s").format(
+          DateTime.parse(info.createdAt!))}',
       info.status!.toUpperCase(),
     ];
     return Column(
@@ -95,7 +104,8 @@ class PdfInvoiceApi {
     );
   }
 
-  static Widget buildTitle(OrderDetailsEntity invoice, context) => Column(
+  static Widget buildTitle(OrderDetailsEntity invoice, context) =>
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
@@ -124,7 +134,8 @@ class PdfInvoiceApi {
       product.productUnitsOrderDetailsList!.forEach((unit) {
         var s = unit.desc;
         String desc = s!.substring(1);
-        dynamic priceOneUnit = (unit.unitDetailsOrderModel!.totalPrice / unit.unitDetailsOrderModel!.amount);
+        dynamic priceOneUnit = (unit.unitDetailsOrderModel!.totalPrice /
+            unit.unitDetailsOrderModel!.amount);
         dynamic taxPrice = priceOneUnit * product.tax! / 100;
         data.add([
           product.productName,
@@ -201,9 +212,10 @@ class PdfInvoiceApi {
 
                 Divider(),
                 buildText(
-                  title: '${AppLocalizations.of(context)!.total_amount_with_vat}: ',
+                  title: '${AppLocalizations.of(context)!
+                      .total_amount_with_vat}: ',
                   titleStyle:
-                    TextStyle(fontWeight: FontWeight.bold,),
+                  TextStyle(fontWeight: FontWeight.bold,),
                   value: totalAfterPrice,
                   unite: true,
                 ),
@@ -249,10 +261,10 @@ class TaxSummary {
 Map<double, double> calculateTaxSum(OrderDetailsEntity invoice) {
   Map<double, double> taxSumMap = {};
 
-    invoice.productsOrderDetailsList!.forEach((product) {
+  invoice.productsOrderDetailsList!.forEach((product) {
+    if (product.tax! != 0) {
       double taxPercentage = product.tax!.toDouble();
       product.productUnitsOrderDetailsList!.forEach((unit) {
-
         // if (taxSumMap.containsKey(taxPercentage)) {
         //   taxSumMap.update(taxPercentage, (value) => value + unit.unitDetailsOrderModel!.totalPrice,
         //       ifAbsent: () => unit.unitDetailsOrderModel!.totalPrice);
@@ -260,11 +272,13 @@ Map<double, double> calculateTaxSum(OrderDetailsEntity invoice) {
         //   taxSumMap[taxPercentage] = unit.unitDetailsOrderModel!.totalPrice;
         // }
 
-        double taxPrice = ((taxPercentage * unit.unitDetailsOrderModel!.totalPrice) / 100);
+        double taxPrice = ((taxPercentage *
+            unit.unitDetailsOrderModel!.totalPrice) / 100);
         taxSumMap.update(taxPercentage, (value) => value + taxPrice,
             ifAbsent: () => taxPrice);
       });
-    });
+    }
+  });
 
 
   return taxSumMap;

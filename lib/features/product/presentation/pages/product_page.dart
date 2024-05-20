@@ -75,9 +75,9 @@ class ProductPage extends StatelessWidget {
                   },
                   elevation: 0.0,
                   label: Text(
-                    'DELETE ONE',
+                    '-1',
                   ),
-                  icon: Icon(Icons.exposure_minus_1),
+                  //icon: Icon(Icons.exposure_minus_1),
                   backgroundColor: AppColor.primaryLight,
                   foregroundColor: Colors.white,
                 ),
@@ -121,9 +121,9 @@ class ProductPage extends StatelessWidget {
                   },
                   elevation: 0.0,
                   label: Text(
-                    'ADD TO BASKET',
+                    '+1',
                   ),
-                  icon: Icon(Icons.plus_one),
+                  //icon: Icon(Icons.plus_one),
                   backgroundColor: AppColor.primaryLight,
                   foregroundColor: Colors.white,
                 ),
